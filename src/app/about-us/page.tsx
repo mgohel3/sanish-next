@@ -13,19 +13,19 @@ export default function AboutUsPage() {
       
       {/* Hero Section */}
       <section className="relative pt-[200px] pb-[160px] text-center border-b border-[var(--border)] overflow-hidden">
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-[var(--bg-secondary)]">
           <img 
-            src="https://images.unsplash.com/photo-1618221118493-9c48b2eb5959?q=80&w=2000" 
+            src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2000" 
             alt="About Sanish" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-50"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-[var(--bg-primary)]/40" />
         </div>
         <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <div className="text-[11px] tracking-[0.2em] uppercase text-white/80 mb-6 font-semibold">
+          <div className="text-[11px] tracking-[0.2em] uppercase text-[var(--accent-blue)] mb-6 font-semibold">
             About Sanish Laminate
           </div>
-          <h1 className="font-serif text-[clamp(48px,6vw,80px)] text-white mb-6 leading-tight tracking-wide">
+          <h1 className="font-serif text-[clamp(48px,6vw,80px)] text-[var(--text-primary)] mb-6 leading-tight tracking-wide">
             ABOUT US
           </h1>
         </div>
