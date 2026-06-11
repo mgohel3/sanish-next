@@ -327,7 +327,7 @@ export default function ProductsClient() {
                 <div className="px-4 py-3 rounded-xl text-[13px]" style={{ backgroundColor: "rgba(123,158,196,0.08)", border: "1px solid rgba(123,158,196,0.2)" }}>
                   <div className="text-[10px] uppercase tracking-[0.12em] font-semibold mb-1" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Active filter</div>
                   <div className="font-semibold" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
-                    {DESIGN_TITLE_MAP[activeDesign] ?? activeDesign}
+                    {DESIGN_TITLE_MAP[activeDesign!] ?? activeDesign}
                   </div>
                   <button onClick={clearAll} className="text-[11px] mt-1 hover:underline" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Clear ×</button>
                 </div>
