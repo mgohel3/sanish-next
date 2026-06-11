@@ -44,7 +44,7 @@ export default function Preloader() {
 
           <div className="relative flex items-center gap-5 z-10">
             {/* Logo Icon Grid */}
-            <div className="grid grid-cols-2 gap-1">
+            <div className="grid grid-cols-2 gap-[1.5px]">
               {dots.map((dot, index) => (
                 <motion.div
                   key={index}

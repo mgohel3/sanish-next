@@ -6,6 +6,9 @@ import CustomCursor from "@/components/CustomCursor";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Preloader from "@/components/Preloader";
 import Popup from "@/components/Popup";
+import { SiteSettingsProvider } from "@/components/SiteSettingsProvider";
+import { getSiteSettings } from "@/lib/siteSettings";
+import { getMegaNavData } from "@/lib/navData";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,24 +38,31 @@ export const metadata: Metadata = {
     "Crafting elegant laminate and decorative surface solutions for architects, interior designers, commercial projects, and modern living spaces.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [siteSettings, navData] = await Promise.all([
+    getSiteSettings(),
+    getMegaNavData(),
+  ]);
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${playfair.variable} ${jakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Preloader />
-        <CustomCursor />
-        <Popup />
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
-        <WhatsAppButton />
+        <SiteSettingsProvider settings={siteSettings} nav={navData}>
+          <Preloader />
+          <CustomCursor />
+          <Popup />
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
+          <WhatsAppButton />
+        </SiteSettingsProvider>
       </body>
     </html>
   );
