@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,6 +8,24 @@ export default function Popup() {
   const [render, setRender] = useState(false);
   const [show, setShow] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
+  const pendingDownload = useRef(false);
+
+  const openPopup = () => {
+    setRender(true);
+    setTimeout(() => setShow(true), 50);
+  };
+
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const detail = (e as CustomEvent<{ downloadAfterSubmit?: boolean }>).detail;
+      if (detail?.downloadAfterSubmit) pendingDownload.current = true;
+      setHasTriggered(true);
+      openPopup();
+    };
+    window.addEventListener("open-inquiry-popup", onOpen);
+    return () => window.removeEventListener("open-inquiry-popup", onOpen);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (hasTriggered) return;
@@ -17,21 +35,22 @@ export default function Popup() {
     const triggerPopup = () => {
       if (hasTriggered) return;
       setHasTriggered(true);
-      setRender(true);
-      setTimeout(() => setShow(true), 50);
+      openPopup();
     };
 
     const timer = setTimeout(() => {
       triggerPopup();
     }, 30000);
 
-    const aboutSection = document.getElementById("about");
+    const footerLeadSection =
+      document.getElementById("cta-section") ||
+      document.getElementById("footer");
     let st: ScrollTrigger | null = null;
 
-    if (aboutSection) {
+    if (footerLeadSection) {
       st = ScrollTrigger.create({
-        trigger: aboutSection,
-        start: "bottom center",
+        trigger: footerLeadSection,
+        start: "top 78%",
         once: true,
         onEnter: triggerPopup,
       });
@@ -79,7 +98,7 @@ export default function Popup() {
             className="absolute -top-10 -right-10 w-48 h-48 rounded-full opacity-30 pointer-events-none"
             style={{
               background:
-                "radial-gradient(circle, #7B9EC4 0%, transparent 70%)",
+                "radial-gradient(circle, #85addc 0%, transparent 70%)",
               filter: "blur(40px)",
             }}
           />
@@ -87,7 +106,7 @@ export default function Popup() {
             className="absolute -bottom-6 -left-6 w-36 h-36 rounded-full opacity-20 pointer-events-none"
             style={{
               background:
-                "radial-gradient(circle, #C97A92 0%, transparent 70%)",
+                "radial-gradient(circle, #f39ba2 0%, transparent 70%)",
               filter: "blur(30px)",
             }}
           />
@@ -116,7 +135,7 @@ export default function Popup() {
 
           {/* Logo dot grid */}
           <div className="grid grid-cols-2 gap-[1.5px] w-fit mb-5">
-            {(["#7B9EC4", "#E8956D", "#C97A92", "#E8B49A"] as const).map((c) => (
+            {(["#fabf7d", "#ac8cc0", "#f39ba2", "#85addc"] as const).map((c) => (
               <span
                 key={c}
                 className="block w-3 h-3 rounded-full"
@@ -127,7 +146,7 @@ export default function Popup() {
 
           <div
             className="text-[10.5px] font-semibold tracking-[0.2em] uppercase mb-3"
-            style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}
+            style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}
           >
             Have a Project?
           </div>
@@ -150,7 +169,19 @@ export default function Popup() {
         <div className="bg-white px-9 py-8">
           <form
             className="flex flex-col gap-3.5"
-            onSubmit={(e) => { e.preventDefault(); handleClose(); }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (pendingDownload.current) {
+                const a = document.createElement("a");
+                a.href = "/assets/catalogue.pdf";
+                a.download = "Sanish-Laminates-Catalogue.pdf";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                pendingDownload.current = false;
+              }
+              handleClose();
+            }}
           >
             {/* Row 1: Name + Phone */}
             <div className="grid grid-cols-2 gap-3">
@@ -163,7 +194,7 @@ export default function Popup() {
                   onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
                   className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200"
                   style={{ background: "#F7F7F9", border: "1.5px solid transparent", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
-                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #7B9EC4"; e.currentTarget.style.background = "#fff"; }}
+                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #f39ba2"; e.currentTarget.style.background = "#fff"; }}
                   onBlur={(e) => { e.currentTarget.style.border = "1.5px solid transparent"; e.currentTarget.style.background = "#F7F7F9"; }}
                 />
               ))}
@@ -179,7 +210,7 @@ export default function Popup() {
                   onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
                   className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200"
                   style={{ background: "#F7F7F9", border: "1.5px solid transparent", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
-                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #7B9EC4"; e.currentTarget.style.background = "#fff"; }}
+                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #f39ba2"; e.currentTarget.style.background = "#fff"; }}
                   onBlur={(e) => { e.currentTarget.style.border = "1.5px solid transparent"; e.currentTarget.style.background = "#F7F7F9"; }}
                 />
               ))}
@@ -191,7 +222,7 @@ export default function Popup() {
               onChange={(e) => setForm({ ...form, enquire_type: e.target.value })}
               className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200 appearance-none"
               style={{ background: "#F7F7F9", border: "1.5px solid transparent", color: form.enquire_type ? "var(--text-primary)" : "#9B9BB0", fontFamily: "var(--font-jakarta)" }}
-              onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #7B9EC4"; e.currentTarget.style.background = "#fff"; }}
+              onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #f39ba2"; e.currentTarget.style.background = "#fff"; }}
               onBlur={(e) => { e.currentTarget.style.border = "1.5px solid transparent"; e.currentTarget.style.background = "#F7F7F9"; }}
             >
               <option value="" disabled>Enquire Type *</option>
@@ -201,7 +232,7 @@ export default function Popup() {
 
             <button type="submit"
               className="w-full mt-1 relative overflow-hidden rounded-2xl py-4 text-[13px] font-semibold tracking-[0.07em] text-white transition-all duration-300 hover:-translate-y-[2px]"
-              style={{ background: "linear-gradient(135deg, #7B9EC4 0%, #8BAED4 100%)", boxShadow: "0 8px 28px rgba(123,158,196,0.45)", fontFamily: "var(--font-jakarta)" }}
+              style={{ background: "#85addc", boxShadow: "0 8px 28px rgba(133,173,220,0.4)", fontFamily: "var(--font-jakarta)" }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 14px 36px rgba(123,158,196,0.60)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 28px rgba(123,158,196,0.45)"; }}
             >

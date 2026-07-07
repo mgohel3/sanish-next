@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageHero from "@/components/PageHero";
 import { MapPin, Phone, Mail } from "lucide-react";
 
 export const metadata = {
@@ -11,29 +12,15 @@ export default function ContactUsPage() {
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
       <Header />
-      
-      {/* Hero Section */}
-      <section className="relative pt-[200px] pb-[160px] text-center border-b border-[var(--border)] overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-[var(--bg-secondary)]">
-          <img 
-            src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000" 
-            alt="Contact Sanish" 
-            className="w-full h-full object-cover opacity-50"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-[var(--bg-primary)]/40" />
-        </div>
-        <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <div className="text-[11px] tracking-[0.2em] uppercase text-[var(--accent-blue)] mb-6 font-semibold">
-            Get in Touch
-          </div>
-          <h1 className="font-serif text-[clamp(48px,6vw,80px)] text-[var(--text-primary)] mb-6 leading-tight tracking-wide">
-            CONTACT US
-          </h1>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Get in Touch"
+        title="Contact Us"
+        image="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000"
+        description="Speak with our team about products, samples, specifications and dealer support."
+      />
 
       <section className="py-[120px] bg-[var(--bg-primary)]">
-        <div className="container mx-auto px-6 md:px-12">
+        <div className="site-container">
           
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-[60px] lg:gap-[100px]">
             

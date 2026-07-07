@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
-import { products, collections, finishes, type Product } from "@/lib/products";
+import { products, collections, finishes, colors, type Product } from "@/lib/products";
 
 /* ── URL slug → display name mappings ───────────────────── */
 const COLLECTION_SLUG_MAP: Record<string, string> = {
@@ -45,6 +45,23 @@ const FINISH_TITLE_MAP: Record<string, string> = {
   metallic:      "Metallic Laminates",
 };
 
+const COLOR_SLUG_MAP: Record<string, string> = {
+  white: "White",
+  beige: "Beige",
+  black: "Black",
+  blue: "Blue",
+  brown: "Brown",
+  green: "Green",
+  grey: "Grey",
+  metallic: "Metallic",
+  multicolor: "Multicolor",
+  orange: "Orange",
+  pink: "Pink",
+  purple: "Purple",
+  red: "Red",
+  yellow: "Yellow",
+};
+
 // Design type → which finishes to match
 const DESIGN_FINISH_MAP: Record<string, string[]> = {
   wood:   ["Textured"],
@@ -81,17 +98,17 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
         <button onClick={onClose} className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/8 hover:bg-black/15 transition-colors">
           <X className="w-4 h-4 text-[#3A3A4A]" />
         </button>
-        <div className="w-full md:w-[45%] flex-shrink-0 bg-[#F0EDE8] relative" style={{ minHeight: 280 }}>
+        <div className="w-full md:w-[45%] flex-shrink-0 bg-[#f3f4f6] relative" style={{ minHeight: 280 }}>
           <img src={product.images[0]} alt={product.name} className="absolute inset-0 w-full h-full object-cover" />
           {product.badge && (
             <span className="absolute top-3 left-3 text-[9.5px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full text-white"
-              style={{ backgroundColor: product.badge === "New" ? "#C97A92" : product.badge === "Bestseller" ? "#7B9EC4" : "#E8956D" }}>
+              style={{ backgroundColor: "#fabf7d" }}>
               {product.badge}
             </span>
           )}
         </div>
         <div className="flex-1 p-7 md:p-9 overflow-y-auto flex flex-col">
-          <p className="text-[10.5px] font-semibold tracking-[0.18em] uppercase mb-2" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
+          <p className="text-[10.5px] font-semibold tracking-[0.18em] uppercase mb-2" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
             {product.collection} Collection
           </p>
           <h2 className="font-serif mb-1" style={{ fontSize: "clamp(24px,3vw,30px)", color: "var(--text-primary)" }}>
@@ -119,12 +136,12 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
             </a>
             <a href={enquiryLink}
               className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl text-[12.5px] font-semibold text-white transition-all duration-300 hover:-translate-y-[2px]"
-              style={{ background: "linear-gradient(135deg,#7B9EC4,#5F85AD)", boxShadow: "0 6px 18px rgba(123,158,196,0.35)", fontFamily: "var(--font-jakarta)" }}>
+              style={{ background: "#85addc", boxShadow: "0 6px 18px rgba(133,173,220,0.35)", fontFamily: "var(--font-jakarta)" }}>
               Enquire Now
             </a>
           </div>
           <Link href={`/products/${product.slug}`} className="mt-3 text-center text-[12px] font-semibold transition-opacity hover:opacity-60"
-            style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
+            style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
             View Full Details →
           </Link>
         </div>
@@ -138,9 +155,11 @@ export default function ProductsClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const [activeCategory, setActiveCategory] = useState("All");
   const [activeCollection, setActiveCollection] = useState("All");
   const [activeFinish, setActiveFinish] = useState("All Finishes");
   const [activeDesign, setActiveDesign] = useState<string | null>(null);
+  const [activeColor, setActiveColor] = useState("All Colours");
   const [searchQuery, setSearchQuery] = useState("");
   const [quickView, setQuickView] = useState<Product | null>(null);
 
@@ -170,6 +189,7 @@ export default function ProductsClient() {
     const colParam = searchParams.get("collection");
     const finParam = searchParams.get("finish");
     const desParam = searchParams.get("design");
+    const colorParam = searchParams.get("color");
 
     // Collection and Finish are independent — both can be active at once
     if (colParam) {
@@ -191,16 +211,19 @@ export default function ProductsClient() {
         setActiveFinish("All Finishes");
       }
     }
+    setActiveColor(colorParam ? (COLOR_SLUG_MAP[colorParam] ?? "All Colours") : "All Colours");
   }, [searchParams]);
 
   // ── Build URL from both active filters ──
-  const buildUrl = (col: string, fin: string, design: string | null, base = "/products") => {
+  const buildUrl = (col: string, fin: string, design: string | null, color = activeColor, base = "/products") => {
     const params = new URLSearchParams();
-    if (design) { params.set("design", design); return `${base}?${params}`; }
     const colSlug = Object.entries(COLLECTION_SLUG_MAP).find(([, v]) => v === col)?.[0];
     const finSlug = Object.entries(FINISH_SLUG_MAP).find(([, v]) => v === fin)?.[0];
+    const colorSlug = Object.entries(COLOR_SLUG_MAP).find(([, v]) => v === color)?.[0];
+    if (design) params.set("design", design);
     if (col !== "All" && colSlug) params.set("collection", colSlug);
     if (fin !== "All Finishes" && finSlug) params.set("finish", finSlug);
+    if (color !== "All Colours" && colorSlug) params.set("color", colorSlug);
     const q = params.toString();
     return q ? `${base}?${q}` : base;
   };
@@ -208,30 +231,37 @@ export default function ProductsClient() {
   // ── Push URL when sidebar filter changes ──
   const applyCollection = useCallback((col: string) => {
     setActiveCollection(col);
-    setActiveDesign(null);
-    router.replace(buildUrl(col, activeFinish, null), { scroll: false });
-  }, [router, activeFinish]);
+    router.replace(buildUrl(col, activeFinish, activeDesign), { scroll: false });
+  }, [router, activeFinish, activeDesign, activeColor]);
 
   const applyFinish = useCallback((fin: string) => {
     setActiveFinish(fin);
-    setActiveDesign(null);
-    router.replace(buildUrl(activeCollection, fin, null), { scroll: false });
-  }, [router, activeCollection]);
+    router.replace(buildUrl(activeCollection, fin, activeDesign), { scroll: false });
+  }, [router, activeCollection, activeDesign, activeColor]);
+
+  const applyColor = useCallback((color: string) => {
+    setActiveColor(color);
+    router.replace(buildUrl(activeCollection, activeFinish, activeDesign, color), { scroll: false });
+  }, [router, activeCollection, activeFinish, activeDesign]);
 
   // ── Product filtering logic ──
   const filtered = products.filter((p) => {
+    const matchCat = activeCategory === "All" || p.category === activeCategory;
     const matchCol = activeCollection === "All" || p.collection === activeCollection;
     const matchFin = activeFinish === "All Finishes" || p.finish === activeFinish;
     const matchDesign = !activeDesign || (DESIGN_FINISH_MAP[activeDesign] ?? []).includes(p.finish);
+    const matchColor = activeColor === "All Colours" || p.color === activeColor;
     const q = searchQuery.toLowerCase();
-    const matchSearch = !q || p.name.toLowerCase().includes(q) || p.finish.toLowerCase().includes(q) || p.collection.toLowerCase().includes(q);
-    return matchCol && matchFin && matchDesign && matchSearch;
+    const matchSearch = !q || p.name.toLowerCase().includes(q) || p.finish.toLowerCase().includes(q) || p.collection.toLowerCase().includes(q) || p.color.toLowerCase().includes(q);
+    return matchCat && matchCol && matchFin && matchDesign && matchColor && matchSearch;
   });
 
   const clearAll = () => {
+    setActiveCategory("All");
     setActiveCollection("All");
     setActiveFinish("All Finishes");
     setActiveDesign(null);
+    setActiveColor("All Colours");
     setSearchQuery("");
     router.replace("/products", { scroll: false });
   };
@@ -246,24 +276,29 @@ export default function ProductsClient() {
     router.replace(buildUrl(activeCollection, "All Finishes", activeDesign), { scroll: false });
   };
 
-  const hasFilter = activeCollection !== "All" || activeFinish !== "All Finishes" || !!activeDesign;
+  const clearColor = () => {
+    setActiveColor("All Colours");
+    router.replace(buildUrl(activeCollection, activeFinish, activeDesign, "All Colours"), { scroll: false });
+  };
+
+  const hasFilter = activeCategory !== "All" || activeCollection !== "All" || activeFinish !== "All Finishes" || !!activeDesign || activeColor !== "All Colours";
   const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminate catalogue.")}`;
 
   return (
     <>
       {/* ── Page header ── */}
-      <section className="pt-[140px] pb-[52px] border-b" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+      <section className="py-[52px] border-b" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
+        <div className="site-container">
 
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 mb-6 text-[11px]" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>
-            <Link href="/" className="hover:text-[#7B9EC4] transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[#f39ba2] transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/products" className="hover:text-[#7B9EC4] transition-colors">Products</Link>
+            <Link href="/products" className="hover:text-[#f39ba2] transition-colors">Products</Link>
             {breadcrumbLabel && (
               <>
                 <span>/</span>
-                <span style={{ color: "#7B9EC4" }}>{breadcrumbLabel}</span>
+                <span style={{ color: "#ac8cc0" }}>{breadcrumbLabel}</span>
               </>
             )}
           </div>
@@ -275,7 +310,7 @@ export default function ProductsClient() {
               </h1>
               <p className="mt-2 text-[14px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                 {filtered.length} surfaces
-                {hasFilter && <span className="ml-2">· <button onClick={clearAll} className="text-[#7B9EC4] hover:underline">Clear filter</button></span>}
+                {hasFilter && <span className="ml-2">· <button onClick={clearAll} className="text-[#ac8cc0] hover:text-[#f39ba2] hover:underline">Clear filter</button></span>}
               </p>
             </div>
 
@@ -289,7 +324,7 @@ export default function ProductsClient() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-3.5 text-[13.5px] outline-none transition-colors rounded-full shadow-sm"
                   style={{ background: "white", border: "1px solid rgba(30,30,46,0.1)", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#7B9EC4")}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#f39ba2")}
                   onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(30,30,46,0.1)")}
                 />
               </div>
@@ -300,14 +335,37 @@ export default function ProductsClient() {
 
       {/* ── Content ── */}
       <section className="py-14">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row gap-12">
+        <div className="site-container flex flex-col lg:flex-row gap-12">
 
           {/* Sidebar */}
           <aside className="w-full lg:w-[220px] flex-shrink-0">
             <div className="lg:sticky lg:top-[110px] space-y-8">
+
+              {/* Category filter */}
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <SlidersHorizontal className="w-3.5 h-3.5" style={{ color: "var(--text-primary)" }} />
+                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>Product Type</h3>
+                </div>
+                <ul className="space-y-0.5">
+                  {(["All", "Laminates", "Louvers", "ASA Sheets"] as const).map((cat) => (
+                    <li key={cat}>
+                      <button onClick={() => setActiveCategory(cat)} className="w-full text-left px-4 py-2.5 rounded-xl text-[13px] transition-all duration-200"
+                        style={{
+                          backgroundColor: activeCategory === cat ? "#85addc" : "transparent",
+                          color: activeCategory === cat ? "white" : "#6B6B80",
+                          fontWeight: activeCategory === cat ? 600 : 400,
+                          fontFamily: "var(--font-jakarta)",
+                        }}>
+                        {cat}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 mb-4">
                   <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>Collections</h3>
                 </div>
                 <ul className="space-y-0.5">
@@ -315,9 +373,9 @@ export default function ProductsClient() {
                     <li key={c}>
                       <button onClick={() => applyCollection(c)} className="w-full text-left px-4 py-2.5 rounded-xl text-[13px] transition-all duration-200"
                         style={{
-                          backgroundColor: activeCollection === c && !activeDesign ? "#7B9EC4" : "transparent",
-                          color: activeCollection === c && !activeDesign ? "white" : "#6B6B80",
-                          fontWeight: activeCollection === c && !activeDesign ? 600 : 400,
+                          backgroundColor: activeCollection === c ? "#ac8cc0" : "transparent",
+                          color: activeCollection === c ? "white" : "#6B6B80",
+                          fontWeight: activeCollection === c ? 600 : 400,
                           fontFamily: "var(--font-jakarta)",
                         }}>
                         {c}
@@ -334,9 +392,9 @@ export default function ProductsClient() {
                     <li key={f}>
                       <button onClick={() => applyFinish(f)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
                         style={{
-                          backgroundColor: activeFinish === f && !activeDesign ? "rgba(123,158,196,0.12)" : "transparent",
-                          color: activeFinish === f && !activeDesign ? "#7B9EC4" : "#6B6B80",
-                          fontWeight: activeFinish === f && !activeDesign ? 600 : 400,
+                          backgroundColor: activeFinish === f ? "rgba(123,158,196,0.12)" : "transparent",
+                          color: activeFinish === f ? "#ac8cc0" : "#6B6B80",
+                          fontWeight: activeFinish === f ? 600 : 400,
                           fontFamily: "var(--font-jakarta)",
                         }}>
                         {f}
@@ -346,25 +404,44 @@ export default function ProductsClient() {
                 </ul>
               </div>
 
+              <div>
+                <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>Colour</h3>
+                <ul className="space-y-0.5">
+                  {(["All Colours", ...colors] as string[]).map((color) => (
+                    <li key={color}>
+                      <button onClick={() => applyColor(color)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
+                        style={{
+                          backgroundColor: activeColor === color ? "rgba(133,173,220,0.12)" : "transparent",
+                          color: activeColor === color ? "#85addc" : "#6B6B80",
+                          fontWeight: activeColor === color ? 600 : 400,
+                          fontFamily: "var(--font-jakarta)",
+                        }}>
+                        {color}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
               {/* Active filter chips */}
-              {(activeCollection !== "All" || activeFinish !== "All Finishes" || activeDesign) && (
+              {(activeCollection !== "All" || activeFinish !== "All Finishes" || activeDesign || activeColor !== "All Colours") && (
                 <div className="space-y-2">
                   <div className="text-[10px] uppercase tracking-[0.12em] font-semibold" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Active filters</div>
                   {activeCollection !== "All" && (
                     <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(123,158,196,0.10)", border: "1px solid rgba(123,158,196,0.2)" }}>
-                      <span className="font-semibold" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>{activeCollection}</span>
+                      <span className="font-semibold" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>{activeCollection}</span>
                       <button onClick={clearCollection} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
                     </div>
                   )}
-                  {activeFinish !== "All Finishes" && !activeDesign && (
+                  {activeFinish !== "All Finishes" && (
                     <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(123,158,196,0.10)", border: "1px solid rgba(123,158,196,0.2)" }}>
-                      <span className="font-semibold" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>{activeFinish}</span>
+                      <span className="font-semibold" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>{activeFinish}</span>
                       <button onClick={clearFinish} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
                     </div>
                   )}
                   {activeDesign && (
                     <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(123,158,196,0.10)", border: "1px solid rgba(123,158,196,0.2)" }}>
-                      <span className="font-semibold" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>{DESIGN_TITLE_MAP[activeDesign!] ?? activeDesign}</span>
+                      <span className="font-semibold" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>{DESIGN_TITLE_MAP[activeDesign!] ?? activeDesign}</span>
                       <button onClick={clearAll} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
                     </div>
                   )}
@@ -384,30 +461,32 @@ export default function ProductsClient() {
             {filtered.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
                 {filtered.map((product) => (
-                  <Link key={product.id} href={`/products/${product.slug}`} className="group block">
-                    <div className="relative aspect-[4/5] mb-4 overflow-hidden rounded-2xl bg-[#F0EDE8]">
-                      <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                      <div className="absolute top-3.5 left-3.5">
+                  <div key={product.id} className="group block">
+                    <div className="relative aspect-[4/5] mb-4 overflow-hidden rounded-2xl bg-[#f3f4f6]">
+                      <Link href={`/products/${product.slug}`} className="absolute inset-0 block w-full h-full z-0">
+                        <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                      </Link>
+                      <div className="absolute top-3.5 left-3.5 z-10 pointer-events-none">
                         <span className="text-[9.5px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full"
                           style={{ background: "rgba(255,255,255,0.88)", backdropFilter: "blur(8px)", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>
                           {product.collection}
                         </span>
                       </div>
                       {product.badge && (
-                        <div className="absolute top-3.5 right-3.5">
+                        <div className="absolute top-3.5 right-3.5 z-10 pointer-events-none">
                           <span className="text-[9.5px] uppercase tracking-wider font-bold px-2.5 py-1.5 rounded-full text-white"
-                            style={{ backgroundColor: product.badge === "New" ? "#C97A92" : product.badge === "Bestseller" ? "#7B9EC4" : "#E8956D", fontFamily: "var(--font-jakarta)" }}>
+                            style={{ backgroundColor: "#fabf7d", fontFamily: "var(--font-jakarta)" }}>
                             {product.badge}
                           </span>
                         </div>
                       )}
-                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3">
-                        <span className="bg-white px-6 py-2.5 rounded-full text-[12px] font-semibold tracking-wide transform translate-y-3 group-hover:translate-y-0 transition-all duration-300"
+                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 z-10 pointer-events-none">
+                        <Link href={`/products/${product.slug}`} className="pointer-events-auto bg-white px-6 py-2.5 rounded-full text-[12px] font-semibold tracking-wide transform translate-y-3 group-hover:translate-y-0 transition-all duration-300 hover:bg-gray-100"
                           style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>
                           View Product
-                        </span>
-                        <div className="flex items-center gap-2 transform translate-y-3 group-hover:translate-y-0 transition-all duration-300" style={{ transitionDelay: "40ms" }}>
-                          <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setQuickView(product); }}
+                        </Link>
+                        <div className="flex items-center gap-2 transform translate-y-3 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto" style={{ transitionDelay: "40ms" }}>
+                          <button onClick={() => setQuickView(product)}
                             className="flex items-center gap-1.5 bg-white/20 hover:bg-white/35 backdrop-blur-sm text-white rounded-full px-3.5 py-2 text-[10.5px] font-semibold tracking-wide transition-all border border-white/30"
                             style={{ fontFamily: "var(--font-jakarta)" }}>
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -415,7 +494,7 @@ export default function ProductsClient() {
                             </svg>
                             Quick View
                           </button>
-                          <a href={waCatalogueLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
+                          <a href={waCatalogueLink} target="_blank" rel="noopener noreferrer"
                             className="w-9 h-9 flex items-center justify-center bg-white/20 hover:bg-white/35 backdrop-blur-sm rounded-full transition-all border border-white/30" title="Download Catalogue">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
@@ -424,17 +503,18 @@ export default function ProductsClient() {
                         </div>
                       </div>
                     </div>
-                    <h3 className="text-[18px] font-bold mb-1 group-hover:text-[#7B9EC4] transition-colors" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>
-                      {product.name}
-                    </h3>
+                    <Link href={`/products/${product.slug}`} className="block">
+                      <h3 className="text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>
+                        {product.name}
+                      </h3>
+                    </Link>
                     <p className="text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{product.finish} · {product.thickness}</p>
-                  </Link>
-                ))}
+                  </div>
               </div>
             ) : (
               <div className="py-20 text-center border border-dashed rounded-2xl" style={{ borderColor: "rgba(30,30,46,0.12)" }}>
                 <p className="text-[15px] mb-4" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>No surfaces match your filters.</p>
-                <button onClick={clearAll} className="text-[13px] font-semibold transition-opacity hover:opacity-70" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
+                <button onClick={clearAll} className="text-[13px] font-semibold transition-opacity hover:opacity-70" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>
                   Clear all filters
                 </button>
               </div>

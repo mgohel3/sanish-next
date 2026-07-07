@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Bodoni_Moda, Heebo, Poppins } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
@@ -10,26 +10,23 @@ import { SiteSettingsProvider } from "@/components/SiteSettingsProvider";
 import { getSiteSettings } from "@/lib/siteSettings";
 import { getMegaNavData } from "@/lib/navData";
 
-const inter = Inter({
-  variable: "--font-inter",
+const heebo = Heebo({
+  variable: "--font-heebo-loaded",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const vogueFallback = Bodoni_Moda({
+  variable: "--font-vogue-fallback",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
 });
 
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+const poppins = Poppins({
+  variable: "--font-poppins-loaded",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -51,7 +48,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} ${jakarta.variable} h-full antialiased`}
+      className={`${heebo.variable} ${vogueFallback.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SiteSettingsProvider settings={siteSettings} nav={navData}>

@@ -11,19 +11,19 @@ const posts = [
     date: "Oct 15, 2026", category: "Design Trends",
     title: "The Rise of Tactile Surfaces in Modern Commercial Spaces",
     image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=600",
-    accent: "#7B9EC4",
+    accent: "#fabf7d",
   },
   {
     date: "Sep 28, 2026", category: "Architecture",
     title: "Integrating High Gloss Finishes in Minimalist Interiors",
     image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=600",
-    accent: "#C97A92",
+    accent: "#fabf7d",
   },
   {
     date: "Sep 12, 2026", category: "Sustainability",
     title: "How Eco-Friendly Laminates Are Changing Green Building",
     image: "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=600",
-    accent: "#E8956D",
+    accent: "#fabf7d",
   },
 ];
 
@@ -43,18 +43,16 @@ export default function Blog() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 md:py-32 relative" style={{ backgroundColor: "#FAFAFA" }}>
-      <div className="max-w-[1380px] mx-auto px-8 md:px-14">
+    <section ref={sectionRef} className="home-section relative" style={{ backgroundColor: "#FAFAFA" }}>
+      <div className="site-container">
 
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div className="max-w-2xl">
-            <div className="eyebrow mb-3">Insights &amp; News</div>
-            <div className="section-sep mb-5" />
-            <h2 className="font-bold leading-[1.15] tracking-tight" style={{ fontFamily: "var(--font-jakarta)", fontSize: "clamp(28px,3.5vw,44px)", color: "#1E1E2E" }}>
+        <div className="home-heading-row">
+          <div>
+            <h2 className="home-heading">
               Editorial
             </h2>
           </div>
-          <a href="#" className="btn-pill btn-pill-ghost text-[11px]" style={{ borderRadius: "999px", padding: "10px 24px", fontFamily: "var(--font-jakarta)" }}>
+          <a href="#" className="btn-pill btn-pill-ghost flex-shrink-0">
             View All Articles →
           </a>
         </div>

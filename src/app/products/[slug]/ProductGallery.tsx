@@ -16,7 +16,7 @@ export default function ProductGallery({
     <div className="lg:sticky lg:top-[100px]">
       {/* Main image */}
       <div
-        className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-4 bg-[#F0EDE8] cursor-zoom-in group"
+        className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6] cursor-zoom-in group"
         onClick={() => setZoomed(true)}
       >
         <img
@@ -42,7 +42,7 @@ export default function ProductGallery({
             onClick={() => setActive(i)}
             className="aspect-square rounded-xl overflow-hidden transition-all duration-200"
             style={{
-              border: i === active ? "2px solid #7B9EC4" : "2px solid transparent",
+              border: i === active ? "2px solid #ac8cc0" : "2px solid transparent",
               opacity: i === active ? 1 : 0.6,
               transform: i === active ? "scale(0.96)" : "scale(1)",
             }}

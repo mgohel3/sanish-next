@@ -12,7 +12,7 @@ const cards = [
     name: "Venetian Marble",
     sub: "High Gloss Finish",
     tag: "New",
-    accent: "#7B9EC4",
+    accent: "#fabf7d",
     offset: false,
   },
   {
@@ -20,7 +20,7 @@ const cards = [
     name: "Nordic Walnut",
     sub: "Synchronized Texture",
     tag: null,
-    accent: "#C97A92",
+    accent: "#fabf7d",
     offset: true,
   },
   {
@@ -28,7 +28,7 @@ const cards = [
     name: "Oxidized Brass",
     sub: "Metallic Series",
     tag: "Bestseller",
-    accent: "#E8956D",
+    accent: "#fabf7d",
     offset: false,
   },
 ];
@@ -57,24 +57,19 @@ export default function EliteCollection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-32 relative" style={{ backgroundColor: "#FAFAFA" }}>
+    <section ref={sectionRef} className="home-section relative" style={{ backgroundColor: "#FAFAFA" }}>
       {/* Soft top gradient from previous section */}
       <div className="absolute top-0 inset-x-0 h-24 pointer-events-none"
         style={{ background: "linear-gradient(to bottom, #F5F3F8, transparent)" }} />
 
-      <div className="max-w-[1380px] mx-auto px-8 md:px-14">
+      <div className="site-container">
 
         {/* Header */}
-        <div className="elite-header text-center mb-20 max-w-2xl mx-auto">
-          <div className="eyebrow mb-4">Signature Series</div>
-          <div className="section-sep mx-auto mb-6" />
-          <h2
-            className="font-bold leading-[1.15] tracking-tight mb-5"
-            style={{ fontFamily: "var(--font-jakarta)", fontSize: "clamp(28px, 3.5vw, 46px)", color: "#1E1E2E" }}
-          >
+        <div className="elite-header mb-12">
+          <h2 className="home-heading mb-4">
             The Elite Collection
           </h2>
-          <p className="text-[15px] leading-[1.75]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)", fontWeight: 300 }}>
+          <p className="text-[15px] leading-[1.75] text-[var(--text-secondary)] max-w-[560px]">
             Our most exclusive range of high-end decorative surfaces, crafted for luxury interiors and statement architectural pieces.
           </p>
         </div>
@@ -85,7 +80,7 @@ export default function EliteCollection() {
             <div
               key={i}
               className="elite-card group cursor-pointer"
-              style={{ transform: card.offset ? "translateY(48px)" : undefined, willChange: "transform" }}
+              style={{ transform: card.offset ? "translateY(32px)" : undefined, willChange: "transform" }}
             >
               {/* Image container — rounded */}
               <div
@@ -171,11 +166,11 @@ export default function EliteCollection() {
         </div>
 
         {/* View all */}
-        <div className="mt-24 text-center">
+        <div className="mt-20 text-center">
           <a
             href="#products"
             className="btn-pill btn-pill-primary inline-flex"
-            style={{ backgroundColor: "#7B9EC4", boxShadow: "0 8px 28px rgba(123,158,196,0.28)" }}
+            style={{ backgroundColor: "#85addc", boxShadow: "0 8px 28px rgba(133,173,220,0.28)" }}
           >
             Explore All Collections
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">

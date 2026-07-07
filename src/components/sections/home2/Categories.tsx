@@ -6,42 +6,42 @@ const CATEGORIES = [
     desc: "Mirror-perfect surfaces with deep colour saturation. Ideal for modern kitchens and furniture.",
     image: "/assets/img/material/shadesCollection.png",
     tag: "Most Popular",
-    accent: "#7B9EC4",
+    accent: "#fabf7d",
   },
   {
     name: "Ultra Matte Finish",
     desc: "Soft-touch, zero-reflectance surfaces. The choice of premium interior designers.",
     image: "/assets/img/material/cool_colour_Collection.webp",
     tag: "Trending",
-    accent: "#C97A92",
+    accent: "#fabf7d",
   },
   {
     name: "Textured Laminates",
     desc: "Realistic wood grain and stone textures that fool the eye and please the touch.",
     image: "/assets/img/material/threeCollection.jpg",
     tag: "Natural Feel",
-    accent: "#E8B49A",
+    accent: "#fabf7d",
   },
   {
     name: "Metallic Series",
     desc: "Brushed and oxidised metallic effects for contemporary commercial and hospitality spaces.",
     image: "/assets/img/material/shadesCollection.png",
     tag: "Commercial",
-    accent: "#9B8FC4",
+    accent: "#fabf7d",
   },
   {
     name: "Fluted Panels",
     desc: "Architectural slatted panels bringing depth and rhythm to feature walls and facades.",
     image: "/assets/img/material/flutedCollection.webp",
     tag: "Architectural",
-    accent: "#E8956D",
+    accent: "#fabf7d",
   },
   {
     name: "PVC Panels",
     desc: "100% waterproof panels for bathrooms, utility areas, and high-moisture environments.",
     image: "/assets/img/material/cool_colour_Collection.webp",
     tag: "Waterproof",
-    accent: "#6BBFA0",
+    accent: "#fabf7d",
   },
 ];
 
@@ -56,16 +56,16 @@ export default function Home2Categories() {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-[2px]" style={{ backgroundColor: "#C4916A" }} />
               <span className="text-[11px] uppercase tracking-[0.2em] font-medium"
-                style={{ color: "#C4916A", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>Product Range</span>
+                style={{ color: "#C4916A", fontFamily: "var(--font-poppins)" }}>Product Range</span>
             </div>
             <h2 className="font-medium leading-[1.1]"
-              style={{ fontSize: "clamp(34px,4vw,52px)", fontFamily: "'Clash Display', var(--font-playfair), sans-serif", color: "#1C1C1C", letterSpacing: "-0.01em" }}>
+              style={{ fontSize: "clamp(34px,4vw,52px)", fontFamily: "var(--font-vogue)", color: "#1C1C1C", letterSpacing: "-0.01em" }}>
               Every Surface.<br /><em>Perfectly Finished.</em>
             </h2>
           </div>
           <Link href="/products"
             className="flex items-center gap-2 text-[13px] font-medium shrink-0 hover:-translate-x-1 transition-transform"
-            style={{ color: "#C4916A", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+            style={{ color: "#C4916A", fontFamily: "var(--font-poppins)" }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path d="M19 12H5M12 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -92,7 +92,7 @@ export default function Home2Categories() {
                     color: cat.accent,
                     borderRadius: "999px",
                     border: `1px solid ${cat.accent}44`,
-                    fontFamily: "'General Sans', var(--font-jakarta), sans-serif",
+                    fontFamily: "var(--font-poppins)",
                   }}>
                   {cat.tag}
                 </span>

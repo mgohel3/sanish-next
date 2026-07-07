@@ -18,15 +18,15 @@ export default function Home2Stats() {
           {STATS.map((s) => (
             <div key={s.label} className="px-8 py-10" style={{ backgroundColor: BG }}>
               <div className="text-[44px] md:text-[52px] font-semibold leading-none mb-2"
-                style={{ fontFamily: "'Clash Display', var(--font-playfair), sans-serif", color: ACC, letterSpacing: "-0.02em" }}>
+                style={{ fontFamily: "var(--font-vogue)", color: ACC, letterSpacing: "-0.02em" }}>
                 {s.value}
               </div>
               <div className="text-[14px] font-medium mb-1"
-                style={{ fontFamily: "'General Sans', var(--font-jakarta), sans-serif", color: ON }}>
+                style={{ fontFamily: "var(--font-poppins)", color: ON }}>
                 {s.label}
               </div>
               <div className="text-[12px]"
-                style={{ color: "rgba(245,242,238,0.6)", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+                style={{ color: "rgba(245,242,238,0.6)", fontFamily: "var(--font-poppins)" }}>
                 {s.desc}
               </div>
             </div>

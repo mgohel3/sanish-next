@@ -4,6 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import ProductGallery from "./ProductGallery";
+import PageHero from "@/components/PageHero";
+import InquireButton from "@/components/InquireButton";
 
 /* ── Collection name → URL slug ─────────────────────────── */
 const COLLECTION_SLUGS: Record<string, string> = {
@@ -73,9 +75,7 @@ export default async function ProductPage({ params }: Props) {
   const enquiryLink = `/contact-us?product=${product.slug}&name=${encodeURIComponent(product.name)}`;
 
   const badgeColor =
-    product.badge === "New"        ? "#C97A92"
-    : product.badge === "Bestseller" ? "#7B9EC4"
-    : "#E8956D";
+    "#fabf7d";
 
   const specs = [
     { label: "Design / Surface",  value: product.surface },
@@ -90,16 +90,22 @@ export default async function ProductPage({ params }: Props) {
   return (
     <main className="min-h-screen" style={{ backgroundColor: "var(--bg-primary)" }}>
       <Header />
+      <PageHero
+        eyebrow={`${product.collection} Collection`}
+        title={product.name}
+        image={product.images[0]}
+        description={product.shortDescription}
+      />
 
       {/* ── Breadcrumb ─────────────────────────────────── */}
-      <div className="pt-[118px] border-b" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-3.5">
+      <div className="border-b" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
+        <div className="site-container py-3.5">
           <nav className="flex items-center gap-2 text-[11.5px]" style={{ fontFamily: "var(--font-jakarta)", color: "#6B6B80" }}>
-            <Link href="/" className="hover:text-[#7B9EC4] transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[#f39ba2] transition-colors">Home</Link>
             <span className="opacity-40">/</span>
-            <Link href="/products" className="hover:text-[#7B9EC4] transition-colors">Products</Link>
+            <Link href="/products" className="hover:text-[#f39ba2] transition-colors">Products</Link>
             <span className="opacity-40">/</span>
-            <Link href={`/products?collection=${colSlug}`} className="hover:text-[#7B9EC4] transition-colors">
+            <Link href={`/products?collection=${colSlug}`} className="hover:text-[#f39ba2] transition-colors">
               {product.collection}
             </Link>
             <span className="opacity-40">/</span>
@@ -109,7 +115,7 @@ export default async function ProductPage({ params }: Props) {
       </div>
 
       {/* ── Main product section ────────────────────────── */}
-      <section className="max-w-[1400px] mx-auto px-6 md:px-12 py-14 lg:py-16">
+      <section className="site-container py-14 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-10 xl:gap-20 items-start">
 
           {/* LEFT — Image Gallery */}
@@ -120,7 +126,7 @@ export default async function ProductPage({ params }: Props) {
 
             {/* Row 1: Collection + product badge */}
             <div className="flex items-center gap-3 mb-3">
-              <span className="text-[10.5px] font-semibold tracking-[0.18em] uppercase" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
+              <span className="text-[10.5px] font-semibold tracking-[0.18em] uppercase" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
                 {product.collection} Collection
               </span>
               {product.badge && (
@@ -160,7 +166,7 @@ export default async function ProductPage({ params }: Props) {
               <Link
                 href={`/products?collection=${colSlug}`}
                 className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase font-semibold transition-opacity hover:opacity-70"
-                style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}
+                style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}
               >
                 Part of the {product.collection} Collection
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -214,18 +220,11 @@ export default async function ProductPage({ params }: Props) {
                 </svg>
                 WhatsApp Us
               </a>
-              <a href={enquiryLink}
-                className="flex-1 flex items-center justify-center gap-2.5 py-4 rounded-2xl text-[13px] font-semibold tracking-[0.04em] text-white transition-all duration-300 hover:-translate-y-[2px]"
-                style={{ background: "linear-gradient(135deg, #7B9EC4, #5F85AD)", boxShadow: "0 8px 24px rgba(123,158,196,0.38)", fontFamily: "var(--font-jakarta)" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-                </svg>
-                Enquire Now
-              </a>
+              <div className="flex-1"><InquireButton /></div>
             </div>
 
             <p className="text-center text-[11px] mt-3" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
-              We typically respond within 24 hours · Free samples available
+              We typically respond within 24 hours.
             </p>
           </div>
         </div>
@@ -234,10 +233,10 @@ export default async function ProductPage({ params }: Props) {
       {/* ── Related Products ───────────────────────────── */}
       {related.length > 0 && (
         <section className="py-14 lg:py-16 border-t" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
-          <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+          <div className="site-container">
             <div className="flex items-end justify-between mb-10">
               <div>
-                <p className="text-[10.5px] font-semibold tracking-[0.2em] uppercase mb-2" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
+                <p className="text-[10.5px] font-semibold tracking-[0.2em] uppercase mb-2" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
                   You May Also Like
                 </p>
                 <h2 className="font-serif" style={{ fontSize: "clamp(26px, 3vw, 34px)", color: "var(--text-primary)" }}>
@@ -245,7 +244,7 @@ export default async function ProductPage({ params }: Props) {
                 </h2>
               </div>
               <Link href="/products" className="hidden sm:flex items-center gap-2 text-[12px] font-semibold transition-colors hover:opacity-70"
-                style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
+                style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
                 View All
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
@@ -256,11 +255,11 @@ export default async function ProductPage({ params }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {related.map((rp) => (
                 <Link key={rp.slug} href={`/products/${rp.slug}`} className="group block">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-4 bg-[#F0EDE8]">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6]">
                     <img src={rp.images[0]} alt={rp.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     {rp.badge && (
                       <span className="absolute top-3 left-3 text-[9px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full text-white"
-                        style={{ backgroundColor: rp.badge === "New" ? "#C97A92" : rp.badge === "Bestseller" ? "#7B9EC4" : "#E8956D" }}>
+                        style={{ backgroundColor: "#fabf7d" }}>
                         {rp.badge}
                       </span>
                     )}

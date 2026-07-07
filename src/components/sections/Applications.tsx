@@ -31,14 +31,11 @@ export default function Applications() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="showcase" className="py-32 bg-white relative">
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div className="max-w-2xl">
-            <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-4 font-medium">
-              Inspiration Gallery
-            </div>
-            <h2 className="font-serif text-[clamp(32px,4vw,48px)] leading-[1.2] text-[var(--text-primary)]">
+    <section ref={sectionRef} id="showcase" className="home-section bg-white relative">
+      <div className="site-container">
+        <div className="home-heading-row">
+          <div>
+            <h2 className="home-heading">
               Architectural Applications
             </h2>
           </div>

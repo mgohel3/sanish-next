@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Link from "next/link";
+import PageHero from "@/components/PageHero";
 
 export const metadata = {
   title: "Find a Sanish Laminate Dealer | Dealer Network India",
@@ -12,27 +12,16 @@ export default function FindADealerPage() {
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }} className="min-h-screen">
       <Header />
-
-      {/* Breadcrumb */}
-      <div className="pt-[118px] border-b" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-3.5">
-          <nav className="flex items-center gap-2 text-[11.5px]" style={{ fontFamily: "var(--font-jakarta)", color: "#6B6B80" }}>
-            <Link href="/" className="hover:text-[#7B9EC4] transition-colors">Home</Link>
-            <span className="opacity-40">/</span>
-            <span style={{ color: "var(--text-primary)" }}>Find a Dealer</span>
-          </nav>
-        </div>
-      </div>
+      <PageHero
+        eyebrow="Dealer Network"
+        title="Find a Dealer"
+        image="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?q=80&w=2000"
+        description="Connect with an authorised Sanish dealer for samples, product guidance and availability."
+      />
 
       {/* Page body */}
       <section className="py-24 md:py-32">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 max-w-2xl">
-          <div className="text-[11px] tracking-[0.2em] uppercase font-semibold mb-4" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
-            Dealer Network
-          </div>
-          <h1 className="font-serif text-[clamp(40px,5vw,64px)] leading-[1.1] text-[var(--text-primary)] mb-8">
-            Find a Dealer
-          </h1>
+        <div className="site-container-narrow">
           <p className="text-[17px] leading-[1.75] text-[var(--text-secondary)] mb-8" style={{ fontFamily: "var(--font-jakarta)", maxWidth: "520px" }}>
             Dealer network information coming soon.
           </p>
@@ -42,11 +31,11 @@ export default function FindADealerPage() {
             </p>
             <div className="mt-4 flex flex-col gap-2">
               <a href="mailto:info@sanishlaminate.com"
-                className="text-[15px] font-semibold hover:underline" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
+                className="text-[15px] font-semibold hover:underline" style={{ color: "var(--accent-blue)", fontFamily: "var(--font-jakarta)" }}>
                 info@sanishlaminate.com
               </a>
               <a href="tel:+917027777032"
-                className="text-[15px] font-semibold hover:underline" style={{ color: "#7B9EC4", fontFamily: "var(--font-jakarta)" }}>
+                className="text-[15px] font-semibold hover:underline" style={{ color: "var(--accent-blue)", fontFamily: "var(--font-jakarta)" }}>
                 +91 7027 777 032
               </a>
             </div>

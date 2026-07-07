@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { useSiteSettings } from "@/components/SiteSettingsProvider";
+import BrandMonogram from "@/components/BrandMonogram";
 
 const ICON_INSTAGRAM = (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -39,6 +41,7 @@ const COMPANY = [
   { label: "About Us",       href: "/about-us" },
   { label: "Find a Dealer",  href: "/find-a-dealer" },
   { label: "Applications",   href: "/applications" },
+  { label: "Rewards",        href: "/rewards" },
   { label: "Contact Us",     href: "/contact-us" },
   { label: "Blog",           href: "#" },
 ];
@@ -55,13 +58,13 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-b from-[#F4EDF7] to-[#EFE7F3] pt-20 border-t border-[var(--color-border-subtle)]" id="footer">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+    <footer className="bg-gradient-to-b from-white to-[#f3f4f6] pt-20 border-t border-[var(--color-border-subtle)]" id="footer">
+      <div className="site-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-16">
 
           {/* Col 1 — Brand */}
           <div className="col-span-1 lg:col-span-1">
-            <Link href="/" className="inline-block mb-4">
+            <Link href="/" className="inline-flex items-center mb-4">
               <img src={settings.logo_light_url} alt={settings.site_name} className="h-12 w-auto" />
             </Link>
             <div className="font-sans text-[12px] font-medium text-[var(--accent-blue)] mb-4 uppercase tracking-[0.1em]">
@@ -71,18 +74,26 @@ export default function Footer() {
               {footer.description}
             </p>
             {(settings.phone_primary || settings.email_primary) && (
-              <div className="mt-4 flex flex-col gap-1">
+              <div className="mt-5 flex flex-col gap-3">
                 {settings.phone_primary && (
                   <a href={`tel:${settings.phone_primary.replace(/\s/g, "")}`}
-                    className="text-[13px] text-[var(--accent-blue)] hover:underline">
+                    className="inline-flex items-center gap-2.5 text-[13px] text-[var(--accent-blue)] hover:text-[var(--accent-pink)]">
+                    <Phone className="h-4 w-4" aria-hidden="true" />
                     {settings.phone_primary}
                   </a>
                 )}
                 {settings.email_primary && (
                   <a href={`mailto:${settings.email_primary}`}
-                    className="text-[13px] text-[var(--text-secondary)] hover:text-[var(--accent-blue)] transition-colors">
+                    className="inline-flex items-center gap-2.5 text-[13px] text-[var(--text-secondary)] hover:text-[var(--accent-pink)] transition-colors">
+                    <Mail className="h-4 w-4 text-[var(--accent-blue)]" aria-hidden="true" />
                     {settings.email_primary}
                   </a>
+                )}
+                {settings.full_address && (
+                  <div className="inline-flex items-start gap-2.5 text-[13px] leading-6 text-[var(--text-secondary)]">
+                    <MapPin className="mt-1 h-4 w-4 shrink-0 text-[var(--accent-blue)]" aria-hidden="true" />
+                    <span>{settings.full_address}</span>
+                  </div>
                 )}
               </div>
             )}
@@ -123,14 +134,14 @@ export default function Footer() {
             <div className="flex mb-6">
               <input type="email" placeholder="Your email address"
                 className="flex-1 bg-white border border-r-0 border-[var(--color-border-subtle)] px-4 py-3 text-[12px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-blue)] transition-colors" />
-              <button className="bg-[#2C3E50] text-white px-5 py-3 text-[11px] tracking-[0.1em] uppercase font-medium hover:bg-[#1a252f] transition-colors whitespace-nowrap">
+              <button className="bg-[var(--accent-blue)] text-white px-5 py-3 text-[11px] tracking-[0.1em] uppercase font-medium hover:bg-[var(--accent-pink)] transition-colors whitespace-nowrap">
                 Subscribe
               </button>
             </div>
             <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-3 uppercase tracking-[0.05em]">Download App</div>
             <a href="#"
               className="inline-flex items-center gap-3 px-5 py-3 transition-all duration-200 hover:opacity-85 hover:-translate-y-0.5"
-              style={{ backgroundColor: "#000000", borderRadius: "8px", minWidth: "160px", textDecoration: "none" }}>
+              style={{ backgroundColor: "#0b0c0e", borderRadius: "999px", minWidth: "160px", textDecoration: "none" }}>
               {/* Google Play 4-colour icon */}
               <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 {/* bottom-left: red */}
@@ -152,8 +163,8 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ backgroundColor: "#E0DBE8" }} className="border-t border-black/5 py-6">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-wrap items-center justify-between gap-4">
+      <div style={{ backgroundColor: "#e5e7eb" }} className="border-t border-black/5 py-6">
+        <div className="site-container flex flex-wrap items-center justify-between gap-4">
           <div className="text-[13px]" style={{ color: "#9A9A9A" }}>
             {footer.copyright}
           </div>
@@ -165,7 +176,7 @@ export default function Footer() {
             {socialLinks.map((s) => (
               <a key={s.label} href={s.href} aria-label={s.label}
                 target={s.href !== "#" ? "_blank" : undefined} rel="noopener noreferrer"
-                className="flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[var(--color-border-subtle)] text-[var(--text-primary)] hover:bg-[var(--accent-blue)] hover:text-white hover:border-[var(--accent-blue)] transition-all">
+                className="flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[var(--color-border-subtle)] text-[var(--text-primary)] hover:bg-[var(--accent-pink)] hover:text-white hover:border-[var(--accent-pink)] transition-all">
                 {s.icon}
               </a>
             ))}

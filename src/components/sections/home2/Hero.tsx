@@ -20,7 +20,7 @@ const SLIDES = [
     eyebrow: "S'Shades Collection",
     title:   "Where Colour Meets\nPrecision Craft",
     sub:     "Over 200 curated shades engineered for architects, designers and discerning homeowners.",
-    dot:     "#7B9EC4",
+    dot:     "#85addc",
     cta:     { label: "Explore S'Shades", href: "/products?collection=sshades" },
   },
   {
@@ -28,7 +28,7 @@ const SLIDES = [
     eyebrow: "Fluted Panel Series",
     title:   "Texture That\nTransforms Spaces",
     sub:     "Architectural fluted panels that turn ordinary walls into design statements.",
-    dot:     "#E8956D",
+    dot:     "#85addc",
     cta:     { label: "View Fluted Series", href: "/products?collection=fluted" },
   },
   {
@@ -36,7 +36,7 @@ const SLIDES = [
     eyebrow: "Cool Colour Collection",
     title:   "Bold. Vibrant.\nUncompromising.",
     sub:     "Cool Colour laminates designed for spaces that refuse to blend in.",
-    dot:     "#C97A92",
+    dot:     "#85addc",
     cta:     { label: "Discover Cool Colour", href: "/products?collection=cool-colour" },
   },
 ];
@@ -73,7 +73,7 @@ export default function Home2Hero() {
         <div className={`flex items-center gap-3 mb-6 transition-all duration-400 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}>
           <div className="w-10 h-[2px]" style={{ backgroundColor: C.accent }} />
           <span className="text-[11px] uppercase tracking-[0.25em] font-semibold"
-            style={{ color: C.accent, fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+            style={{ color: C.accent, fontFamily: "var(--font-poppins)" }}>
             {slide.eyebrow}
           </span>
         </div>
@@ -83,7 +83,7 @@ export default function Home2Hero() {
           className={`leading-[1.05] font-semibold mb-6 transition-all duration-500 ${animating ? "opacity-0 translate-y-6" : "opacity-100 translate-y-0"}`}
           style={{
             fontSize: "clamp(40px, 5vw, 68px)",
-            fontFamily: "'Clash Display', var(--font-playfair), sans-serif",
+            fontFamily: "var(--font-vogue)",
             color: C.textPrimary,
             whiteSpace: "pre-line",
             letterSpacing: "-0.02em",
@@ -95,7 +95,7 @@ export default function Home2Hero() {
         {/* Sub */}
         <p
           className={`text-[17px] leading-[1.75] mb-10 max-w-[480px] transition-all duration-500 delay-75 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}
-          style={{ fontFamily: "'General Sans', var(--font-jakarta), sans-serif", color: C.textSec }}
+          style={{ fontFamily: "var(--font-poppins)", color: C.textSec }}
         >
           {slide.sub}
         </p>
@@ -106,7 +106,7 @@ export default function Home2Hero() {
             className="flex items-center gap-2.5 text-white text-[12px] font-medium px-8 py-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             style={{
               backgroundColor: C.accent, borderRadius: "999px",
-              fontFamily: "'General Sans', var(--font-jakarta), sans-serif", letterSpacing: "0.04em",
+              fontFamily: "var(--font-poppins)", letterSpacing: "0.04em",
               boxShadow: `0 6px 20px ${C.accent}44`,
             }}>
             {slide.cta.label}
@@ -118,7 +118,7 @@ export default function Home2Hero() {
             className="flex items-center gap-2.5 text-[12px] font-medium px-8 py-4 border transition-all duration-300 hover:-translate-y-1"
             style={{
               color: C.textPrimary, border: `1.5px solid ${C.textPrimary}`,
-              borderRadius: "999px", fontFamily: "'General Sans', var(--font-jakarta), sans-serif",
+              borderRadius: "999px", fontFamily: "var(--font-poppins)",
               letterSpacing: "0.04em",
             }}>
             Request Free Samples
@@ -139,7 +139,7 @@ export default function Home2Hero() {
               <div key={b} className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: C.accent }} />
                 <span className="text-[11px] uppercase tracking-[0.12em]"
-                  style={{ color: C.textSec, fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>{b}</span>
+                  style={{ color: C.textSec, fontFamily: "var(--font-poppins)" }}>{b}</span>
               </div>
             ))}
           </div>

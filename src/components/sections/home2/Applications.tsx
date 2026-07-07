@@ -53,10 +53,10 @@ export default function Home2Applications() {
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-[2px]" style={{ backgroundColor: "#C4916A" }} />
             <span className="text-[11px] uppercase tracking-[0.2em] font-medium"
-              style={{ color: "#C4916A", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>Applications</span>
+              style={{ color: "#C4916A", fontFamily: "var(--font-poppins)" }}>Applications</span>
           </div>
           <h2 className="font-medium leading-[1.1]"
-            style={{ fontSize: "clamp(34px,4vw,52px)", fontFamily: "'Clash Display', var(--font-playfair), sans-serif", color: "#1C1C1C", letterSpacing: "-0.01em" }}>
+            style={{ fontSize: "clamp(34px,4vw,52px)", fontFamily: "var(--font-vogue)", color: "#1C1C1C", letterSpacing: "-0.01em" }}>
             Right Surface for<br /><em>Every Space</em>
           </h2>
         </div>
@@ -71,7 +71,7 @@ export default function Home2Applications() {
                   borderRadius: "16px",
                   backgroundColor: i === active ? "#1C1C1C" : "transparent",
                   color: i === active ? "white" : "#5C5C5C",
-                  fontFamily: "'General Sans', var(--font-jakarta), sans-serif",
+                  fontFamily: "var(--font-poppins)",
                   fontSize: "14px",
                   fontWeight: i === active ? 600 : 400,
                   borderLeft: i === active ? "3px solid #C4916A" : "3px solid transparent",
@@ -85,11 +85,11 @@ export default function Home2Applications() {
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-6">
             <div className="flex flex-col justify-center">
               <h3 className="mb-4 font-medium leading-tight"
-                style={{ fontSize: "clamp(22px,3vw,32px)", fontFamily: "'Satoshi', var(--font-jakarta), sans-serif", color: "#1C1C1C" }}>
+                style={{ fontSize: "clamp(22px,3vw,32px)", fontFamily: "var(--font-poppins)", color: "#1C1C1C" }}>
                 {app.label}
               </h3>
               <p className="text-[15px] leading-[1.75] mb-6"
-                style={{ color: "#5C5C5C", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+                style={{ color: "#5C5C5C", fontFamily: "var(--font-poppins)" }}>
                 {app.desc}
               </p>
               <div className="flex flex-wrap gap-2 mb-8">
@@ -100,7 +100,7 @@ export default function Home2Applications() {
                       color: "#1C1C1C",
                       borderRadius: "999px",
                       border: "1px solid #E5E0D8",
-                      fontFamily: "'General Sans', var(--font-jakarta), sans-serif",
+                      fontFamily: "var(--font-poppins)",
                     }}>
                     {t}
                   </span>
@@ -108,7 +108,7 @@ export default function Home2Applications() {
               </div>
               <Link href="/products"
                 className="flex items-center gap-2 text-[13px] font-medium w-fit"
-                style={{ color: "#C4916A", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+                style={{ color: "#C4916A", fontFamily: "var(--font-poppins)" }}>
                 Browse Suitable Designs
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />

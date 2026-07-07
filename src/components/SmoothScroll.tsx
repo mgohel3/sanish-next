@@ -17,18 +17,21 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       smoothWheel: true,
     });
 
-    // ✅ Connect Lenis to GSAP ScrollTrigger so pinning & scrub work correctly
     lenis.on("scroll", ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-
+    // Keep the same function reference so it can be properly removed on cleanup
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
+
+    // When ScrollTrigger recalculates (after pins resolve), tell Lenis to resize
+    ScrollTrigger.addEventListener("refresh", () => lenis.resize());
+    ScrollTrigger.refresh();
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+      gsap.ticker.remove(tick);
+      ScrollTrigger.removeEventListener("refresh", () => lenis.resize());
     };
   }, []);
 

@@ -43,14 +43,14 @@ export default function Home2SampleCTA() {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-[2px]" style={{ backgroundColor: ACC }} />
               <span className="text-[11px] uppercase tracking-[0.2em] font-medium"
-                style={{ color: ACC, fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>Free Samples</span>
+                style={{ color: ACC, fontFamily: "var(--font-poppins)" }}>Free Samples</span>
             </div>
             <h2 className="font-medium leading-[1.1] mb-5"
-              style={{ fontSize: "clamp(34px,4vw,52px)", fontFamily: "'Clash Display', var(--font-playfair), sans-serif", color: ON, letterSpacing: "-0.01em" }}>
+              style={{ fontSize: "clamp(34px,4vw,52px)", fontFamily: "var(--font-vogue)", color: ON, letterSpacing: "-0.01em" }}>
               See the Quality<br /><em>Before You Decide</em>
             </h2>
             <p className="text-[16px] leading-[1.75] mb-8"
-              style={{ color: "rgba(245,242,238,0.75)", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+              style={{ color: "rgba(245,242,238,0.75)", fontFamily: "var(--font-poppins)" }}>
               Request free physical laminate samples delivered to your door. Architects, interior designers, and builders get priority dispatch within 48 hours.
             </p>
             <div className="space-y-3">
@@ -68,7 +68,7 @@ export default function Home2SampleCTA() {
                     </svg>
                   </div>
                   <span className="text-[14px]"
-                    style={{ color: "rgba(245,242,238,0.75)", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>{pt}</span>
+                    style={{ color: "rgba(245,242,238,0.75)", fontFamily: "var(--font-poppins)" }}>{pt}</span>
                 </div>
               ))}
             </div>
@@ -86,16 +86,16 @@ export default function Home2SampleCTA() {
                   </svg>
                 </div>
                 <h3 className="text-[22px] font-medium mb-2"
-                  style={{ color: ON, fontFamily: "'Satoshi', var(--font-jakarta), sans-serif" }}>Request Received!</h3>
+                  style={{ color: ON, fontFamily: "var(--font-poppins)" }}>Request Received!</h3>
                 <p className="text-[14px]"
-                  style={{ color: "rgba(245,242,238,0.6)", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+                  style={{ color: "rgba(245,242,238,0.6)", fontFamily: "var(--font-poppins)" }}>
                   Our team will contact you within 24 hours to confirm your sample selections.
                 </p>
               </div>
             ) : (
               <>
                 <h3 className="text-[20px] font-medium mb-6"
-                  style={{ color: ON, fontFamily: "'Satoshi', var(--font-jakarta), sans-serif" }}>Request Free Samples</h3>
+                  style={{ color: ON, fontFamily: "var(--font-poppins)" }}>Request Free Samples</h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Row 1: Name + Phone */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -105,12 +105,12 @@ export default function Home2SampleCTA() {
                     ].map(({ key, label, type, ph, req }) => (
                       <div key={key}>
                         <label className="text-[11px] font-medium uppercase tracking-[0.1em] mb-1.5 block"
-                          style={{ color: ON, fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>{label}</label>
+                          style={{ color: ON, fontFamily: "var(--font-poppins)" }}>{label}</label>
                         <input required={req} type={type} placeholder={ph}
                           value={(form as Record<string,string>)[key]}
                           onChange={(e) => setForm({ ...form, [key]: e.target.value })}
                           className="w-full px-4 py-3 text-[14px] border outline-none transition-colors"
-                          style={{ borderRadius: "12px", color: ON, backgroundColor: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.15)", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }} />
+                          style={{ borderRadius: "12px", color: ON, backgroundColor: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.15)", fontFamily: "var(--font-poppins)" }} />
                       </div>
                     ))}
                   </div>
@@ -122,22 +122,22 @@ export default function Home2SampleCTA() {
                     ].map(({ key, label, type, ph, req }) => (
                       <div key={key}>
                         <label className="text-[11px] font-medium uppercase tracking-[0.1em] mb-1.5 block"
-                          style={{ color: ON, fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>{label}</label>
+                          style={{ color: ON, fontFamily: "var(--font-poppins)" }}>{label}</label>
                         <input required={req} type={type} placeholder={ph}
                           value={(form as Record<string,string>)[key]}
                           onChange={(e) => setForm({ ...form, [key]: e.target.value })}
                           className="w-full px-4 py-3 text-[14px] border outline-none transition-colors"
-                          style={{ borderRadius: "12px", color: ON, backgroundColor: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.15)", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }} />
+                          style={{ borderRadius: "12px", color: ON, backgroundColor: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.15)", fontFamily: "var(--font-poppins)" }} />
                       </div>
                     ))}
                   </div>
                   {/* Enquire Type */}
                   <div>
                     <label className="text-[11px] font-medium uppercase tracking-[0.1em] mb-1.5 block"
-                      style={{ color: ON, fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>Enquire Type *</label>
+                      style={{ color: ON, fontFamily: "var(--font-poppins)" }}>Enquire Type *</label>
                     <select required value={form.enquire_type} onChange={(e) => setForm({ ...form, enquire_type: e.target.value })}
                       className="w-full px-4 py-3 text-[14px] border outline-none transition-colors appearance-none"
-                      style={{ borderRadius: "12px", color: ON, backgroundColor: BG, borderColor: "rgba(255,255,255,0.15)", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+                      style={{ borderRadius: "12px", color: ON, backgroundColor: BG, borderColor: "rgba(255,255,255,0.15)", fontFamily: "var(--font-poppins)" }}>
                       <option value="" disabled>Select type</option>
                       <option value="commercial">Commercial</option>
                       <option value="consumer">Consumer</option>
@@ -145,10 +145,10 @@ export default function Home2SampleCTA() {
                   </div>
                   <button type="submit"
                     className="w-full py-4 text-[13px] font-medium text-white uppercase tracking-[0.08em] transition-all hover:-translate-y-0.5 hover:opacity-90"
-                    style={{ backgroundColor: ACC, borderRadius: "14px", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+                    style={{ backgroundColor: ACC, borderRadius: "14px", fontFamily: "var(--font-poppins)" }}>
                     Request My Free Samples
                   </button>
-                  <p className="text-[11px] text-center" style={{ color: "rgba(245,242,238,0.35)", fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+                  <p className="text-[11px] text-center" style={{ color: "rgba(245,242,238,0.35)", fontFamily: "var(--font-poppins)" }}>
                     Free delivery. No credit card required.
                   </p>
                 </form>

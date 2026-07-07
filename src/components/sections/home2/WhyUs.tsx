@@ -54,15 +54,15 @@ export default function Home2WhyUs() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-8 h-[2px]" style={{ backgroundColor: C.accent }} />
             <span className="text-[11px] uppercase tracking-[0.2em] font-medium"
-              style={{ color: C.accent, fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>Why Sanish</span>
+              style={{ color: C.accent, fontFamily: "var(--font-poppins)" }}>Why Sanish</span>
             <div className="w-8 h-[2px]" style={{ backgroundColor: C.accent }} />
           </div>
           <h2 className="font-medium leading-[1.15]"
-            style={{ fontSize: "clamp(32px,4vw,48px)", fontFamily: "'Clash Display', var(--font-playfair), sans-serif", color: C.textP, letterSpacing: "-0.01em" }}>
+            style={{ fontSize: "clamp(32px,4vw,48px)", fontFamily: "var(--font-vogue)", color: C.textP, letterSpacing: "-0.01em" }}>
             Built to Last. <em>Designed to Impress.</em>
           </h2>
           <p className="text-[16px] mt-4 max-w-[540px] mx-auto leading-[1.7]"
-            style={{ fontFamily: "'General Sans', var(--font-jakarta), sans-serif", color: C.textS }}>
+            style={{ fontFamily: "var(--font-poppins)", color: C.textS }}>
             Every Sanish laminate is manufactured with stringent quality control, giving your projects decades of beauty and performance.
           </p>
         </div>
@@ -76,11 +76,11 @@ export default function Home2WhyUs() {
                 {u.icon}
               </div>
               <h3 className="text-[17px] font-medium mb-3"
-                style={{ fontFamily: "'Satoshi', var(--font-jakarta), sans-serif", color: C.textP }}>
+                style={{ fontFamily: "var(--font-poppins)", color: C.textP }}>
                 {u.title}
               </h3>
               <p className="text-[14px] leading-[1.65]"
-                style={{ color: C.textS, fontFamily: "'General Sans', var(--font-jakarta), sans-serif" }}>
+                style={{ color: C.textS, fontFamily: "var(--font-poppins)" }}>
                 {u.desc}
               </p>
             </div>

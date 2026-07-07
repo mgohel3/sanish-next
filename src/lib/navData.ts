@@ -45,7 +45,6 @@ export const DEFAULT_NAV: NavData = {
   main: [
     { label: "Applications", url: "/applications", open_new_tab: false, position: 1 },
     { label: "About Us",     url: "/about-us",     open_new_tab: false, position: 2 },
-    { label: "Contact",      url: "/contact-us",   open_new_tab: false, position: 3 },
   ],
   topbar: [
     { label: "Dealer Network",     url: "#",                          open_new_tab: false, position: 1 },
@@ -73,10 +72,10 @@ export const DEFAULT_CATEGORIES: CategoryItem[] = [
 ];
 
 export const DEFAULT_COLLECTIONS: CollectionItem[] = [
-  { id: 1, name: "S'Shades",    slug: "sshades",      show_in_mega_menu: true, mega_accent_color: "#7B9EC4", mega_position: 0, images: [{ url: "/assets/img/material/shadesCollection.png" }],         status: "published" },
-  { id: 2, name: "Thre3",       slug: "thre3",        show_in_mega_menu: true, mega_accent_color: "#E8956D", mega_position: 1, images: [{ url: "/assets/img/material/threeCollection.jpg" }],          status: "published" },
-  { id: 3, name: "Cool Colour", slug: "cool-colour",  show_in_mega_menu: true, mega_accent_color: "#C97A92", mega_position: 2, images: [{ url: "/assets/img/material/cool_colour_Collection.webp" }],  status: "published" },
-  { id: 4, name: "Fluted",      slug: "fluted-col",   show_in_mega_menu: true, mega_accent_color: "#7B9EC4", mega_position: 3, images: [{ url: "/assets/img/material/flutedCollection.webp" }],        status: "published" },
+  { id: 1, name: "S'Shades",    slug: "sshades",      show_in_mega_menu: true, mega_accent_color: "#ac8cc0", mega_position: 0, images: [{ url: "/assets/img/material/shadesCollection.png" }],         status: "published" },
+  { id: 2, name: "Thre3",       slug: "thre3",        show_in_mega_menu: true, mega_accent_color: "#ac8cc0", mega_position: 1, images: [{ url: "/assets/img/material/threeCollection.jpg" }],          status: "published" },
+  { id: 3, name: "Cool Colour", slug: "cool-colour",  show_in_mega_menu: true, mega_accent_color: "#ac8cc0", mega_position: 2, images: [{ url: "/assets/img/material/cool_colour_Collection.webp" }],  status: "published" },
+  { id: 4, name: "Fluted",      slug: "fluted-col",   show_in_mega_menu: true, mega_accent_color: "#ac8cc0", mega_position: 3, images: [{ url: "/assets/img/material/flutedCollection.webp" }],        status: "published" },
 ];
 
 export async function getMegaNavData(): Promise<MegaNavData> {

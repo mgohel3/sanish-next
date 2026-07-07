@@ -3,23 +3,25 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const isDev = process.env.NODE_ENV === "development";
+
 export default function Preloader() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!isDev);
 
   useEffect(() => {
-    // Hide preloader after a short cinematic delay
+    if (isDev) return;
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2800);
+    }, 1800);
     return () => clearTimeout(timer);
   }, []);
 
-  // Four pastel brand colors for the logo icon dots
+  // Brand monogram colours — matches the 2×2 dot grid exactly
   const dots = [
-    { color: "#8EA9C4", delay: 0 },    // Accent Blue
-    { color: "#D9C5B2", delay: 0.15 }, // Soft Bronze
-    { color: "#E0E5DF", delay: 0.3 },  // Sage Green
-    { color: "#D4C4C7", delay: 0.45 }, // Soft Rose
+    { color: "#fabf7d", delay: 0 },    // top-left  — apricot
+    { color: "#ac8cc0", delay: 0.12 }, // top-right — purple
+    { color: "#f39ba2", delay: 0.24 }, // bottom-left — pink
+    { color: "#85addc", delay: 0.36 }, // bottom-right — blue
   ];
 
   return (
@@ -29,12 +31,12 @@ export default function Preloader() {
           key="preloader"
           initial={{ y: 0 }}
           exit={{ y: "-100%", opacity: 0 }}
-          transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
           className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
         >
           {/* Soft animated pastel gradient background */}
           <motion.div 
-            className="absolute inset-0 bg-gradient-to-br from-[#F6F1F8] via-[#EFE7F3] to-[#FBF8F5] opacity-80"
+            className="absolute inset-0 bg-gradient-to-br from-white via-[#f3f4f6] to-[#e5e7eb] opacity-90"
             animate={{
               backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
             }}
@@ -44,24 +46,15 @@ export default function Preloader() {
 
           <div className="relative flex items-center gap-5 z-10">
             {/* Logo Icon Grid */}
-            <div className="grid grid-cols-2 gap-[1.5px]">
+            <div className="grid grid-cols-2" style={{ gap: "1.3px" }}>
               {dots.map((dot, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ 
-                    opacity: [0, 1, 1], 
-                    scale: [0, 1.1, 1] 
-                  }}
-                  transition={{
-                    duration: 1.2,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    delay: dot.delay,
-                    ease: "easeInOut"
-                  }}
-                  className="w-[18px] h-[18px] rounded-full shadow-sm"
-                  style={{ backgroundColor: dot.color }}
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: dot.delay, ease: "easeOut" }}
+                  className="rounded-full"
+                  style={{ width: 20, height: 20, backgroundColor: dot.color }}
                 />
               ))}
             </div>

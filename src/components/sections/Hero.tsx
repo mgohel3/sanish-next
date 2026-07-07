@@ -13,7 +13,7 @@ const slides = [
     line1: "Where Architecture",
     line2: "Meets Artistry",
     sub: "Premium decorative laminates crafted for architects, designers, and luxury interiors.",
-    accent: "#7B9EC4",
+    accent: "#85addc",
     bg: "#F0EDF7",
     orb1: "rgba(123,158,196,0.22)",
     orb2: "rgba(201,122,146,0.14)",
@@ -25,8 +25,8 @@ const slides = [
     line1: "Crafted For",
     line2: "Elegant Spaces",
     sub: "High-gloss, matte and textured finishes that redefine interior surfaces.",
-    accent: "#E8956D",
-    bg: "#FDF4EE",
+    accent: "#85addc",
+    bg: "#f3f4f6",
     orb1: "rgba(232,149,109,0.22)",
     orb2: "rgba(232,180,154,0.14)",
   },
@@ -37,7 +37,7 @@ const slides = [
     line1: "Texture That",
     line2: "Speaks Design",
     sub: "From woodgrains to metallics — surfaces that transform spaces into masterpieces.",
-    accent: "#C97A92",
+    accent: "#85addc",
     bg: "#F7EFF3",
     orb1: "rgba(201,122,146,0.22)",
     orb2: "rgba(123,158,196,0.12)",
@@ -49,7 +49,7 @@ const slides = [
     line1: "Defining Modern",
     line2: "Living Spaces",
     sub: "Architectural panels — the language of contemporary design.",
-    accent: "#7B9EC4",
+    accent: "#85addc",
     bg: "#EEF2F7",
     orb1: "rgba(123,158,196,0.20)",
     orb2: "rgba(232,149,109,0.12)",
@@ -162,12 +162,13 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-full min-h-screen overflow-hidden flex items-center"
+      className="relative w-full overflow-hidden flex items-center"
       style={{
         backgroundColor: slide.bg,
         transition: "background-color 1400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-        paddingTop: "148px",
-        paddingBottom: "90px",
+        minHeight: "clamp(680px, 88svh, 860px)",
+        paddingTop: "clamp(108px, 12vh, 132px)",
+        paddingBottom: "78px",
       }}
     >
       {/* ── Ambient orbs (mouse-reactive) ── */}
@@ -210,25 +211,13 @@ export default function Hero() {
       <div className="grain-texture" style={{ zIndex: 3 }} />
 
       {/* ── Main layout ── */}
-      <div className="relative z-10 w-full max-w-[1380px] mx-auto px-8 md:px-14 grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-0 items-center">
+      <div className="site-container relative z-10 w-full grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-0 items-center">
 
         {/* ── LEFT: Text ── */}
-        <div ref={contentRef} className="flex flex-col justify-center lg:pr-16">
-
-          {/* Eyebrow */}
-          <div className="h-tag flex items-center gap-3 mb-8">
-            <div className="grid grid-cols-2 gap-[3px]">
-              {["#7B9EC4","#E8956D","#C97A92","#E8B49A"].map((c) => (
-                <span key={c} className="block w-[6px] h-[6px] rounded-full" style={{ backgroundColor: c }} />
-              ))}
-            </div>
-            <span className="eyebrow" style={{ color: slide.accent, transition: "color 800ms ease" }}>
-              {slide.tag}
-            </span>
-          </div>
+        <div ref={contentRef} className="flex flex-col justify-center lg:pr-14">
 
           {/* Headline — masked reveal */}
-          <div className="mb-8 space-y-1">
+          <div className="mb-7 space-y-1">
             <div className="overflow-hidden">
               <h1
                 className="h-line1 block font-bold leading-[1.08] tracking-tight"
@@ -258,7 +247,7 @@ export default function Hero() {
 
           {/* Divider */}
           <div
-            className="h-divider h-[2px] w-14 mb-8 origin-left"
+            className="h-divider h-[2px] w-14 mb-7 origin-left"
             style={{ backgroundColor: slide.accent, borderRadius: "999px", transition: "background-color 800ms ease" }}
           />
 
@@ -271,7 +260,7 @@ export default function Hero() {
           </p>
 
           {/* Pill Buttons */}
-          <div className="flex flex-wrap gap-6 mb-12 items-center">
+          <div className="flex flex-wrap gap-6 mb-10 items-center">
             <Link
               href="/surface-explorer"
               className="inline-flex items-center gap-2 px-7 py-3.5 transition-all duration-300 group"
@@ -321,7 +310,7 @@ export default function Hero() {
           </div>
 
           {/* Stats */}
-          <div className="flex items-start gap-10 pt-8 border-t" style={{ borderColor: "rgba(30,30,46,0.08)" }}>
+          <div className="flex items-start gap-10 pt-7 border-t" style={{ borderColor: "rgba(30,30,46,0.08)" }}>
             {[{ value: "500+", label: "Designs" }, { value: "25+", label: "Years" }, { value: "18K+", label: "Clients" }].map((s) => (
               <div key={s.label} className="h-stats">
                 <div className="font-bold text-[26px] leading-none mb-1.5" style={{ fontFamily: "var(--font-jakarta)", color: slide.accent, transition: "color 800ms ease" }}>
@@ -387,7 +376,7 @@ export default function Hero() {
           >
             <div className="flex items-center gap-3">
               <div className="grid grid-cols-2 gap-[3px]">
-                {["#7B9EC4","#E8956D","#C97A92","#E8B49A"].map((c) => (
+                {["#fabf7d","#ac8cc0","#f39ba2","#85addc"].map((c) => (
                   <span key={c} className="block w-3 h-3 rounded-full" style={{ backgroundColor: c }} />
                 ))}
               </div>
@@ -421,7 +410,7 @@ export default function Hero() {
           <div className="h-full origin-left" style={{ width: `${progress}%`, backgroundColor: slide.accent, transition: "width 0.09s linear, background-color 800ms ease", borderRadius: "999px" }} />
         </div>
 
-        <div className="flex items-center justify-between px-8 md:px-14 py-5">
+        <div className="site-container flex items-center justify-between py-5">
           {/* Pill dots */}
           <div className="flex items-center gap-2.5">
             {slides.map((_, i) => (
