@@ -21,20 +21,22 @@
 
   --font-sans: var(--font-heebo);
   --font-serif: var(--font-vogue);
-  --font-jakarta: var(--font-poppins);
+  --font-jakarta: var(--font-heebo);
 }
 
 :root {
-  /* Typography roles. "Vogue" resolves automatically when the licensed
-     font is installed or supplied; Bodoni Moda is the production fallback. */
+  /* Typography roles, site-wide: Title = Vogue, everything else
+     (description / body / button) = Heebo. "Vogue" resolves automatically
+     when the licensed font is installed or supplied; Bodoni Moda is the
+     production fallback. */
   --font-heebo: var(--font-heebo-loaded), "Arial Narrow", Arial, sans-serif;
   --font-vogue: "Vogue", var(--font-vogue-fallback), "Didot", serif;
-  --font-poppins: var(--font-poppins-loaded), Arial, sans-serif;
 
-  /* Compatibility aliases for existing component-level declarations. */
+  /* Compatibility aliases for existing component-level declarations —
+     all body/UI aliases resolve to Heebo, all title aliases resolve to Vogue. */
   --font-inter: var(--font-heebo);
   --font-playfair: var(--font-vogue);
-  --font-jakarta: var(--font-poppins);
+  --font-jakarta: var(--font-heebo);
 
   --bg-primary: #fafafa;
   --bg-secondary: #f3f4f6;
@@ -73,20 +75,20 @@ body {
 
 h1,
 h2,
-.font-vogue {
-  font-family: var(--font-vogue);
-}
-
 h3,
 h4,
 h5,
 h6,
+.font-vogue {
+  font-family: var(--font-vogue);
+}
+
 nav,
 button,
 [role="button"],
 label,
 .font-ui {
-  font-family: var(--font-poppins);
+  font-family: var(--font-heebo);
 }
 
 p,
@@ -96,6 +98,23 @@ textarea,
 select,
 .font-body {
   font-family: var(--font-heebo);
+}
+
+/* ══ Canonical type scale ═════════════════════════════════
+   Title (Vogue): h1, h2. Description / Body / Button (Heebo): h3–h6, p.
+   Wrapped in @layer base so any Tailwind utility class (text-[Npx], etc.)
+   on the same element still wins — this only sets the site-wide default. */
+@layer base {
+  h1 { font-size: clamp(44px, 6vw, 82px); line-height: 1.05; font-weight: 500; }
+  h2 { font-size: clamp(34px, 4vw, 56px); line-height: 1.1;  font-weight: 400; }
+  h3 { font-size: 18px; line-height: 1.35; font-weight: 700; }
+  h4 { font-size: 16px; line-height: 1.4;  font-weight: 700; }
+  h5 { font-size: 14px; line-height: 1.45; font-weight: 600; }
+  h6 {
+    font-size: 12px; line-height: 1.5; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  p { font-size: 15px; line-height: 1.8; font-weight: 400; }
 }
 
 /* ══ Custom Cursor ═══════════════════════════════════════ */
@@ -163,7 +182,7 @@ body:has(button:hover) .cursor-follower {
   padding: 13px 30px;
   border-radius: 999px;
   font-size: 11px;
-  font-family: var(--font-poppins);
+  font-family: var(--font-heebo);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -332,7 +351,7 @@ body:has(button:hover) .cursor-follower {
 
 /* ══ Eyebrow label ════════════════════════════════════════ */
 .eyebrow {
-  font-family: var(--font-poppins);
+  font-family: var(--font-heebo);
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
@@ -421,7 +440,7 @@ textarea:focus-visible {
 
 .page-hero__eyebrow {
   color: var(--accent-blue);
-  font-family: var(--font-poppins);
+  font-family: var(--font-heebo);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -489,7 +508,7 @@ textarea:focus-visible {
 
 .section-header h2 {
   font-family: var(--font-vogue);
-  font-size: clamp(32px, 4vw, 52px);
+  font-size: clamp(34px, 4vw, 56px);
   font-weight: 400;
   line-height: 1.1;
   color: var(--text-primary);
@@ -537,7 +556,7 @@ textarea:focus-visible {
 }
 
 .home-heading--ui {
-  font-family: var(--font-poppins);
+  font-family: var(--font-vogue);
   font-size: clamp(30px, 3.2vw, 46px);
   font-weight: 700;
   line-height: 1.08;

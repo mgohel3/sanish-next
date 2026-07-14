@@ -81,7 +81,7 @@ export default function Blog() {
               </div>
 
               <h3 className="font-bold text-[17px] leading-[1.35] mb-4 flex-1 transition-colors duration-300"
-                style={{ fontFamily: "var(--font-jakarta)", color: "#1E1E2E" }}
+                style={{ color: "#1E1E2E" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = post.accent; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#1E1E2E"; }}>
                 {post.title}

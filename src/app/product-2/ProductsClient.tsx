@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { products, collections, finishes, type Product } from "@/lib/products";
+import PageHero from "@/components/PageHero";
 
 const COLLECTION_SLUG_MAP: Record<string, string> = {
   sshades:     "S'Shades",
@@ -231,61 +232,46 @@ export default function ProductsClient() {
   const hasFilter = activeCollection !== "All" || activeFinish !== "All Finishes" || !!activeDesign;
   const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminate catalogue.")}`;
 
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Products 2", href: BASE },
+    ...(breadcrumbLabel ? [{ label: breadcrumbLabel }] : []),
+  ];
+
   return (
     <>
-      <section className="py-[52px] border-b" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-          <div className="flex items-center gap-2 mb-6 text-[11px]" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>
-            <Link href="/" className="hover:text-[#f39ba2] transition-colors">Home</Link>
-            <span>/</span>
-            <Link href={BASE} className="hover:text-[#f39ba2] transition-colors">Products 2</Link>
-            {breadcrumbLabel && (
-              <>
-                <span>/</span>
-                <span style={{ color: "#ac8cc0" }}>{breadcrumbLabel}</span>
-              </>
-            )}
+      <PageHero
+        eyebrow="Product Categories"
+        title={pageTitle}
+        image="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=2000"
+        description="Browse laminates, louvers and sheet solutions through one consistent product system."
+        breadcrumb={breadcrumbItems}
+        rightSlot={
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#6B6B80" }} />
+            <input
+              type="text"
+              placeholder="Search finishes, colours…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-3.5 text-[13.5px] outline-none transition-colors rounded-full shadow-sm"
+              style={{ background: "white", border: "1px solid rgba(30,30,46,0.1)", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#f39ba2")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(30,30,46,0.1)")}
+            />
           </div>
-
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div>
-              <h1 className="font-serif leading-tight" style={{ fontSize: "clamp(38px,5vw,60px)", color: "var(--text-primary)" }}>
-                {pageTitle}
-              </h1>
-              <p className="mt-2 text-[14px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
-                {filtered.length} surfaces
-                {hasFilter && <span className="ml-2">· <button onClick={clearAll} className="text-[#ac8cc0] hover:text-[#f39ba2] hover:underline">Clear filter</button></span>}
-              </p>
-            </div>
-
-            <div className="w-full md:w-[320px]">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#6B6B80" }} />
-                <input
-                  type="text"
-                  placeholder="Search finishes, colours…"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3.5 text-[13.5px] outline-none transition-colors rounded-full shadow-sm"
-                  style={{ background: "white", border: "1px solid rgba(30,30,46,0.1)", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#f39ba2")}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(30,30,46,0.1)")}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        }
+      />
 
       <section className="py-14">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row gap-12">
+        <div className="site-container flex flex-col lg:flex-row gap-12">
 
           <aside className="w-full lg:w-[220px] flex-shrink-0">
             <div className="lg:sticky lg:top-[110px] space-y-8">
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <SlidersHorizontal className="w-3.5 h-3.5" style={{ color: "var(--text-primary)" }} />
-                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>Collections</h3>
+                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Collections</h3>
                 </div>
                 <ul className="space-y-0.5">
                   {collections.map((c) => (
@@ -305,7 +291,7 @@ export default function ProductsClient() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>Finish</h3>
+                <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Finish</h3>
                 <ul className="space-y-0.5">
                   {finishes.map((f) => (
                     <li key={f}>
@@ -386,12 +372,13 @@ export default function ProductsClient() {
                       </div>
                     </div>
                     <Link href={`/products/${product.slug}`} className="block">
-                      <h3 className="text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>
+                      <h3 className="text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors" style={{ color: "var(--text-primary)" }}>
                         {product.name}
                       </h3>
                     </Link>
                     <p className="text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{product.finish} · {product.thickness}</p>
                   </div>
+                ))}
               </div>
             ) : (
               <div className="py-20 text-center border border-dashed rounded-2xl" style={{ borderColor: "rgba(30,30,46,0.12)" }}>

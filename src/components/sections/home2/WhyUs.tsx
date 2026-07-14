@@ -49,12 +49,12 @@ const USPs = [
 export default function Home2WhyUs() {
   return (
     <section className="py-24 md:py-32" style={{ backgroundColor: C.bg }}>
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+      <div className="site-container">
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-8 h-[2px]" style={{ backgroundColor: C.accent }} />
             <span className="text-[11px] uppercase tracking-[0.2em] font-medium"
-              style={{ color: C.accent, fontFamily: "var(--font-poppins)" }}>Why Sanish</span>
+              style={{ color: C.accent, fontFamily: "var(--font-heebo)" }}>Why Sanish</span>
             <div className="w-8 h-[2px]" style={{ backgroundColor: C.accent }} />
           </div>
           <h2 className="font-medium leading-[1.15]"
@@ -62,7 +62,7 @@ export default function Home2WhyUs() {
             Built to Last. <em>Designed to Impress.</em>
           </h2>
           <p className="text-[16px] mt-4 max-w-[540px] mx-auto leading-[1.7]"
-            style={{ fontFamily: "var(--font-poppins)", color: C.textS }}>
+            style={{ fontFamily: "var(--font-heebo)", color: C.textS }}>
             Every Sanish laminate is manufactured with stringent quality control, giving your projects decades of beauty and performance.
           </p>
         </div>
@@ -76,11 +76,11 @@ export default function Home2WhyUs() {
                 {u.icon}
               </div>
               <h3 className="text-[17px] font-medium mb-3"
-                style={{ fontFamily: "var(--font-poppins)", color: C.textP }}>
+                style={{ fontFamily: "var(--font-heebo)", color: C.textP }}>
                 {u.title}
               </h3>
               <p className="text-[14px] leading-[1.65]"
-                style={{ color: C.textS, fontFamily: "var(--font-poppins)" }}>
+                style={{ color: C.textS, fontFamily: "var(--font-heebo)" }}>
                 {u.desc}
               </p>
             </div>

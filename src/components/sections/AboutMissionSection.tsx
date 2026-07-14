@@ -119,7 +119,6 @@ export default function AboutMissionSection() {
                 />
                 <h3
                   className="text-[14px] font-bold uppercase tracking-[0.14em] text-[var(--text-primary)]"
-                  style={{ fontFamily: "var(--font-jakarta)" }}
                 >
                   {card.title}
                 </h3>

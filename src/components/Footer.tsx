@@ -101,7 +101,7 @@ export default function Footer() {
 
           {/* Col 2 — Collections */}
           <div>
-            <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Collections</div>
+            <h4 className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Collections</h4>
             <div className="flex flex-col gap-2">
               {COLLECTIONS.map((c) => (
                 <Link key={c.href} href={c.href}
@@ -114,7 +114,7 @@ export default function Footer() {
 
           {/* Col 3 — Company */}
           <div>
-            <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Company</div>
+            <h4 className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Company</h4>
             <div className="flex flex-col gap-2">
               {COMPANY.map((c) => (
                 <Link key={c.href} href={c.href}
@@ -127,7 +127,7 @@ export default function Footer() {
 
           {/* Col 4 — Newsletter */}
           <div className="col-span-1 lg:col-span-1">
-            <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Stay Connected</div>
+            <h4 className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Stay Connected</h4>
             <p className="text-[13px] font-normal leading-[1.7] mb-5 text-[var(--text-secondary)]">
               {footer.newsletter_text}
             </p>
@@ -139,25 +139,41 @@ export default function Footer() {
               </button>
             </div>
             <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-3 uppercase tracking-[0.05em]">Download App</div>
-            <a href="#"
-              className="inline-flex items-center gap-3 px-5 py-3 transition-all duration-200 hover:opacity-85 hover:-translate-y-0.5"
-              style={{ backgroundColor: "#0b0c0e", borderRadius: "999px", minWidth: "160px", textDecoration: "none" }}>
-              {/* Google Play 4-colour icon */}
-              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* bottom-left: red */}
-                <path d="M0.5 21.5L11 11L0.5 0.5C0.2 0.8 0 1.2 0 1.7V20.3C0 20.8 0.2 21.2 0.5 21.5Z" fill="#EA4335"/>
-                {/* top: cyan/blue */}
-                <path d="M0.5 0.5L11 11L15.5 6.5L2 0C1.4-0.3 0.8-0.1 0.5 0.5Z" fill="#4FC3F7"/>
-                {/* bottom: green */}
-                <path d="M0.5 21.5L11 11L15.5 15.5L2 22C1.4 22.3 0.8 22.1 0.5 21.5Z" fill="#4CAF50"/>
-                {/* right: yellow */}
-                <path d="M19 12.9L15.5 15.5L11 11L15.5 6.5L19 9.1C19.9 9.6 20 10.4 20 11C20 11.6 19.9 12.4 19 12.9Z" fill="#FFCA28"/>
-              </svg>
-              <div>
-                <div className="text-white leading-none" style={{ fontSize: "9px", letterSpacing: "0.06em", opacity: 0.8 }}>GET IT ON</div>
-                <div className="text-white font-semibold leading-tight" style={{ fontSize: "15px", letterSpacing: "0.01em" }}>Google Play</div>
-              </div>
-            </a>
+            <div className="flex flex-wrap items-center gap-2">
+              <a href="https://play.google.com/store/apps/details?id=com.sapphirewoods.loyalty&hl=en_IN"
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3.5 py-2.5 transition-all duration-200 hover:opacity-85 hover:-translate-y-0.5"
+                style={{ backgroundColor: "#0b0c0e", borderRadius: "999px", textDecoration: "none" }}>
+                {/* Google Play 4-colour icon */}
+                <svg width="15" height="17" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* bottom-left: red */}
+                  <path d="M0.5 21.5L11 11L0.5 0.5C0.2 0.8 0 1.2 0 1.7V20.3C0 20.8 0.2 21.2 0.5 21.5Z" fill="#EA4335"/>
+                  {/* top: cyan/blue */}
+                  <path d="M0.5 0.5L11 11L15.5 6.5L2 0C1.4-0.3 0.8-0.1 0.5 0.5Z" fill="#4FC3F7"/>
+                  {/* bottom: green */}
+                  <path d="M0.5 21.5L11 11L15.5 15.5L2 22C1.4 22.3 0.8 22.1 0.5 21.5Z" fill="#4CAF50"/>
+                  {/* right: yellow */}
+                  <path d="M19 12.9L15.5 15.5L11 11L15.5 6.5L19 9.1C19.9 9.6 20 10.4 20 11C20 11.6 19.9 12.4 19 12.9Z" fill="#FFCA28"/>
+                </svg>
+                <div>
+                  <div className="text-white leading-none" style={{ fontSize: "7.5px", letterSpacing: "0.06em", opacity: 0.8 }}>GET IT ON</div>
+                  <div className="text-white font-semibold leading-tight" style={{ fontSize: "12px", letterSpacing: "0.01em" }}>Google Play</div>
+                </div>
+              </a>
+
+              <a href="https://apps.apple.com/us/app/srewards/id6758007860"
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3.5 py-2.5 transition-all duration-200 hover:opacity-85 hover:-translate-y-0.5"
+                style={{ backgroundColor: "#0b0c0e", borderRadius: "999px", textDecoration: "none" }}>
+                <svg width="13" height="17" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.41-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.113c.83-1.012 1.39-2.42 1.234-3.821-1.196.052-2.638.796-3.494 1.807-.767.9-1.442 2.35-1.26 3.71 1.338.104 2.687-.68 3.52-1.696z" />
+                </svg>
+                <div>
+                  <div className="text-white leading-none" style={{ fontSize: "7.5px", letterSpacing: "0.06em", opacity: 0.8 }}>Download on the</div>
+                  <div className="text-white font-semibold leading-tight" style={{ fontSize: "12px", letterSpacing: "0.01em" }}>App Store</div>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>

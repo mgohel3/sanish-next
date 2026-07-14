@@ -31,8 +31,8 @@ export default function Infrastructure() {
 
   return (
     <section ref={sectionRef} className="py-24 md:py-32 bg-[var(--bg-primary)] border-t border-[var(--color-border-subtle)]">
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
+      <div className="site-container">
+        <div className="flex flex-col lg:flex-row gap-16 items-start">
           <div className="flex-1 w-full relative h-[400px] lg:h-[600px] infra-fade">
             <img 
               src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800" 

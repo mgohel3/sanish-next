@@ -48,7 +48,7 @@ const CATEGORIES = [
 export default function Home2Categories() {
   return (
     <section className="py-24 md:py-32" style={{ backgroundColor: "#F5F2EE" }}>
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+      <div className="site-container">
 
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
@@ -56,7 +56,7 @@ export default function Home2Categories() {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-[2px]" style={{ backgroundColor: "#C4916A" }} />
               <span className="text-[11px] uppercase tracking-[0.2em] font-medium"
-                style={{ color: "#C4916A", fontFamily: "var(--font-poppins)" }}>Product Range</span>
+                style={{ color: "#C4916A", fontFamily: "var(--font-heebo)" }}>Product Range</span>
             </div>
             <h2 className="font-medium leading-[1.1]"
               style={{ fontSize: "clamp(34px,4vw,52px)", fontFamily: "var(--font-vogue)", color: "#1C1C1C", letterSpacing: "-0.01em" }}>
@@ -65,7 +65,7 @@ export default function Home2Categories() {
           </div>
           <Link href="/products"
             className="flex items-center gap-2 text-[13px] font-medium shrink-0 hover:-translate-x-1 transition-transform"
-            style={{ color: "#C4916A", fontFamily: "var(--font-poppins)" }}>
+            style={{ color: "#C4916A", fontFamily: "var(--font-heebo)" }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path d="M19 12H5M12 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -92,15 +92,14 @@ export default function Home2Categories() {
                     color: cat.accent,
                     borderRadius: "999px",
                     border: `1px solid ${cat.accent}44`,
-                    fontFamily: "var(--font-poppins)",
+                    fontFamily: "var(--font-heebo)",
                   }}>
                   {cat.tag}
                 </span>
               </div>
               {/* Content */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="text-[18px] font-bold text-white mb-2 leading-tight"
-                  style={{ fontFamily: "var(--font-jakarta)" }}>
+                <h3 className="text-[18px] font-bold text-white mb-2 leading-tight">
                   {cat.name}
                 </h3>
                 <p className="text-[13px] text-white/65 leading-[1.5] mb-4 max-h-0 group-hover:max-h-20 overflow-hidden transition-all duration-500"

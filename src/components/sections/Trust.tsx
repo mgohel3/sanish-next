@@ -53,7 +53,7 @@ export default function Trust() {
 
   return (
     <section ref={sectionRef} className="py-24 bg-[var(--bg-secondary)] relative z-10">
-      <div className="container mx-auto px-6 md:px-12">
+      <div className="site-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, i) => (
             <div key={i} className="trust-card bg-white p-8 border border-[var(--color-border-subtle)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.03)] transition-all duration-300 group">

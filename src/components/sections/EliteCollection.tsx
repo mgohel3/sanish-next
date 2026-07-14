@@ -128,7 +128,6 @@ export default function EliteCollection() {
                   <h3
                     className="font-bold text-[17px] mb-1 transition-colors duration-300"
                     style={{
-                      fontFamily: "var(--font-jakarta)",
                       color: "#1E1E2E",
                     }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = card.accent; }}

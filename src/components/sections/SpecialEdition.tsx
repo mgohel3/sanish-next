@@ -24,7 +24,7 @@ export default function SpecialEdition() {
   return (
     <section ref={sectionRef} className="home-section--compact bg-[var(--bg-secondary)] relative overflow-hidden">
       <div className="site-container">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
           {/* Left — Content */}
           <div className="lg:order-2">

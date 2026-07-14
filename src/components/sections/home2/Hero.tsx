@@ -73,7 +73,7 @@ export default function Home2Hero() {
         <div className={`flex items-center gap-3 mb-6 transition-all duration-400 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}>
           <div className="w-10 h-[2px]" style={{ backgroundColor: C.accent }} />
           <span className="text-[11px] uppercase tracking-[0.25em] font-semibold"
-            style={{ color: C.accent, fontFamily: "var(--font-poppins)" }}>
+            style={{ color: C.accent, fontFamily: "var(--font-heebo)" }}>
             {slide.eyebrow}
           </span>
         </div>
@@ -95,7 +95,7 @@ export default function Home2Hero() {
         {/* Sub */}
         <p
           className={`text-[17px] leading-[1.75] mb-10 max-w-[480px] transition-all duration-500 delay-75 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}
-          style={{ fontFamily: "var(--font-poppins)", color: C.textSec }}
+          style={{ fontFamily: "var(--font-heebo)", color: C.textSec }}
         >
           {slide.sub}
         </p>
@@ -106,7 +106,7 @@ export default function Home2Hero() {
             className="flex items-center gap-2.5 text-white text-[12px] font-medium px-8 py-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             style={{
               backgroundColor: C.accent, borderRadius: "999px",
-              fontFamily: "var(--font-poppins)", letterSpacing: "0.04em",
+              fontFamily: "var(--font-heebo)", letterSpacing: "0.04em",
               boxShadow: `0 6px 20px ${C.accent}44`,
             }}>
             {slide.cta.label}
@@ -118,7 +118,7 @@ export default function Home2Hero() {
             className="flex items-center gap-2.5 text-[12px] font-medium px-8 py-4 border transition-all duration-300 hover:-translate-y-1"
             style={{
               color: C.textPrimary, border: `1.5px solid ${C.textPrimary}`,
-              borderRadius: "999px", fontFamily: "var(--font-poppins)",
+              borderRadius: "999px", fontFamily: "var(--font-heebo)",
               letterSpacing: "0.04em",
             }}>
             Request Free Samples
@@ -139,7 +139,7 @@ export default function Home2Hero() {
               <div key={b} className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: C.accent }} />
                 <span className="text-[11px] uppercase tracking-[0.12em]"
-                  style={{ color: C.textSec, fontFamily: "var(--font-poppins)" }}>{b}</span>
+                  style={{ color: C.textSec, fontFamily: "var(--font-heebo)" }}>{b}</span>
               </div>
             ))}
           </div>

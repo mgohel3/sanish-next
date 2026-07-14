@@ -220,10 +220,10 @@ export default function Hero() {
           <div className="mb-7 space-y-1">
             <div className="overflow-hidden">
               <h1
-                className="h-line1 block font-bold leading-[1.08] tracking-tight"
+                className="h-line1 block leading-[1.08] tracking-tight"
                 style={{
-                  fontFamily: "var(--font-jakarta)",
                   fontSize: "clamp(34px, 4.6vw, 68px)",
+                  fontWeight: 500,
                   color: "#1E1E2E",
                 }}
               >
@@ -232,10 +232,10 @@ export default function Hero() {
             </div>
             <div className="overflow-hidden">
               <h1
-                className="h-line2 block font-bold leading-[1.08] tracking-tight"
+                className="h-line2 block leading-[1.08] tracking-tight"
                 style={{
-                  fontFamily: "var(--font-jakarta)",
                   fontSize: "clamp(34px, 4.6vw, 68px)",
+                  fontWeight: 500,
                   color: slide.accent,
                   transition: "color 800ms ease",
                 }}

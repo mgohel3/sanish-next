@@ -15,7 +15,7 @@ export default function RewardsHighlight() {
         style={{ background: "radial-gradient(circle, rgba(172,140,192,0.12) 0%, transparent 70%)" }} />
 
       <div className="site-container relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
           {/* Left — Content */}
           <div>
@@ -67,6 +67,28 @@ export default function RewardsHighlight() {
               <div>
                 <div className="text-white leading-none" style={{ fontSize: "9px", letterSpacing: "0.06em", opacity: 0.8 }}>GET IT ON</div>
                 <div className="text-white font-semibold leading-tight" style={{ fontSize: "15px", letterSpacing: "0.01em" }}>Google Play</div>
+              </div>
+            </a>
+
+            <a
+              href="https://apps.apple.com/us/app/srewards/id6758007860"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-5 py-3 text-white transition-all duration-200 hover:opacity-85 hover:-translate-y-0.5"
+              style={{
+                backgroundColor: "#0b0c0e",
+                borderRadius: "999px",
+                minWidth: "180px",
+                boxShadow: "0 12px 28px rgba(11,12,14,0.18)",
+                fontFamily: "var(--font-jakarta)",
+              }}
+            >
+              <svg width="18" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.41-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.113c.83-1.012 1.39-2.42 1.234-3.821-1.196.052-2.638.796-3.494 1.807-.767.9-1.442 2.35-1.26 3.71 1.338.104 2.687-.68 3.52-1.696z" />
+              </svg>
+              <div>
+                <div className="text-white leading-none" style={{ fontSize: "9px", letterSpacing: "0.06em", opacity: 0.8 }}>Download on the</div>
+                <div className="text-white font-semibold leading-tight" style={{ fontSize: "15px", letterSpacing: "0.01em" }}>App Store</div>
               </div>
             </a>
 

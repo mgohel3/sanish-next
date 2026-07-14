@@ -156,8 +156,7 @@ export default function WhyUsCarousel() {
                   style={{ backgroundColor: card.iconBg, color: card.iconColor, borderRadius: "16px" }}>
                   {card.icon}
                 </div>
-                <h3 className="text-[17px] font-semibold text-[var(--text-primary)] mb-3"
-                  style={{ fontFamily: "var(--font-jakarta)" }}>
+                <h3 className="text-[17px] font-semibold text-[var(--text-primary)] mb-3">
                   {card.title}
                 </h3>
                 <p className="text-[14px] text-[var(--text-secondary)] leading-[1.7]"

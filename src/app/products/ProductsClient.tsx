@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
-import { products, collections, finishes, colors, type Product } from "@/lib/products";
+import { products, collections, finishes, colors, COLOR_SWATCH, type Product } from "@/lib/products";
+import PageHero from "@/components/PageHero";
 
 /* ── URL slug → display name mappings ───────────────────── */
 const COLLECTION_SLUG_MAP: Record<string, string> = {
@@ -284,54 +285,36 @@ export default function ProductsClient() {
   const hasFilter = activeCategory !== "All" || activeCollection !== "All" || activeFinish !== "All Finishes" || !!activeDesign || activeColor !== "All Colours";
   const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminate catalogue.")}`;
 
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+    ...(breadcrumbLabel ? [{ label: breadcrumbLabel }] : []),
+  ];
+
   return (
     <>
-      {/* ── Page header ── */}
-      <section className="py-[52px] border-b" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
-        <div className="site-container">
-
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 mb-6 text-[11px]" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>
-            <Link href="/" className="hover:text-[#f39ba2] transition-colors">Home</Link>
-            <span>/</span>
-            <Link href="/products" className="hover:text-[#f39ba2] transition-colors">Products</Link>
-            {breadcrumbLabel && (
-              <>
-                <span>/</span>
-                <span style={{ color: "#ac8cc0" }}>{breadcrumbLabel}</span>
-              </>
-            )}
+      <PageHero
+        eyebrow="All Products"
+        title={pageTitle}
+        image="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000"
+        description="Browse the complete Sanish range — laminates, louvers and ASA sheets — all in one place."
+        breadcrumb={breadcrumbItems}
+        rightSlot={
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#6B6B80" }} />
+            <input
+              type="text"
+              placeholder="Search finishes, colours…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-3.5 text-[13.5px] outline-none transition-colors rounded-full shadow-sm"
+              style={{ background: "white", border: "1px solid rgba(30,30,46,0.1)", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = "#f39ba2")}
+              onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(30,30,46,0.1)")}
+            />
           </div>
-
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div>
-              <h1 className="font-serif leading-tight" style={{ fontSize: "clamp(38px,5vw,60px)", color: "var(--text-primary)" }}>
-                {pageTitle}
-              </h1>
-              <p className="mt-2 text-[14px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
-                {filtered.length} surfaces
-                {hasFilter && <span className="ml-2">· <button onClick={clearAll} className="text-[#ac8cc0] hover:text-[#f39ba2] hover:underline">Clear filter</button></span>}
-              </p>
-            </div>
-
-            <div className="w-full md:w-[320px]">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "#6B6B80" }} />
-                <input
-                  type="text"
-                  placeholder="Search finishes, colours…"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3.5 text-[13.5px] outline-none transition-colors rounded-full shadow-sm"
-                  style={{ background: "white", border: "1px solid rgba(30,30,46,0.1)", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#f39ba2")}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(30,30,46,0.1)")}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        }
+      />
 
       {/* ── Content ── */}
       <section className="py-14">
@@ -345,7 +328,7 @@ export default function ProductsClient() {
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <SlidersHorizontal className="w-3.5 h-3.5" style={{ color: "var(--text-primary)" }} />
-                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>Product Type</h3>
+                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Product Type</h3>
                 </div>
                 <ul className="space-y-0.5">
                   {(["All", "Laminates", "Louvers", "ASA Sheets"] as const).map((cat) => (
@@ -366,7 +349,7 @@ export default function ProductsClient() {
 
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>Collections</h3>
+                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Collections</h3>
                 </div>
                 <ul className="space-y-0.5">
                   {collections.map((c) => (
@@ -386,7 +369,7 @@ export default function ProductsClient() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>Finish</h3>
+                <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Finish</h3>
                 <ul className="space-y-0.5">
                   {finishes.map((f) => (
                     <li key={f}>
@@ -405,22 +388,37 @@ export default function ProductsClient() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>Colour</h3>
-                <ul className="space-y-0.5">
-                  {(["All Colours", ...colors] as string[]).map((color) => (
-                    <li key={color}>
-                      <button onClick={() => applyColor(color)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Colour</h3>
+                  {activeColor !== "All Colours" && (
+                    <button onClick={() => applyColor("All Colours")} className="text-[11px] hover:underline"
+                      style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>
+                      Clear
+                    </button>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2.5">
+                  {colors.map((color) => {
+                    const isActive = activeColor === color;
+                    return (
+                      <button
+                        key={color}
+                        onClick={() => applyColor(color)}
+                        title={color}
+                        aria-label={color}
+                        aria-pressed={isActive}
+                        className="rounded-full transition-transform duration-200 hover:scale-110"
                         style={{
-                          backgroundColor: activeColor === color ? "rgba(133,173,220,0.12)" : "transparent",
-                          color: activeColor === color ? "#85addc" : "#6B6B80",
-                          fontWeight: activeColor === color ? 600 : 400,
-                          fontFamily: "var(--font-jakarta)",
-                        }}>
-                        {color}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                          width: 26,
+                          height: 26,
+                          background: COLOR_SWATCH[color] ?? "#ccc",
+                          border: color === "White" ? "1px solid rgba(30,30,46,0.15)" : "1px solid rgba(30,30,46,0.08)",
+                          boxShadow: isActive ? "0 0 0 2px white, 0 0 0 4px #85addc" : "none",
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Active filter chips */}
@@ -504,12 +502,13 @@ export default function ProductsClient() {
                       </div>
                     </div>
                     <Link href={`/products/${product.slug}`} className="block">
-                      <h3 className="text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors" style={{ color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>
+                      <h3 className="text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors" style={{ color: "var(--text-primary)" }}>
                         {product.name}
                       </h3>
                     </Link>
                     <p className="text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{product.finish} · {product.thickness}</p>
                   </div>
+                ))}
               </div>
             ) : (
               <div className="py-20 text-center border border-dashed rounded-2xl" style={{ borderColor: "rgba(30,30,46,0.12)" }}>

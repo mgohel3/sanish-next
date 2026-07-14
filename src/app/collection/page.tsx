@@ -26,7 +26,7 @@ export default function CollectionPage() {
       {/* ── Intro stats ── */}
       <section className="py-16 bg-white border-b border-[var(--color-border-subtle)]">
         <div className="site-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
             <div>
               <div className="eyebrow mb-4">Why Sanish</div>
               <h2 className="font-serif text-[clamp(28px,3.6vw,48px)] leading-[1.1] text-[var(--text-primary)] mb-5">

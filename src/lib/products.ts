@@ -350,3 +350,21 @@ export const finishes = ["All Finishes", "High Gloss", "Ultra Matte", "Matte", "
 export const designTypes: DesignType[] = ["Wood", "Stone", "Fabric", "Solid", "Metallic"];
 export const productCategories: ProductCategory[] = ["Laminates", "Louvers", "ASA Sheets"];
 export const colors: ProductColor[] = ["White", "Beige", "Black", "Blue", "Brown", "Green", "Grey", "Metallic", "Multicolor", "Orange", "Pink", "Purple", "Red", "Yellow"];
+
+/** Swatch fill (hex or gradient) shown for each colour filter option. */
+export const COLOR_SWATCH: Record<string, string> = {
+  White: "#F7F6F3",
+  Beige: "#D9C7A3",
+  Black: "#1C1C1C",
+  Blue: "#4A6FA5",
+  Brown: "#6B4226",
+  Green: "#4C7A52",
+  Grey: "#9B9B9B",
+  Metallic: "linear-gradient(135deg, #DADFE3 0%, #9FA6AC 50%, #DADFE3 100%)",
+  Multicolor: "conic-gradient(from 0deg, #E08D3C, #E8A0B4, #8B6BA8, #4A6FA5, #4C7A52, #E8C547, #E08D3C)",
+  Orange: "#E08D3C",
+  Pink: "#E8A0B4",
+  Purple: "#8B6BA8",
+  Red: "#B33A3A",
+  Yellow: "#E8C547",
+};

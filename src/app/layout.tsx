@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Heebo, Poppins } from "next/font/google";
+import { Bodoni_Moda, Heebo } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
@@ -22,13 +22,6 @@ const vogueFallback = Bodoni_Moda({
   display: "swap",
 });
 
-const poppins = Poppins({
-  variable: "--font-poppins-loaded",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800"],
-});
-
 export const metadata: Metadata = {
   title: "Sanish Laminates | Premium Decorative Surfaces",
   description:
@@ -48,7 +41,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${heebo.variable} ${vogueFallback.variable} ${poppins.variable} h-full antialiased`}
+      className={`${heebo.variable} ${vogueFallback.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SiteSettingsProvider settings={siteSettings} nav={navData}>

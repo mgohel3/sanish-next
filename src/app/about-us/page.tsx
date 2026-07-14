@@ -35,7 +35,7 @@ export default function AboutUsPage() {
       {/* ── Innovation & Design ── */}
       <section className="py-[120px] bg-[var(--bg-primary)]">
         <div className="site-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] lg:gap-[100px] items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] lg:gap-[100px] items-start">
             <div>
               <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-4 font-medium">
                 Best Laminate Company in India

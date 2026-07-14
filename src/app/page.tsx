@@ -2,7 +2,6 @@ import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import HorizontalShowcase from "@/components/sections/HorizontalShowcase";
-import EliteCollection from "@/components/sections/EliteCollection";
 import SpecialEdition from "@/components/sections/SpecialEdition";
 import WhyUsCarousel from "@/components/sections/WhyUsCarousel";
 import Applications from "@/components/sections/Applications";
@@ -18,7 +17,6 @@ export default function Home() {
       <Hero />
       <About />
       <HorizontalShowcase />
-      <EliteCollection />
       <SpecialEdition />
       <WhyUsCarousel />
       <Applications />
