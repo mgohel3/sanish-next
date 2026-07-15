@@ -69,15 +69,6 @@ export default function Home2Hero() {
       {/* ── Left: text panel ── */}
       <div className="relative z-10 flex flex-col justify-center w-full lg:w-[55%] px-6 md:px-12 lg:px-16 pt-32 pb-20">
 
-        {/* Eyebrow */}
-        <div className={`flex items-center gap-3 mb-6 transition-all duration-400 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}>
-          <div className="w-10 h-[2px]" style={{ backgroundColor: C.accent }} />
-          <span className="text-[11px] uppercase tracking-[0.25em] font-semibold"
-            style={{ color: C.accent, fontFamily: "var(--font-heebo)" }}>
-            {slide.eyebrow}
-          </span>
-        </div>
-
         {/* H1 */}
         <h1
           className={`leading-[1.05] font-semibold mb-6 transition-all duration-500 ${animating ? "opacity-0 translate-y-6" : "opacity-100 translate-y-0"}`}

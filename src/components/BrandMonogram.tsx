@@ -4,7 +4,7 @@ type BrandMonogramProps = {
   className?: string;
 };
 
-const DOTS = ["#fabf7d", "#ac8cc0", "#f39ba2", "#85addc"];
+const DOTS = ["#85addc", "#ac8cc0", "#f39ba2", "#fabf7d"];
 
 export default function BrandMonogram({
   size = 9,

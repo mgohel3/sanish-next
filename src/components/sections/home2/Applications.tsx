@@ -46,7 +46,7 @@ export default function Home2Applications() {
   const app = APPS[active];
 
   return (
-    <section className="py-24 md:py-32" style={{ backgroundColor: "#F5F2EE" }}>
+    <section className="home-section--compact" style={{ backgroundColor: "#F5F2EE" }}>
       <div className="site-container">
         {/* Header */}
         <div className="mb-16">

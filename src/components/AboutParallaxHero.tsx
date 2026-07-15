@@ -49,9 +49,6 @@ export default function AboutParallaxHero() {
 
       {/* Content */}
       <div className="relative z-10 w-full" style={{ padding: "clamp(150px, 18vw, 220px) clamp(24px, 4vw, 48px) clamp(56px, 8vw, 96px)", maxWidth: "1400px", margin: "0 auto", color: "white" }}>
-        <div style={{ color: "var(--accent-blue)", fontFamily: "var(--font-jakarta)", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "16px" }}>
-          About Sanish Laminate
-        </div>
         <h1 className="font-serif" style={{ fontSize: "clamp(44px, 6vw, 82px)", fontWeight: 500, lineHeight: 1.02, marginBottom: "20px" }}>
           About Us
         </h1>

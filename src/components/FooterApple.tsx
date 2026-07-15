@@ -45,7 +45,7 @@ const COMPANY = [
   { label: "Blog",           href: "#" },
 ];
 
-export default function Footer() {
+export default function FooterApple() {
   const settings = useSiteSettings();
   const { social, footer } = settings;
 

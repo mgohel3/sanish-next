@@ -20,7 +20,7 @@ export default function FindADealerPage() {
       />
 
       {/* Page body */}
-      <section className="py-24 md:py-32">
+      <section className="home-section">
         <div className="site-container-narrow">
           <p className="text-[17px] leading-[1.75] text-[var(--text-secondary)] mb-8" style={{ fontFamily: "var(--font-jakarta)", maxWidth: "520px" }}>
             Dealer network information coming soon.

@@ -74,7 +74,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
       </section>
 
       {/* ── Body ── */}
-      <section className="py-16 bg-white">
+      <section className="home-section--compact bg-white">
         <div className="site-container">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-14">
 
@@ -82,7 +82,6 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
             <div>
               {/* Description */}
               <div className="mb-12">
-                <div className="eyebrow mb-4">Project Overview</div>
                 <p className="text-[16px] text-[var(--text-secondary)] leading-[1.9]"
                   style={{ fontFamily: "var(--font-jakarta)" }}>
                   {app.description}
@@ -92,8 +91,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
               {/* Photo gallery */}
               {app.gallery.length > 0 && (
                 <div className="mb-14">
-                  <div className="eyebrow mb-5">Project Gallery</div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="sm:row-span-2 overflow-hidden rounded-[20px]" style={{ minHeight: "300px" }}>
                       <img src={app.gallery[0]} alt={`${app.label} 1`} className="w-full h-full object-cover" />
                     </div>
@@ -108,7 +106,6 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
 
               {/* Products used */}
               <div>
-                <div className="eyebrow mb-5">Products Used</div>
                 <div className="space-y-4">
                   {app.productsUsed.map((p) => (
                     <div key={p.name} className="flex flex-col sm:flex-row sm:items-start gap-4 p-6 rounded-[20px] border border-[var(--color-border-subtle)] bg-[var(--bg-secondary)]">
@@ -218,12 +215,11 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
 
       {/* ── Related projects ── */}
       {related.length > 0 && (
-        <section className="py-16 border-t border-[var(--color-border-subtle)]"
+        <section className="home-section--compact border-t border-[var(--color-border-subtle)]"
           style={{ backgroundColor: "var(--bg-secondary)" }}>
           <div className="site-container">
             <div className="flex items-end justify-between mb-10">
               <div>
-                <div className="eyebrow mb-2">More {app.category}</div>
                 <h2 className="font-serif text-[clamp(24px,3vw,34px)] text-[var(--text-primary)]">
                   Related Projects
                 </h2>

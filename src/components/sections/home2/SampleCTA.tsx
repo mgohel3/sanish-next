@@ -28,7 +28,7 @@ export default function Home2SampleCTA() {
   };
 
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: BG }}>
+    <section className="relative home-section overflow-hidden" style={{ backgroundColor: BG }}>
       {/* Decorative orbs */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{ background: `radial-gradient(circle, rgba(196,145,106,0.10) 0%, transparent 70%)`, transform: "translate(30%, -30%)" }} />

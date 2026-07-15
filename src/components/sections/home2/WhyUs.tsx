@@ -48,7 +48,7 @@ const USPs = [
 
 export default function Home2WhyUs() {
   return (
-    <section className="py-24 md:py-32" style={{ backgroundColor: C.bg }}>
+    <section className="home-section--compact" style={{ backgroundColor: C.bg }}>
       <div className="site-container">
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">

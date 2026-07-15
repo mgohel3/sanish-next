@@ -17,7 +17,7 @@ const STATES = [
 
 export default function Home2Dealers() {
   return (
-    <section className="py-24 md:py-32" style={{ backgroundColor: C.bg }}>
+    <section className="home-section--compact" style={{ backgroundColor: C.bg }}>
       <div className="site-container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 

@@ -118,7 +118,7 @@ export default function HeroClassic() {
     }, 0);
 
     /* -- Text out -- */
-    tl.to([".hc2-tag", ".hc2-l1", ".hc2-l2", ".hc2-l3", ".hc2-sep", ".hc2-sub", ".hc2-btns", ".hc2-stats"], {
+    tl.to([".hc2-l1", ".hc2-l2", ".hc2-l3", ".hc2-sep", ".hc2-sub", ".hc2-btns", ".hc2-stats"], {
       y: -28, opacity: 0, duration: 0.45, stagger: 0.035, ease: "power3.in", overwrite: true,
     }, 0);
 
@@ -157,8 +157,7 @@ export default function HeroClassic() {
   /* ── Animate text in when slide changes ── */
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-    tl.fromTo(".hc2-tag",   { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, 0)
-      .fromTo(".hc2-l1",    { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0 }, 0.08)
+    tl.fromTo(".hc2-l1",    { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0 }, 0)
       .fromTo(".hc2-l2",    { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0 }, 0.17)
       .fromTo(".hc2-l3",    { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0 }, 0.26)
       .fromTo(".hc2-sep",   { scaleX: 0 },          { scaleX: 1, duration: 0.7, ease: "power3.inOut" }, 0.5)
@@ -221,17 +220,6 @@ export default function HeroClassic() {
           }}
         >
           {slide.number}
-        </div>
-
-        {/* Tag */}
-        <div className="hc2-tag flex items-center gap-3 mb-8">
-          <div className="w-8 h-[1.5px]" style={{ backgroundColor: slide.accent, transition: "background-color 600ms ease" }} />
-          <span
-            className="text-[10px] font-semibold uppercase tracking-[0.22em]"
-            style={{ color: slide.accent, fontFamily: "var(--font-jakarta)", transition: "color 600ms ease" }}
-          >
-            {slide.tag}
-          </span>
         </div>
 
         {/* Headline — 3 line stagger */}

@@ -53,7 +53,7 @@ export default function ApplicationsGallery() {
       </div>
 
       {/* ── Masonry gallery ── */}
-      <section className="py-16 bg-white">
+      <section className="home-section--compact bg-white">
         <div className="site-container">
           <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
             {filtered.map((item) => (
@@ -121,7 +121,7 @@ export default function ApplicationsGallery() {
       </section>
 
       {/* ── Bottom CTA ── */}
-      <section className="py-20 border-t border-[var(--color-border-subtle)]" style={{ backgroundColor: "var(--bg-secondary)" }}>
+      <section className="home-section--compact border-t border-[var(--color-border-subtle)]" style={{ backgroundColor: "var(--bg-secondary)" }}>
         <div className="site-container flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
             <h2 className="font-serif text-[clamp(28px,3.5vw,40px)] leading-[1.1] text-[var(--text-primary)] mb-2">

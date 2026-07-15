@@ -19,7 +19,7 @@ export default function ContactUsPage() {
         description="Speak with our team about products, samples, specifications and dealer support."
       />
 
-      <section className="py-[120px] bg-[var(--bg-primary)]">
+      <section className="home-section bg-[var(--bg-primary)]">
         <div className="site-container">
           
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-[60px] lg:gap-[100px]">
@@ -38,8 +38,8 @@ export default function ContactUsPage() {
                       <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">Address</h4>
                       <p className="text-[15px] text-[var(--text-primary)] leading-[1.6]">
                         SAPPHIRE WOODS (INDIA) LLP<br/>
-                        123 Innovation Drive, Andheri West<br/>
-                        Mumbai, Maharashtra 400053
+                        Regd. Office: 203 Aggarwal Chamber, Sainik Vihar<br/>
+                        Pitam Pura, Delhi - 110034
                       </p>
                     </div>
                   </div>
@@ -75,7 +75,7 @@ export default function ContactUsPage() {
               {/* Google Map */}
               <div className="w-full h-[300px] bg-gray-200 border border-[var(--border)] overflow-hidden">
                 <iframe
-                  src="https://maps.google.com/maps?q=Andheri+West,+Mumbai,+Maharashtra+400053,+India&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  src="https://maps.google.com/maps?q=Sanish+Laminate,28.6895846,77.1227317&z=17&ie=UTF8&iwloc=&output=embed"
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 

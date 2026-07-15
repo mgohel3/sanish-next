@@ -115,7 +115,7 @@ export default async function ProductPage({ params }: Props) {
       </div>
 
       {/* ── Main product section ────────────────────────── */}
-      <section className="site-container py-14 lg:py-16">
+      <section className="site-container home-section--compact">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-10 xl:gap-20 items-start">
 
           {/* LEFT — Image Gallery */}
@@ -232,7 +232,7 @@ export default async function ProductPage({ params }: Props) {
 
       {/* ── Related Products ───────────────────────────── */}
       {related.length > 0 && (
-        <section className="py-14 lg:py-16 border-t" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
+        <section className="home-section--compact border-t" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
           <div className="site-container">
             <div className="flex items-end justify-between mb-10">
               <div>

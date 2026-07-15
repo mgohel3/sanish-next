@@ -11,7 +11,7 @@ const STEPS = [
 
 export default function Home2Process() {
   return (
-    <section className="py-24 md:py-32 overflow-hidden" style={{ backgroundColor: BG }}>
+    <section className="home-section--compact overflow-hidden" style={{ backgroundColor: BG }}>
       <div className="site-container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 

@@ -33,7 +33,7 @@ export default function AboutUsPage() {
       <AboutParallaxHero />
 
       {/* ── Innovation & Design ── */}
-      <section className="py-[120px] bg-[var(--bg-primary)]">
+      <section className="home-section bg-[var(--bg-primary)]">
         <div className="site-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] lg:gap-[100px] items-start">
             <div>
@@ -71,10 +71,9 @@ export default function AboutUsPage() {
       <AboutMissionSection />
 
       {/* ── Certifications ── */}
-      <section className="py-20 bg-[var(--bg-primary)]">
+      <section className="home-section--compact bg-[var(--bg-primary)]">
         <div className="site-container">
           <div className="text-center mb-14">
-            <div className="eyebrow mb-3">Credentials</div>
             <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]">
               Quality Certifications
             </h2>
@@ -124,7 +123,7 @@ export default function AboutUsPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="py-[120px] bg-[var(--bg-secondary)] border-t border-[var(--border)] text-center relative overflow-hidden">
+      <section className="home-section bg-[var(--bg-secondary)] border-t border-[var(--border)] text-center relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2000"

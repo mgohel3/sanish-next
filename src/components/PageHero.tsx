@@ -13,7 +13,6 @@ type PageHeroProps = {
 };
 
 export default function PageHero({
-  eyebrow,
   title,
   image,
   description,
@@ -41,7 +40,6 @@ export default function PageHero({
         )}
         <div className={rightSlot ? "flex flex-col md:flex-row md:items-end md:justify-between gap-8" : undefined}>
           <div>
-            <div className="page-hero__eyebrow">{eyebrow}</div>
             <h1>{title}</h1>
             {description && <p>{description}</p>}
           </div>

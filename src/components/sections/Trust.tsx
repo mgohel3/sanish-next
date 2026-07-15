@@ -52,7 +52,7 @@ export default function Trust() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-24 bg-[var(--bg-secondary)] relative z-10">
+    <section ref={sectionRef} className="home-section--compact bg-[var(--bg-secondary)] relative z-10">
       <div className="site-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, i) => (

@@ -22,7 +22,7 @@ export default function SpecialEdition() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="home-section--compact bg-[var(--bg-secondary)] relative overflow-hidden">
+    <section ref={sectionRef} className="home-section--compact bg-[var(--bg-primary)] relative overflow-hidden">
       <div className="site-container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
@@ -31,7 +31,7 @@ export default function SpecialEdition() {
             <h2 className="home-heading mb-6">
               Special Edition <br /> Architectural Panels
             </h2>
-            <p className="text-[16px] text-[var(--text-secondary)] leading-[1.7] max-w-lg mb-8">
+            <p className="text-[15px] text-[var(--text-secondary)] leading-[1.8] max-w-lg mb-8">
               Our limited edition architectural panels redefine luxury interiors. Featuring synchronised textures that perfectly mimic natural materials with enhanced durability.
             </p>
             <div className="flex flex-wrap gap-3 mb-10">

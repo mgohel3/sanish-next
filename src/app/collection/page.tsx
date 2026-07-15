@@ -24,11 +24,10 @@ export default function CollectionPage() {
       />
 
       {/* ── Intro stats ── */}
-      <section className="py-16 bg-white border-b border-[var(--color-border-subtle)]">
+      <section className="home-section--compact bg-white border-b border-[var(--color-border-subtle)]">
         <div className="site-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
             <div>
-              <div className="eyebrow mb-4">Why Sanish</div>
               <h2 className="font-serif text-[clamp(28px,3.6vw,48px)] leading-[1.1] text-[var(--text-primary)] mb-5">
                 Designed to Inspire.<br />Built to Last.
               </h2>
@@ -58,10 +57,9 @@ export default function CollectionPage() {
       </section>
 
       {/* ── Collection Tiles ── */}
-      <section className="py-16 bg-[var(--bg-secondary)]">
+      <section className="home-section--compact bg-[var(--bg-secondary)]">
         <div className="site-container">
           <div className="text-center mb-12">
-            <div className="eyebrow mb-3">Browse All</div>
             <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]">
               Our Collections
             </h2>
@@ -71,11 +69,10 @@ export default function CollectionPage() {
       </section>
 
       {/* ── Inquiry Form ── */}
-      <section className="py-20 bg-white border-t border-[var(--color-border-subtle)]">
+      <section className="home-section--compact bg-white border-t border-[var(--color-border-subtle)]">
         <div className="site-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div className="flex flex-col justify-center">
-              <div className="eyebrow mb-4">Get In Touch</div>
               <h2 className="font-serif text-[clamp(28px,3.6vw,46px)] leading-[1.1] text-[var(--text-primary)] mb-6">
                 Collection Inquiry
               </h2>

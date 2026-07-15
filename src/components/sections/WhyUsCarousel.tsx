@@ -108,7 +108,7 @@ export default function WhyUsCarousel() {
   return (
     <section
       className="home-section--compact relative overflow-hidden"
-      style={{ backgroundColor: "var(--bg-primary)" }}
+      style={{ backgroundColor: "var(--bg-secondary)" }}
       onMouseEnter={() => { paused.current = true; }}
       onMouseLeave={() => { paused.current = false; }}
     >

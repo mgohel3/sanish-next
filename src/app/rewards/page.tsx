@@ -130,11 +130,10 @@ export default function RewardsPage() {
       />
 
       {/* ── Intro Banner ── */}
-      <section className="py-20 bg-[var(--bg-primary)]">
+      <section className="home-section--compact bg-[var(--bg-primary)]">
         <div className="site-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div>
-              <div className="eyebrow mb-4">Why Join?</div>
               <h2 className="font-serif text-[clamp(30px,3.8vw,50px)] leading-[1.1] text-[var(--text-primary)] mb-6">
                 You Install, We Reward
               </h2>
@@ -242,10 +241,9 @@ export default function RewardsPage() {
       </section>
 
       {/* ── How It Works ── */}
-      <section className="py-20 bg-[var(--bg-secondary)] border-y border-[var(--color-border-subtle)]">
+      <section className="home-section--compact bg-[var(--bg-secondary)] border-y border-[var(--color-border-subtle)]">
         <div className="site-container">
           <div className="text-center mb-14">
-            <div className="eyebrow mb-3">Simple Process</div>
             <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]">
               How It Works
             </h2>
@@ -281,10 +279,9 @@ export default function RewardsPage() {
       </section>
 
       {/* ── Benefits Grid ── */}
-      <section className="py-20 bg-[var(--bg-primary)]">
+      <section className="home-section--compact bg-[var(--bg-primary)]">
         <div className="site-container">
           <div className="text-center mb-14">
-            <div className="eyebrow mb-3">Programme Benefits</div>
             <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]">
               What You Get
             </h2>
@@ -317,10 +314,9 @@ export default function RewardsPage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="py-20 bg-[var(--bg-secondary)] border-t border-[var(--color-border-subtle)]">
+      <section className="home-section--compact bg-[var(--bg-secondary)] border-t border-[var(--color-border-subtle)]">
         <div className="site-container-narrow">
           <div className="text-center mb-12">
-            <div className="eyebrow mb-3">Questions</div>
             <h2 className="font-serif text-[clamp(28px,3.5vw,42px)] text-[var(--text-primary)]">
               Frequently Asked
             </h2>
@@ -347,7 +343,7 @@ export default function RewardsPage() {
 
       {/* ── Download CTA ── */}
       <section
-        className="py-24 relative overflow-hidden"
+        className="home-section relative overflow-hidden"
         style={{ background: "linear-gradient(135deg,#1E1E2E 0%,#2d2b45 100%)" }}
       >
         <div className="absolute inset-0 pointer-events-none">

@@ -51,7 +51,7 @@ export default function AboutMissionSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative py-28 overflow-hidden">
+    <section ref={sectionRef} className="relative home-section--compact overflow-hidden">
       {/* ── Parallax background image ── */}
       <div
         ref={bgRef}

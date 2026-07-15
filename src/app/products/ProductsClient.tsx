@@ -317,7 +317,7 @@ export default function ProductsClient() {
       />
 
       {/* ── Content ── */}
-      <section className="py-14">
+      <section className="home-section--compact">
         <div className="site-container flex flex-col lg:flex-row gap-12">
 
           {/* Sidebar */}

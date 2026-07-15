@@ -13,9 +13,9 @@ const slides = [
     line1: "Where Architecture",
     line2: "Meets Artistry",
     sub: "Premium decorative laminates crafted for architects, designers, and luxury interiors.",
-    accent: "#85addc",
+    accent: "#ac8cc0",
     bg: "#F0EDF7",
-    orb1: "rgba(123,158,196,0.22)",
+    orb1: "rgba(172,140,192,0.22)",
     orb2: "rgba(201,122,146,0.14)",
   },
   {
@@ -25,7 +25,7 @@ const slides = [
     line1: "Crafted For",
     line2: "Elegant Spaces",
     sub: "High-gloss, matte and textured finishes that redefine interior surfaces.",
-    accent: "#85addc",
+    accent: "#ac8cc0",
     bg: "#f3f4f6",
     orb1: "rgba(232,149,109,0.22)",
     orb2: "rgba(232,180,154,0.14)",
@@ -37,10 +37,10 @@ const slides = [
     line1: "Texture That",
     line2: "Speaks Design",
     sub: "From woodgrains to metallics — surfaces that transform spaces into masterpieces.",
-    accent: "#85addc",
+    accent: "#ac8cc0",
     bg: "#F7EFF3",
     orb1: "rgba(201,122,146,0.22)",
-    orb2: "rgba(123,158,196,0.12)",
+    orb2: "rgba(172,140,192,0.12)",
   },
   {
     id: 4,
@@ -49,9 +49,9 @@ const slides = [
     line1: "Defining Modern",
     line2: "Living Spaces",
     sub: "Architectural panels — the language of contemporary design.",
-    accent: "#85addc",
+    accent: "#ac8cc0",
     bg: "#EEF2F7",
-    orb1: "rgba(123,158,196,0.20)",
+    orb1: "rgba(172,140,192,0.20)",
     orb2: "rgba(232,149,109,0.12)",
   },
 ];
@@ -218,9 +218,9 @@ export default function Hero() {
 
           {/* Headline — masked reveal */}
           <div className="mb-7 space-y-1">
-            <div className="overflow-hidden">
+            <div className="overflow-hidden pb-2">
               <h1
-                className="h-line1 block leading-[1.08] tracking-tight"
+                className="h-line1 block leading-[1.25] tracking-tight"
                 style={{
                   fontSize: "clamp(34px, 4.6vw, 68px)",
                   fontWeight: 500,
@@ -230,9 +230,9 @@ export default function Hero() {
                 {slide.line1}
               </h1>
             </div>
-            <div className="overflow-hidden">
+            <div className="overflow-hidden pb-2">
               <h1
-                className="h-line2 block leading-[1.08] tracking-tight"
+                className="h-line2 block leading-[1.25] tracking-tight"
                 style={{
                   fontSize: "clamp(34px, 4.6vw, 68px)",
                   fontWeight: 500,
@@ -376,7 +376,7 @@ export default function Hero() {
           >
             <div className="flex items-center gap-3">
               <div className="grid grid-cols-2 gap-[3px]">
-                {["#fabf7d","#ac8cc0","#f39ba2","#85addc"].map((c) => (
+                {["#85addc","#ac8cc0","#f39ba2","#fabf7d"].map((c) => (
                   <span key={c} className="block w-3 h-3 rounded-full" style={{ backgroundColor: c }} />
                 ))}
               </div>

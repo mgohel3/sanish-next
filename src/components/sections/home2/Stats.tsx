@@ -12,7 +12,7 @@ const STATS = [
 export default function Home2Stats() {
   return (
     <section style={{ backgroundColor: BG }}>
-      <div className="site-container py-16 md:py-20">
+      <div className="site-container home-section--compact">
         <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-white/10"
           style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: "24px", overflow: "hidden" }}>
           {STATS.map((s) => (
