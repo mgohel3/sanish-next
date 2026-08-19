@@ -3,33 +3,61 @@
 import { useRef, useState, useEffect, useCallback, type MouseEvent } from "react";
 
 const collections = [
-  { name: "S'Shades",    sub: "Premium Finishes",  category: "Laminates",  image: "/assets/img/material/shadesCollection.png",         accent: "#fabf7d" },
-  { name: "Thre3",       sub: "Exclusive Designs",  category: "Laminates",  image: "/assets/img/material/threeCollection.jpg",          accent: "#fabf7d" },
-  { name: "Fluted",      sub: "Textured Panels",    category: "Louvers",    image: "/assets/img/material/flutedCollection.webp",        accent: "#fabf7d" },
-  { name: "0.8mm",       sub: "Durable Series",     category: "ASA Sheets", image: "/assets/img/material/08mmCollection.webp",          accent: "#fabf7d" },
-  { name: "Cool Colour", sub: "Modern Shades",      category: "Laminates",  image: "/assets/img/material/cool_colour_Collection.webp",  accent: "#fabf7d" },
+  { name: "S'Shades", sub: "Premium Finishes", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Shades Collection.jpg", accent: "#fabf7d" },
+  { name: "Thre3", sub: "Exclusive Designs", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Thre3 Collection.jpg", accent: "#fabf7d" },
+  { name: "Perspective V4", sub: "Durable Series", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/Our Collections_0.8mm Collection.jpg", accent: "#fabf7d" },
+  { name: "Thermo", sub: "Weather Resistant", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/thermocollection.jpg", accent: "#fabf7d" },
+  // TODO: temporary placeholder — swap for a real Louvers collection card/image once one exists.
+  { name: "Cool Colour", sub: "Modern Shades", category: "Louvers", image: "/assets/img/material/15-08-2026/Our Collections_Cool Colour Collection.jpg", accent: "#fabf7d" },
 ];
 
-const filters = ["Laminates", "Louvers", "ASA Sheets"];
+// Louvers filter tab hidden for now — re-enable once a real Louvers collection exists.
+const filters = ["Laminates", "Thermo Laminates"];
 
 const AUTOPLAY_DELAY = 4000;
+const SCROLL_DURATION = 350; // ms — native "smooth" scroll drags on for large jumps, so we animate it ourselves
+
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+// A clone of the first card is appended after the last one so autoplay can
+// keep scrolling forward past the end instead of snapping backward; once the
+// clone is reached we jump the scroll position back to the real first card
+// with no animation, invisibly, since the clone looks identical.
+const displayItems = [...collections, collections[0]];
+const CLONE_IDX = collections.length;
 
 export default function HorizontalShowcase() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const scrollAnimRef = useRef<number | null>(null);
 
   // Tracks an in-progress mouse drag so a real drag doesn't also fire a
   // card's onClick once the pointer is released.
   const dragRef = useRef({ isDown: false, startX: 0, startScrollLeft: 0, moved: false });
 
-  /* ── Native scroll — this is the actual scrollable element now, so
-     there's no custom transform/offset math left to drift out of sync
-     with what's on screen (that was the root cause of the cropping). ── */
+  /* ── Fixed-duration eased scroll — native scroll-behavior:smooth has no
+     speed control and visibly drags on for bigger jumps, so we animate the
+     scrollLeft ourselves at a fixed, snappy duration regardless of distance. ── */
   const scrollToCard = useCallback((idx: number) => {
     const track = trackRef.current;
     const card = track?.children[idx] as HTMLElement | undefined;
     if (!track || !card) return;
-    track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: "smooth" });
+    if (scrollAnimRef.current !== null) cancelAnimationFrame(scrollAnimRef.current);
+
+    const start = track.scrollLeft;
+    const target = card.offsetLeft - track.offsetLeft;
+    const distance = target - start;
+    if (distance === 0) return;
+
+    const startTime = performance.now();
+    const step = (now: number) => {
+      const t = Math.min((now - startTime) / SCROLL_DURATION, 1);
+      track.scrollLeft = start + distance * easeOutCubic(t);
+      scrollAnimRef.current = t < 1 ? requestAnimationFrame(step) : null;
+    };
+    scrollAnimRef.current = requestAnimationFrame(step);
   }, []);
 
   const goTo = (idx: number) => {
@@ -49,23 +77,41 @@ export default function HorizontalShowcase() {
     goTo(next.i);
   };
 
-  /* ── Autoplay — loops through cards, resets on any interaction ── */
+  /* ── Autoplay — always steps forward, including past the last real card
+     onto its clone, so the loop reads as continuous motion instead of a
+     backward snap to card 1. ── */
   useEffect(() => {
     const id = setTimeout(() => {
-      const next = (activeIdx + 1) % collections.length;
+      const next = activeIdx + 1;
       setActiveIdx(next);
       scrollToCard(next);
     }, AUTOPLAY_DELAY);
     return () => clearTimeout(id);
   }, [activeIdx, scrollToCard]);
 
+  /* ── Once the clone card is reached, silently snap back to the real
+     first card after the scroll animation finishes — same pixels on
+     screen, so the reset is invisible. ── */
+  useEffect(() => {
+    if (activeIdx !== CLONE_IDX) return;
+    const id = setTimeout(() => {
+      const track = trackRef.current;
+      const firstCard = track?.children[0] as HTMLElement | undefined;
+      if (track && firstCard) {
+        track.scrollLeft = firstCard.offsetLeft - track.offsetLeft;
+      }
+      setActiveIdx(0);
+    }, SCROLL_DURATION);
+    return () => clearTimeout(id);
+  }, [activeIdx]);
+
   /* ── Click-and-drag scrolling (desktop) — touch swipe already works
      natively on the overflow-x:auto track, no extra code needed there. ── */
   const onMouseDown = (e: MouseEvent) => {
     const track = trackRef.current;
     if (!track) return;
+    if (scrollAnimRef.current !== null) cancelAnimationFrame(scrollAnimRef.current);
     dragRef.current = { isDown: true, startX: e.pageX, startScrollLeft: track.scrollLeft, moved: false };
-    track.style.scrollBehavior = "auto";
   };
   const onMouseMove = (e: MouseEvent) => {
     const track = trackRef.current;
@@ -76,14 +122,12 @@ export default function HorizontalShowcase() {
     track.scrollLeft = drag.startScrollLeft - dx;
   };
   const endDrag = () => {
-    const track = trackRef.current;
     dragRef.current.isDown = false;
-    if (track) track.style.scrollBehavior = "smooth";
   };
 
   const handleCardClick = (i: number) => {
     if (dragRef.current.moved) return; // this was a drag, not a click
-    goTo(i);
+    goTo(i === CLONE_IDX ? 0 : i);
   };
 
   return (
@@ -135,7 +179,6 @@ export default function HorizontalShowcase() {
           style={{
             padding: "16px",
             cursor: "grab",
-            scrollBehavior: "smooth",
             WebkitOverflowScrolling: "touch",
           }}
           onMouseDown={onMouseDown}
@@ -143,23 +186,31 @@ export default function HorizontalShowcase() {
           onMouseUp={endDrag}
           onMouseLeave={endDrag}
         >
-          {collections.map((item, i) => (
+          {displayItems.map((item, i) => (
             <div
-              key={item.name}
+              key={`${item.name}-${i}`}
               onClick={() => handleCardClick(i)}
-              className={`flex-shrink-0 relative cursor-pointer select-none transition-transform duration-400 hover:scale-[1.02] ${i === activeIdx ? "scale-[1.03]" : ""}`}
+              className={`group flex-shrink-0 relative cursor-pointer select-none ${i === activeIdx ? "scale-[1.03]" : ""}`}
               style={{
                 width: "clamp(240px, 28vw, 360px)",
-                height: "clamp(300px, 46vh, 420px)",
+                aspectRatio: "4 / 5",
                 borderRadius: "24px",
                 overflow: "hidden",
+                backgroundColor: "#12131a",
                 boxShadow: i === activeIdx
                   ? "0 8px 20px rgba(250,191,125,0.28), 0 28px 64px rgba(250,191,125,0.22)"
                   : "0 20px 48px rgba(30,30,46,0.08)",
-                transition: "box-shadow 0.4s ease",
+                transition: "box-shadow 0.4s ease, transform 0.4s ease",
               }}
             >
-              <img src={item.image} alt={item.name} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+              {/* Card locked to the source images' native 4:5 ratio, so object-cover
+                  fills it completely with no letterboxing and no meaningful cropping. */}
+              <img
+                src={item.image}
+                alt={item.name}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                draggable={false}
+              />
               <div
                 className="absolute inset-0"
                 style={{ background: "linear-gradient(to top, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.2) 50%, transparent 100%)" }}

@@ -11,7 +11,7 @@ const COLLECTION_SLUG_MAP: Record<string, string> = {
   sshades:     "S'Shades",
   thre3:       "Thre3",
   "cool-colour": "Cool Colour",
-  "08mm":      "0.8mm",
+  "08mm":      "Perspective V4",
   fluted:      "Fluted",
   perspective: "All",
 };
@@ -20,7 +20,7 @@ const COLLECTION_TITLE_MAP: Record<string, string> = {
   sshades:     "S'Shades Premium Collection",
   thre3:       "Thre3 Collection",
   "cool-colour": "Cool Colour Collection",
-  "08mm":      "0.8mm Series",
+  "08mm":      "Perspective V4",
   fluted:      "Fluted Collection",
   perspective: "Sanish Perspective Collection",
 };
@@ -278,7 +278,7 @@ export default function ProductsClient() {
                     <li key={c}>
                       <button onClick={() => applyCollection(c)} className="w-full text-left px-4 py-2.5 rounded-xl text-[13px] transition-all duration-200"
                         style={{
-                          backgroundColor: activeCollection === c && !activeDesign ? "#ac8cc0" : "transparent",
+                          backgroundColor: activeCollection === c && !activeDesign ? "#85addc" : "transparent",
                           color: activeCollection === c && !activeDesign ? "white" : "#6B6B80",
                           fontWeight: activeCollection === c && !activeDesign ? 600 : 400,
                           fontFamily: "var(--font-jakarta)",
@@ -297,8 +297,8 @@ export default function ProductsClient() {
                     <li key={f}>
                       <button onClick={() => applyFinish(f)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
                         style={{
-                          backgroundColor: activeFinish === f && !activeDesign ? "rgba(123,158,196,0.12)" : "transparent",
-                          color: activeFinish === f && !activeDesign ? "#ac8cc0" : "#6B6B80",
+                          backgroundColor: activeFinish === f && !activeDesign ? "rgba(133,173,220,0.12)" : "transparent",
+                          color: activeFinish === f && !activeDesign ? "#85addc" : "#6B6B80",
                           fontWeight: activeFinish === f && !activeDesign ? 600 : 400,
                           fontFamily: "var(--font-jakarta)",
                         }}>
@@ -310,9 +310,9 @@ export default function ProductsClient() {
               </div>
 
               {activeDesign && (
-                <div className="px-4 py-3 rounded-xl text-[13px]" style={{ backgroundColor: "rgba(123,158,196,0.08)", border: "1px solid rgba(123,158,196,0.2)" }}>
+                <div className="px-4 py-3 rounded-xl text-[13px]" style={{ backgroundColor: "rgba(133,173,220,0.08)", border: "1px solid rgba(133,173,220,0.2)" }}>
                   <div className="text-[10px] uppercase tracking-[0.12em] font-semibold mb-1" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Active filter</div>
-                  <div className="font-semibold" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>
+                  <div className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
                     {DESIGN_TITLE_MAP[activeDesign!] ?? activeDesign}
                   </div>
                   <button onClick={clearAll} className="text-[11px] mt-1 hover:underline" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Clear ×</button>
@@ -383,7 +383,7 @@ export default function ProductsClient() {
             ) : (
               <div className="py-20 text-center border border-dashed rounded-2xl" style={{ borderColor: "rgba(30,30,46,0.12)" }}>
                 <p className="text-[15px] mb-4" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>No surfaces match your filters.</p>
-                <button onClick={clearAll} className="text-[13px] font-semibold transition-opacity hover:opacity-70" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>
+                <button onClick={clearAll} className="text-[13px] font-semibold transition-opacity hover:opacity-70" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
                   Clear all filters
                 </button>
               </div>

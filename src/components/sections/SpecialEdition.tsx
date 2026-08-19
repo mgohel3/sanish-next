@@ -42,16 +42,16 @@ export default function SpecialEdition() {
                 </span>
               ))}
             </div>
-            <Link href="/laminates" className="btn-pill btn-pill-primary inline-flex">
+            <Link href="/collection" className="btn-pill btn-pill-primary inline-flex">
               Explore Range
             </Link>
           </div>
 
           {/* Right — Single parallax image */}
-          <div className="relative overflow-hidden lg:order-1" style={{ borderRadius: "28px", height: "clamp(390px, 42vw, 520px)" }}>
-            <div ref={imgRef} className="absolute inset-0 w-full h-[110%]" style={{ top: "-5%" }}>
+          <div className="relative overflow-hidden lg:order-1" style={{ borderRadius: "28px", aspectRatio: "3 / 2", transform: "translateZ(0)" }}>
+            <div ref={imgRef} className="absolute inset-0 w-[110%] h-[110%]" style={{ top: "-5%", left: "-5%" }}>
               <img
-                src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200"
+                src="/assets/img/material/15-08-2026/Special%20Edition_Banner.jpg"
                 alt="Special Edition Panel"
                 className="w-full h-full object-cover"
               />

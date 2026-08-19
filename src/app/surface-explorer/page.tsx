@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-// Redirect old surface-explorer URL to /products
+// Redirect old surface-explorer URL to /collection
 export default function SurfaceExplorerRedirect() {
-  redirect("/products");
+  redirect("/collection");
 }

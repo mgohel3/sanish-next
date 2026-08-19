@@ -106,7 +106,7 @@ export default function Home2Applications() {
                   </span>
                 ))}
               </div>
-              <Link href="/products"
+              <Link href="/collection"
                 className="flex items-center gap-2 text-[13px] font-medium w-fit"
                 style={{ color: "#C4916A", fontFamily: "var(--font-heebo)" }}>
                 Browse Suitable Designs

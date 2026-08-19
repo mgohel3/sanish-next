@@ -2,13 +2,13 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
-import CollectionTiles from "@/components/CollectionTiles";
-import Link from "next/link";
+import CollectionShowcase from "@/components/CollectionShowcase";
+import CollectionInquiryForm from "@/components/CollectionInquiryForm";
 
 export const metadata = {
   title: "Collections | Sanish Laminates",
   description:
-    "Explore the full Sanish Laminates collection — S'Shades, Thre3, Cool Colour, 0.8mm Series and Fluted. Premium decorative surface solutions for every interior.",
+    "Explore the full Sanish Laminates collection — S'Shades, Thre3, Cool Colour, Perspective V4 and Thermo Laminates. Premium decorative surface solutions for every interior.",
 };
 
 export default function CollectionPage() {
@@ -19,7 +19,7 @@ export default function CollectionPage() {
       <PageHero
         eyebrow="Our Collections"
         title="Surface Design, Elevated"
-        image="https://images.unsplash.com/photo-1618219944342-824e40a13285?q=80&w=2000"
+        image="/assets/img/collections-banner.jpg"
         description="Five distinct collections crafted for architects, designers and discerning homeowners who believe every surface tells a story."
       />
 
@@ -39,16 +39,16 @@ export default function CollectionPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { val: "500+",   label: "Designs",          accent: "#85addc" },
-                { val: "5",      label: "Collections",      accent: "#ac8cc0" },
-                { val: "25+",    label: "Years Experience", accent: "#f39ba2" },
-                { val: "IS:848", label: "Certified",        accent: "#fabf7d" },
+                { title: "Extensive Range",   desc: "Designs across every finish and texture", accent: "#85addc" },
+                { title: "Curated Collections", desc: "Distinct lines for every design language", accent: "#ac8cc0" },
+                { title: "Proven Expertise",   desc: "Decades of manufacturing excellence", accent: "#f39ba2" },
+                { title: "Certified Quality",  desc: "Compliant with IS:848 safety standards", accent: "#fabf7d" },
               ].map((s) => (
-                <div key={s.label} className="rounded-[20px] p-6 border border-[var(--color-border-subtle)]"
+                <div key={s.title} className="rounded-[20px] p-6 border border-[var(--color-border-subtle)]"
                   style={{ backgroundColor: `${s.accent}0d` }}>
-                  <div className="font-serif text-[32px] font-bold mb-1" style={{ color: s.accent }}>{s.val}</div>
-                  <div className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)]"
-                    style={{ fontFamily: "var(--font-jakarta)" }}>{s.label}</div>
+                  <div className="font-serif text-[19px] font-bold mb-1.5 leading-[1.25]" style={{ color: s.accent }}>{s.title}</div>
+                  <div className="text-[13px] leading-[1.5] text-[var(--text-secondary)]"
+                    style={{ fontFamily: "var(--font-jakarta)" }}>{s.desc}</div>
                 </div>
               ))}
             </div>
@@ -59,12 +59,12 @@ export default function CollectionPage() {
       {/* ── Collection Tiles ── */}
       <section className="home-section--compact bg-[var(--bg-secondary)]">
         <div className="site-container">
-          <div className="text-center mb-12">
+          <div className="section-header">
             <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]">
               Our Collections
             </h2>
           </div>
-          <CollectionTiles />
+          <CollectionShowcase />
         </div>
       </section>
 
@@ -111,81 +111,5 @@ export default function CollectionPage() {
 
       <Footer />
     </main>
-  );
-}
-
-function CollectionInquiryForm() {
-  return (
-    <form
-      action="mailto:info@sanishlaminate.com"
-      method="get"
-      encType="text/plain"
-      className="space-y-5"
-    >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
-            style={{ fontFamily: "var(--font-jakarta)" }}>Full Name</label>
-          <input type="text" name="name" placeholder="Your full name" required
-            className="w-full px-4 py-3 rounded-xl border border-[var(--color-border-subtle)] bg-white text-[14px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-blue)] transition-colors"
-            style={{ fontFamily: "var(--font-jakarta)" }} />
-        </div>
-        <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
-            style={{ fontFamily: "var(--font-jakarta)" }}>Email Address</label>
-          <input type="email" name="email" placeholder="you@example.com" required
-            className="w-full px-4 py-3 rounded-xl border border-[var(--color-border-subtle)] bg-white text-[14px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-blue)] transition-colors"
-            style={{ fontFamily: "var(--font-jakarta)" }} />
-        </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
-            style={{ fontFamily: "var(--font-jakarta)" }}>Contact Number</label>
-          <input type="tel" name="phone" placeholder="+91 00000 00000"
-            className="w-full px-4 py-3 rounded-xl border border-[var(--color-border-subtle)] bg-white text-[14px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-blue)] transition-colors"
-            style={{ fontFamily: "var(--font-jakarta)" }} />
-        </div>
-        <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
-            style={{ fontFamily: "var(--font-jakarta)" }}>Select Collection</label>
-          <select name="collection"
-            className="w-full px-4 py-3 rounded-xl border border-[var(--color-border-subtle)] bg-white text-[14px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-blue)] transition-colors appearance-none cursor-pointer"
-            style={{ fontFamily: "var(--font-jakarta)" }}>
-            <option value="">Choose a collection</option>
-            <option value="sshades">S&apos;Shades Premium</option>
-            <option value="thre3">Thre3</option>
-            <option value="cool-colour">Cool Colour</option>
-            <option value="08mm">0.8mm Series</option>
-            <option value="fluted">Fluted</option>
-          </select>
-        </div>
-      </div>
-      <div>
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
-          style={{ fontFamily: "var(--font-jakarta)" }}>Enquiry Purpose</label>
-        <select name="purpose"
-          className="w-full px-4 py-3 rounded-xl border border-[var(--color-border-subtle)] bg-white text-[14px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-blue)] transition-colors appearance-none cursor-pointer"
-          style={{ fontFamily: "var(--font-jakarta)" }}>
-          <option value="">Select purpose</option>
-          <option value="commercial">Commercial Project</option>
-          <option value="residential">Residential Project</option>
-          <option value="architectural">Architectural Specification</option>
-          <option value="distributor">Distributor / Dealer Inquiry</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
-          style={{ fontFamily: "var(--font-jakarta)" }}>Message</label>
-        <textarea name="message" rows={4} placeholder="Tell us about your project…"
-          className="w-full px-4 py-3 rounded-xl border border-[var(--color-border-subtle)] bg-white text-[14px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-blue)] transition-colors resize-none"
-          style={{ fontFamily: "var(--font-jakarta)" }} />
-      </div>
-      <button type="submit"
-        className="w-full py-3.5 rounded-full text-white text-[12px] font-semibold uppercase tracking-[0.1em] transition-all duration-300 hover:-translate-y-[2px]"
-        style={{ backgroundColor: "var(--accent-blue)", fontFamily: "var(--font-jakarta)", boxShadow: "0 8px 24px rgba(133,173,220,0.35)" }}>
-        Send Inquiry
-      </button>
-    </form>
   );
 }

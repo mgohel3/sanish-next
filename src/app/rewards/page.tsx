@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import Link from "next/link";
+import StoreBadges from "@/components/ui/StoreBadges";
 
 export const metadata = {
   title: "Rewards | Sanish Laminates",
@@ -113,10 +114,6 @@ const FAQS = [
   },
 ];
 
-const PLAY_STORE_URL =
-  "https://play.google.com/store/apps/details?id=com.sapphirewoods.loyalty&hl=en_IN";
-const APP_STORE_URL = "https://apps.apple.com/us/app/srewards/id6758007860";
-
 export default function RewardsPage() {
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
@@ -125,7 +122,7 @@ export default function RewardsPage() {
       <PageHero
         eyebrow="Carpenter Rewards"
         title="Earn Rewards on Every Installation"
-        image="https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=2000"
+        image="/assets/img/rewards-banner.jpg"
         description="The Sanish Rewards programme is built for professional carpenters. Install more, earn more — and redeem rewards that matter to you."
       />
 
@@ -146,52 +143,7 @@ export default function RewardsPage() {
                 Join thousands of carpenters across India who are already earning with Sanish. Simply
                 download the app, scan packs and watch your rewards grow.
               </p>
-              <div className="flex flex-wrap items-center gap-4">
-                <a
-                  href={PLAY_STORE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-6 py-4 transition-all duration-300 hover:-translate-y-[2px]"
-                  style={{
-                    backgroundColor: "#0b0c0e",
-                    borderRadius: "999px",
-                    textDecoration: "none",
-                    boxShadow: "0 8px 28px rgba(11,12,14,0.22)",
-                  }}
-                >
-                  <svg width="22" height="24" viewBox="0 0 20 22" fill="none">
-                    <path d="M0.5 21.5L11 11L0.5 0.5C0.2 0.8 0 1.2 0 1.7V20.3C0 20.8 0.2 21.2 0.5 21.5Z" fill="#EA4335"/>
-                    <path d="M0.5 0.5L11 11L15.5 6.5L2 0C1.4-0.3 0.8-0.1 0.5 0.5Z" fill="#4FC3F7"/>
-                    <path d="M0.5 21.5L11 11L15.5 15.5L2 22C1.4 22.3 0.8 22.1 0.5 21.5Z" fill="#4CAF50"/>
-                    <path d="M19 12.9L15.5 15.5L11 11L15.5 6.5L19 9.1C19.9 9.6 20 10.4 20 11C20 11.6 19.9 12.4 19 12.9Z" fill="#FFCA28"/>
-                  </svg>
-                  <div>
-                    <div className="text-white leading-none" style={{ fontSize: "9px", letterSpacing: "0.08em", opacity: 0.7 }}>GET IT ON</div>
-                    <div className="text-white font-semibold leading-tight" style={{ fontSize: "16px" }}>Google Play</div>
-                  </div>
-                </a>
-
-                <a
-                  href={APP_STORE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-6 py-4 transition-all duration-300 hover:-translate-y-[2px]"
-                  style={{
-                    backgroundColor: "#0b0c0e",
-                    borderRadius: "999px",
-                    textDecoration: "none",
-                    boxShadow: "0 8px 28px rgba(11,12,14,0.22)",
-                  }}
-                >
-                  <svg width="20" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.41-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.113c.83-1.012 1.39-2.42 1.234-3.821-1.196.052-2.638.796-3.494 1.807-.767.9-1.442 2.35-1.26 3.71 1.338.104 2.687-.68 3.52-1.696z" />
-                  </svg>
-                  <div>
-                    <div className="text-white leading-none" style={{ fontSize: "9px", letterSpacing: "0.08em", opacity: 0.7 }}>Download on the</div>
-                    <div className="text-white font-semibold leading-tight" style={{ fontSize: "16px" }}>App Store</div>
-                  </div>
-                </a>
-              </div>
+              <StoreBadges size="md" />
             </div>
 
             {/* Visual card */}
@@ -366,50 +318,7 @@ export default function RewardsPage() {
           </p>
 
           <div className="inline-flex flex-wrap items-center justify-center gap-5">
-            <a
-              href={PLAY_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-4 px-8 py-5 transition-all duration-300 hover:-translate-y-[2px] hover:opacity-90"
-              style={{
-                backgroundColor: "white",
-                borderRadius: "999px",
-                textDecoration: "none",
-                boxShadow: "0 12px 40px rgba(0,0,0,0.30)",
-              }}
-            >
-              <svg width="26" height="28" viewBox="0 0 20 22" fill="none">
-                <path d="M0.5 21.5L11 11L0.5 0.5C0.2 0.8 0 1.2 0 1.7V20.3C0 20.8 0.2 21.2 0.5 21.5Z" fill="#EA4335"/>
-                <path d="M0.5 0.5L11 11L15.5 6.5L2 0C1.4-0.3 0.8-0.1 0.5 0.5Z" fill="#4FC3F7"/>
-                <path d="M0.5 21.5L11 11L15.5 15.5L2 22C1.4 22.3 0.8 22.1 0.5 21.5Z" fill="#4CAF50"/>
-                <path d="M19 12.9L15.5 15.5L11 11L15.5 6.5L19 9.1C19.9 9.6 20 10.4 20 11C20 11.6 19.9 12.4 19 12.9Z" fill="#FFCA28"/>
-              </svg>
-              <div className="text-left">
-                <div className="text-[10px] uppercase tracking-[0.1em] text-black/50 leading-none mb-0.5">GET IT ON</div>
-                <div className="text-[18px] font-bold text-[#1E1E2E] leading-tight">Google Play</div>
-              </div>
-            </a>
-
-            <a
-              href={APP_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-4 px-8 py-5 transition-all duration-300 hover:-translate-y-[2px] hover:opacity-90"
-              style={{
-                backgroundColor: "white",
-                borderRadius: "999px",
-                textDecoration: "none",
-                boxShadow: "0 12px 40px rgba(0,0,0,0.30)",
-              }}
-            >
-              <svg width="24" height="28" viewBox="0 0 24 24" fill="#1E1E2E">
-                <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.41-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.113c.83-1.012 1.39-2.42 1.234-3.821-1.196.052-2.638.796-3.494 1.807-.767.9-1.442 2.35-1.26 3.71 1.338.104 2.687-.68 3.52-1.696z" />
-              </svg>
-              <div className="text-left">
-                <div className="text-[10px] uppercase tracking-[0.1em] text-black/50 leading-none mb-0.5">Download on the</div>
-                <div className="text-[18px] font-bold text-[#1E1E2E] leading-tight">App Store</div>
-              </div>
-            </a>
+            <StoreBadges size="lg" variant="light" />
           </div>
 
           <div className="mt-10 flex items-center justify-center gap-8 flex-wrap">

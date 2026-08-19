@@ -52,7 +52,7 @@ export default function Blog() {
               Editorial
             </h2>
           </div>
-          <a href="#" className="btn-pill btn-pill-ghost flex-shrink-0">
+          <a href="#" className="btn-pill btn-pill-ghost flex-shrink-0" style={{ textTransform: "none" }}>
             View All Articles →
           </a>
         </div>

@@ -67,10 +67,10 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   map_lng: "77.1227317",
   social: {
     instagram: "https://www.instagram.com/sanishlaminate/",
-    facebook: "https://www.facebook.com/p/Sanish-Laminate-100053535313070/",
-    youtube: "",
-    pinterest: "https://in.pinterest.com/sanishlaminate2026/",
-    linkedin: "https://www.linkedin.com/company/sanish-laminate",
+    facebook: "https://www.facebook.com/sanishlaminate/",
+    youtube: "https://www.youtube.com/@SanishLaminate",
+    pinterest: "",
+    linkedin: "https://www.linkedin.com/company/sanish-laminate-company/",
     twitter: "",
     whatsapp: "+917027777032",
   },
@@ -95,7 +95,15 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       next: { revalidate: 300 }, // cache 5 min, revalidate in background
     });
     if (!res.ok) return DEFAULT_SITE_SETTINGS;
-    return (await res.json()) as SiteSettings;
+    const fetched = (await res.json()) as SiteSettings;
+    // The DB row can exist with social links left blank (not yet filled in
+    // via the dashboard) — fall back to defaults per-platform rather than
+    // showing dead "#" links.
+    const social = { ...DEFAULT_SITE_SETTINGS.social };
+    for (const key of Object.keys(social) as (keyof SiteSettingsSocial)[]) {
+      if (fetched.social?.[key]) social[key] = fetched.social[key];
+    }
+    return { ...fetched, social };
   } catch {
     return DEFAULT_SITE_SETTINGS;
   }

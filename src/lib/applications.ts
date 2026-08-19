@@ -13,6 +13,7 @@ export type ApplicationProject = {
   area?: string;
   productsUsed: {
     name: string;
+    code: string;
     collection: string;
     finish: string;
     usage: string;
@@ -36,8 +37,8 @@ export const applications: ApplicationProject[] = [
     designer: "Studio Forma",
     area: "320 sq ft",
     productsUsed: [
-      { name: "S'Shades Pearl White", collection: "S'Shades", finish: "High Gloss", usage: "Upper and lower cabinet shutters", productSlug: "sshades-pearl-white" },
-      { name: "Cool Colour Linen Grey", collection: "Cool Colour", finish: "Ultra Matte", usage: "Island countertop fascia and open shelving", productSlug: "cool-colour-linen-grey" },
+      { name: "S'Shades Pearl White", code: "High Gloss 1.0mm - 3001 HG", collection: "S'Shades", finish: "High Gloss", usage: "Upper and lower cabinet shutters", productSlug: "sshades-pearl-white" },
+      { name: "Cool Colour Linen Grey", code: "Ultra Matte 0.8mm - 3002 UM", collection: "Cool Colour", finish: "Ultra Matte", usage: "Island countertop fascia and open shelving", productSlug: "cool-colour-linen-grey" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=1400",
@@ -59,8 +60,8 @@ export const applications: ApplicationProject[] = [
     designer: "Axis Design Co.",
     area: "650 sq ft",
     productsUsed: [
-      { name: "Thre3 Slate Noir", collection: "Thre3", finish: "Textured Stone", usage: "Feature wall behind display shelves and cash counter", productSlug: "thre3-slate-noir" },
-      { name: "S'Shades Warm White", collection: "S'Shades", finish: "Matte", usage: "Ceiling coves and side wall panels", productSlug: "sshades-warm-white" },
+      { name: "Thre3 Slate Noir", code: "Textured Stone 1.0mm - 3003 TS", collection: "Thre3", finish: "Textured Stone", usage: "Feature wall behind display shelves and cash counter", productSlug: "thre3-slate-noir" },
+      { name: "S'Shades Warm White", code: "Matte 1.0mm - 3004 MT", collection: "S'Shades", finish: "Matte", usage: "Ceiling coves and side wall panels", productSlug: "sshades-warm-white" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1400",
@@ -82,8 +83,8 @@ export const applications: ApplicationProject[] = [
     designer: "Workhaus Studio",
     area: "4,000 sq ft",
     productsUsed: [
-      { name: "Cool Colour Charcoal", collection: "Cool Colour", finish: "Ultra Matte", usage: "Workstation panel cladding and reception desk", productSlug: "cool-colour-charcoal" },
-      { name: "0.8mm Warm White", collection: "0.8mm Series", finish: "Matte", usage: "Break-room cabinets and storage walls", productSlug: "08mm-warm-white" },
+      { name: "Cool Colour Charcoal", code: "Ultra Matte 0.8mm - 3005 UM", collection: "Cool Colour", finish: "Ultra Matte", usage: "Workstation panel cladding and reception desk", productSlug: "cool-colour-charcoal" },
+      { name: "0.8mm Warm White", code: "Matte 0.8mm - 3006 MT", collection: "Perspective V4", finish: "Matte", usage: "Break-room cabinets and storage walls", productSlug: "08mm-warm-white" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1400",
@@ -105,8 +106,8 @@ export const applications: ApplicationProject[] = [
     designer: "De Sousa Hughes",
     area: "800 sq ft",
     productsUsed: [
-      { name: "S'Shades Acrylic Pearl", collection: "S'Shades", finish: "High Gloss", usage: "TV unit shutters and display wall niches", productSlug: "sshades-acrylic-pearl" },
-      { name: "Thre3 Warm Linen", collection: "Thre3", finish: "Suede", usage: "Sofa backdrop wall cladding", productSlug: "thre3-warm-linen" },
+      { name: "S'Shades Acrylic Pearl", code: "High Gloss 1.0mm - 3007 HG", collection: "S'Shades", finish: "High Gloss", usage: "TV unit shutters and display wall niches", productSlug: "sshades-acrylic-pearl" },
+      { name: "Thre3 Warm Linen", code: "Suede 1.0mm - 3008 SU", collection: "Thre3", finish: "Suede", usage: "Sofa backdrop wall cladding", productSlug: "thre3-warm-linen" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=1400",
@@ -118,7 +119,7 @@ export const applications: ApplicationProject[] = [
   {
     slug: "boutique-hotel-metallic",
     label: "Boutique Hotel",
-    category: "Commercial",
+    category: "Hospitality",
     finish: "Metallic Bronze",
     src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1400",
     tall: true,
@@ -128,8 +129,8 @@ export const applications: ApplicationProject[] = [
     designer: "Studio Aapro",
     area: "12,000 sq ft",
     productsUsed: [
-      { name: "S'Shades Oxidised Brass", collection: "S'Shades", finish: "Metallic", usage: "Corridor accent wall panels and headboards", productSlug: "oxidized-brass" },
-      { name: "Thre3 Terracotta Matte", collection: "Thre3", finish: "Matte", usage: "Wardrobe and minibar unit fronts", productSlug: "thre3-terracotta" },
+      { name: "S'Shades Oxidised Brass", code: "Metallic 1.0mm - 3009 ME", collection: "S'Shades", finish: "Metallic", usage: "Corridor accent wall panels and headboards", productSlug: "oxidized-brass" },
+      { name: "Thre3 Terracotta Matte", code: "Matte 1.0mm - 3010 MT", collection: "Thre3", finish: "Matte", usage: "Wardrobe and minibar unit fronts", productSlug: "thre3-terracotta" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1582131503261-fca1d1c0589f?q=80&w=1400",
@@ -151,8 +152,8 @@ export const applications: ApplicationProject[] = [
     designer: "Patel & Rao Interiors",
     area: "450 sq ft",
     productsUsed: [
-      { name: "Thre3 Suede Greige", collection: "Thre3", finish: "Suede", usage: "All cabinet fronts, including pantry unit", productSlug: "thre3-suede-greige" },
-      { name: "0.8mm Pale Sage", collection: "0.8mm Series", finish: "Matte", usage: "Island base fascia and overhead storage", productSlug: "08mm-pale-sage" },
+      { name: "Thre3 Suede Greige", code: "Suede 1.0mm - 3011 SU", collection: "Thre3", finish: "Suede", usage: "All cabinet fronts, including pantry unit", productSlug: "thre3-suede-greige" },
+      { name: "0.8mm Pale Sage", code: "Matte 0.8mm - 3012 MT", collection: "Perspective V4", finish: "Matte", usage: "Island base fascia and overhead storage", productSlug: "08mm-pale-sage" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1400",
@@ -160,6 +161,52 @@ export const applications: ApplicationProject[] = [
       "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=900",
     ],
     highlights: ["Soft-touch Suede texture", "Steam and humidity resistant", "Seamless colour match across 68 shutters"],
+  },
+  {
+    slug: "coastal-kitchen-matte",
+    label: "Coastal Kitchen",
+    category: "Kitchens",
+    finish: "Sea Salt Matte",
+    src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=80&w=1400",
+    tall: false,
+    description: "A holiday home kitchen in Goa called for a breezy, coastal palette that could stand up to humidity and salt air. Sea Salt Matte laminates on the cabinetry bring a soft, weathered-wood look without any of the maintenance real timber would demand this close to the coast.",
+    location: "Candolim, Goa",
+    year: "2025",
+    designer: "Coastline Interiors",
+    area: "280 sq ft",
+    productsUsed: [
+      { name: "0.8mm Pale Sage", code: "Matte 0.8mm - 3013 MT", collection: "Perspective V4", finish: "Matte", usage: "Base cabinet shutters and open shelving", productSlug: "08mm-pale-sage" },
+      { name: "S'Shades Warm White", code: "Matte 1.0mm - 3014 MT", collection: "S'Shades", finish: "Matte", usage: "Upper cabinets and window seat panelling", productSlug: "sshades-warm-white" },
+    ],
+    gallery: [
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=80&w=1400",
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=900",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=900",
+    ],
+    highlights: ["Humidity and salt-air resistant", "Soft coastal colour palette", "Low-maintenance matte surface"],
+  },
+  {
+    slug: "minimalist-kitchen-loft",
+    label: "Minimalist Loft Kitchen",
+    category: "Kitchens",
+    finish: "Concrete Grey Textured",
+    src: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=1400",
+    tall: false,
+    description: "An industrial loft conversion in Mumbai's Lower Parel called for a kitchen that felt at home against exposed brick and steel beams. Concrete Grey Textured laminates on a handle-less cabinet run keep the look pared-back and architectural.",
+    location: "Lower Parel, Mumbai",
+    year: "2024",
+    designer: "Grey Matter Studio",
+    area: "210 sq ft",
+    productsUsed: [
+      { name: "0.8mm Concrete Grey", code: "Textured 0.8mm - 3015 TX", collection: "Perspective V4", finish: "Textured", usage: "Handle-less base and wall cabinet shutters", productSlug: "08mm-concrete" },
+      { name: "Cool Colour Charcoal", code: "Ultra Matte 0.8mm - 3016 UM", collection: "Cool Colour", finish: "Ultra Matte", usage: "Kitchen peninsula and breakfast counter fascia", productSlug: "cool-colour-charcoal" },
+    ],
+    gallery: [
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=1400",
+      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=80&w=900",
+      "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=900",
+    ],
+    highlights: ["Handle-less minimalist profile", "Pairs with exposed brick and steel", "Textured surface hides daily fingerprints"],
   },
   {
     slug: "showroom-display",
@@ -174,8 +221,8 @@ export const applications: ApplicationProject[] = [
     designer: "Praxis Design Studio",
     area: "900 sq ft",
     productsUsed: [
-      { name: "S'Shades Anthracite Gloss", collection: "S'Shades", finish: "High Gloss", usage: "Feature wall, display plinths, and reception counter", productSlug: "sshades-anthracite" },
-      { name: "Cool Colour Arctic White", collection: "Cool Colour", finish: "Ultra Matte", usage: "Ceiling and secondary wall panels", productSlug: "cool-colour-arctic" },
+      { name: "S'Shades Anthracite Gloss", code: "High Gloss 1.0mm - 3017 HG", collection: "S'Shades", finish: "High Gloss", usage: "Feature wall, display plinths, and reception counter", productSlug: "sshades-anthracite" },
+      { name: "Cool Colour Arctic White", code: "Ultra Matte 0.8mm - 3018 UM", collection: "Cool Colour", finish: "Ultra Matte", usage: "Ceiling and secondary wall panels", productSlug: "cool-colour-arctic" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=1400",
@@ -197,8 +244,8 @@ export const applications: ApplicationProject[] = [
     designer: "Collective Works",
     area: "2,800 sq ft",
     productsUsed: [
-      { name: "Thre3 Walnut Natural", collection: "Thre3", finish: "Textured", usage: "Acoustic partition panels and library wall feature", productSlug: "thre3-walnut" },
-      { name: "Cool Colour Slate Grey", collection: "Cool Colour", finish: "Matte", usage: "Modular workstation surfaces", productSlug: "cool-colour-slate" },
+      { name: "Thre3 Walnut Natural", code: "Textured 1.0mm - 3019 TX", collection: "Thre3", finish: "Textured", usage: "Acoustic partition panels and library wall feature", productSlug: "thre3-walnut" },
+      { name: "Cool Colour Slate Grey", code: "Matte 0.8mm - 3020 MT", collection: "Cool Colour", finish: "Matte", usage: "Modular workstation surfaces", productSlug: "cool-colour-slate" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1400",
@@ -220,8 +267,8 @@ export const applications: ApplicationProject[] = [
     designer: "Saakaar Collective",
     area: "600 sq ft",
     productsUsed: [
-      { name: "Cool Colour Soft Linen", collection: "Cool Colour", finish: "Matte", usage: "Full-height 14-door wardrobe", productSlug: "cool-colour-soft-linen" },
-      { name: "S'Shades Ivory Satin", collection: "S'Shades", finish: "Satin", usage: "Bed headboard panel and side units", productSlug: "sshades-ivory-satin" },
+      { name: "Cool Colour Soft Linen", code: "Matte 0.8mm - 3021 MT", collection: "Cool Colour", finish: "Matte", usage: "Full-height 14-door wardrobe", productSlug: "cool-colour-soft-linen" },
+      { name: "S'Shades Ivory Satin", code: "Satin 1.0mm - 3022 ST", collection: "S'Shades", finish: "Satin", usage: "Bed headboard panel and side units", productSlug: "sshades-ivory-satin" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1604014237800-1c9102c219da?q=80&w=1400",
@@ -243,8 +290,8 @@ export const applications: ApplicationProject[] = [
     designer: "Bimal Shah Architects",
     area: "380 sq ft",
     productsUsed: [
-      { name: "Thre3 Calacatta Oro", collection: "Thre3", finish: "High Gloss", usage: "Kitchen island faces and upper cabinet shutters", productSlug: "thre3-calacatta" },
-      { name: "0.8mm Concrete Grey", collection: "0.8mm Series", finish: "Textured", usage: "Lower cabinet unit base", productSlug: "08mm-concrete" },
+      { name: "Thre3 Calacatta Oro", code: "High Gloss 1.0mm - 3023 HG", collection: "Thre3", finish: "High Gloss", usage: "Kitchen island faces and upper cabinet shutters", productSlug: "thre3-calacatta" },
+      { name: "0.8mm Concrete Grey", code: "Textured 0.8mm - 3024 TX", collection: "Perspective V4", finish: "Textured", usage: "Lower cabinet unit base", productSlug: "08mm-concrete" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1400",
@@ -256,7 +303,7 @@ export const applications: ApplicationProject[] = [
   {
     slug: "restaurant-interior-fluted",
     label: "Restaurant Interior",
-    category: "Commercial",
+    category: "Hospitality",
     finish: "Fluted Oak",
     src: "https://images.unsplash.com/photo-1582131503261-fca1d1c0589f?q=80&w=1400",
     tall: false,
@@ -266,8 +313,8 @@ export const applications: ApplicationProject[] = [
     designer: "The Third Row Studio",
     area: "1,800 sq ft",
     productsUsed: [
-      { name: "Fluted Oak Natural", collection: "Fluted", finish: "Textured", usage: "Perimeter wall panels, bar back, and column cladding", productSlug: "fluted-oak-natural" },
-      { name: "Thre3 Burnt Umber", collection: "Thre3", finish: "Matte", usage: "Banquette seating panels and host stand", productSlug: "thre3-burnt-umber" },
+      { name: "Fluted Oak Natural", code: "Textured 3.0mm - 3025 TX", collection: "Fluted", finish: "Textured", usage: "Perimeter wall panels, bar back, and column cladding", productSlug: "fluted-oak-natural" },
+      { name: "Thre3 Burnt Umber", code: "Matte 1.0mm - 3026 MT", collection: "Thre3", finish: "Matte", usage: "Banquette seating panels and host stand", productSlug: "thre3-burnt-umber" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1400",
@@ -289,8 +336,8 @@ export const applications: ApplicationProject[] = [
     designer: "Saha & Partners",
     area: "220 sq ft",
     productsUsed: [
-      { name: "Cool Colour Pure White", collection: "Cool Colour", finish: "Ultra Matte", usage: "All wardrobe shutter and drawer fronts", productSlug: "cool-colour-pure-white" },
-      { name: "0.8mm Blush Pink", collection: "0.8mm Series", finish: "Satin", usage: "Study desk and open shelf inserts", productSlug: "08mm-blush-pink" },
+      { name: "Cool Colour Pure White", code: "Ultra Matte 0.8mm - 3027 UM", collection: "Cool Colour", finish: "Ultra Matte", usage: "All wardrobe shutter and drawer fronts", productSlug: "cool-colour-pure-white" },
+      { name: "0.8mm Blush Pink", code: "Satin 0.8mm - 3028 ST", collection: "Perspective V4", finish: "Satin", usage: "Study desk and open shelf inserts", productSlug: "08mm-blush-pink" },
     ],
     gallery: [
       "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=1400",
@@ -309,4 +356,62 @@ export function getRelatedApplications(current: ApplicationProject, limit = 3): 
   return applications
     .filter((a) => a.slug !== current.slug && a.category === current.category)
     .slice(0, limit);
+}
+
+export function categorySlug(category: string): string {
+  return category.toLowerCase().replace(/\s+/g, "-");
+}
+
+export type ApplicationCategory = {
+  slug: string;
+  label: string;
+  description: string;
+  accent: string;
+  image: string;
+};
+
+export const CATEGORIES: ApplicationCategory[] = [
+  {
+    slug: "kitchens",
+    label: "Kitchens",
+    description: "From high-gloss island units to soft-touch matte cabinetry, see how Sanish surfaces bring durability and design to the heart of the home.",
+    accent: "#f39ba2",
+    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1400",
+  },
+  {
+    slug: "commercial",
+    label: "Commercial",
+    description: "Offices, co-working studios and workplaces finished in laminates built for daily wear, glare-free surfaces, and brand-aligned interiors.",
+    accent: "#85addc",
+    image: "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1400",
+  },
+  {
+    slug: "retail",
+    label: "Retail",
+    description: "Boutiques and showrooms where surface finish sets the tone — dramatic gloss, warm texture, and statement cladding.",
+    accent: "#fabf7d",
+    image: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=1400",
+  },
+  {
+    slug: "hospitality",
+    label: "Hospitality",
+    description: "Hotels and restaurants finished in Sanish laminates for warm, textured atmospheres that balance daily durability with hospitality-grade elegance.",
+    accent: "#d4a574",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1400",
+  },
+  {
+    slug: "residential",
+    label: "Residential",
+    description: "Living rooms, bedrooms and wardrobes finished with Sanish laminates for a look that feels tactile, timeless and made to last.",
+    accent: "#ac8cc0",
+    image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1400",
+  },
+];
+
+export function getCategoryBySlug(slug: string): ApplicationCategory | undefined {
+  return CATEGORIES.find((c) => c.slug === slug);
+}
+
+export function getApplicationsByCategory(categoryLabel: string): ApplicationProject[] {
+  return applications.filter((a) => a.category === categoryLabel);
 }

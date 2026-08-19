@@ -21,7 +21,7 @@ const SLIDES = [
     title:   "Where Colour Meets\nPrecision Craft",
     sub:     "Over 200 curated shades engineered for architects, designers and discerning homeowners.",
     dot:     "#85addc",
-    cta:     { label: "Explore S'Shades", href: "/products?collection=sshades" },
+    cta:     { label: "Explore S'Shades", href: "/collection" },
   },
   {
     image:   "/assets/img/material/flutedCollection.webp",
@@ -29,7 +29,7 @@ const SLIDES = [
     title:   "Texture That\nTransforms Spaces",
     sub:     "Architectural fluted panels that turn ordinary walls into design statements.",
     dot:     "#85addc",
-    cta:     { label: "View Fluted Series", href: "/products?collection=fluted" },
+    cta:     { label: "View Fluted Series", href: "/collection" },
   },
   {
     image:   "/assets/img/material/cool_colour_Collection.webp",
@@ -37,7 +37,7 @@ const SLIDES = [
     title:   "Bold. Vibrant.\nUncompromising.",
     sub:     "Cool Colour laminates designed for spaces that refuse to blend in.",
     dot:     "#85addc",
-    cta:     { label: "Discover Cool Colour", href: "/products?collection=cool-colour" },
+    cta:     { label: "Discover Cool Colour", href: "/collection" },
   },
 ];
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import IconButton from "@/components/ui/IconButton";
 
 export default function ProductGallery({
   images,
@@ -42,7 +43,7 @@ export default function ProductGallery({
             onClick={() => setActive(i)}
             className="aspect-square rounded-xl overflow-hidden transition-all duration-200"
             style={{
-              border: i === active ? "2px solid #ac8cc0" : "2px solid transparent",
+              border: i === active ? "2px solid #85addc" : "2px solid transparent",
               opacity: i === active ? 1 : 0.6,
               transform: i === active ? "scale(0.96)" : "scale(1)",
             }}
@@ -68,14 +69,16 @@ export default function ProductGallery({
             className="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
-          <button
-            className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+          <IconButton
+            variant="glass"
+            aria-label="Close"
+            className="absolute top-6 right-6"
             onClick={() => setZoomed(false)}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
-          </button>
+          </IconButton>
         </div>
       )}
     </div>

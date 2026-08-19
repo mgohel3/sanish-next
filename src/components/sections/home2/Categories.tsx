@@ -63,7 +63,7 @@ export default function Home2Categories() {
               Every Surface.<br /><em>Perfectly Finished.</em>
             </h2>
           </div>
-          <Link href="/products"
+          <Link href="/collection"
             className="flex items-center gap-2 text-[13px] font-medium shrink-0 hover:-translate-x-1 transition-transform"
             style={{ color: "#C4916A", fontFamily: "var(--font-heebo)" }}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@ export default function Home2Categories() {
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {CATEGORIES.map((cat) => (
-            <Link key={cat.name} href="/products"
+            <Link key={cat.name} href="/collection"
               className="group relative overflow-hidden block"
               style={{ borderRadius: "24px", aspectRatio: "4/3" }}>
               <img src={cat.image} alt={cat.name}

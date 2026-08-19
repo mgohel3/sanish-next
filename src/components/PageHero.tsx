@@ -10,6 +10,9 @@ type PageHeroProps = {
   description?: string;
   breadcrumb?: Crumb[];
   rightSlot?: ReactNode;
+  /** Set when `image` isn't the ~3.4:1 aspect the default crop is tuned for
+   *  (see globals.css .page-hero__image) — fills the band width-first instead. */
+  imageFill?: boolean;
 };
 
 export default function PageHero({
@@ -18,10 +21,15 @@ export default function PageHero({
   description,
   breadcrumb,
   rightSlot,
+  imageFill,
 }: PageHeroProps) {
   return (
     <section className="page-hero">
-      <img src={image} alt="" className="page-hero__image" />
+      <img
+        src={image}
+        alt=""
+        className={imageFill ? "page-hero__image page-hero__image--fill" : "page-hero__image"}
+      />
       <div className="page-hero__overlay" />
       <div className="page-hero__content">
         {breadcrumb && breadcrumb.length > 0 && (

@@ -1,4 +1,4 @@
-export type ProductCategory = "Laminates" | "Louvers" | "ASA Sheets";
+export type ProductCategory = "Laminates" | "Louvers" | "Thermo Laminates";
 export type DesignType = "Wood" | "Stone" | "Fabric" | "Solid" | "Metallic";
 export type ProductColor =
   | "White" | "Beige" | "Black" | "Blue" | "Brown" | "Green" | "Grey"
@@ -185,7 +185,7 @@ export const products: Product[] = [
     id: 7,
     slug: "slate-grey",
     name: "Slate Grey",
-    collection: "0.8mm",
+    collection: "Perspective V4",
     finish: "Suede",
     thickness: "0.8mm",
     dimensions: "8ft × 4ft (2440 × 1220mm)",
@@ -345,10 +345,10 @@ export function getRelatedProducts(slugs: string[]): Product[] {
     .filter(Boolean) as Product[];
 }
 
-export const collections = ["All", "S'Shades", "Thre3", "Cool Colour", "Fluted", "0.8mm"];
+export const collections = ["All", "S'Shades", "Thre3", "Cool Colour", "Fluted", "Perspective V4"];
 export const finishes = ["All Finishes", "High Gloss", "Ultra Matte", "Matte", "Satin", "Suede", "Textured", "Metallic"];
 export const designTypes: DesignType[] = ["Wood", "Stone", "Fabric", "Solid", "Metallic"];
-export const productCategories: ProductCategory[] = ["Laminates", "Louvers", "ASA Sheets"];
+export const productCategories: ProductCategory[] = ["Laminates", "Louvers", "Thermo Laminates"];
 export const colors: ProductColor[] = ["White", "Beige", "Black", "Blue", "Brown", "Green", "Grey", "Metallic", "Multicolor", "Orange", "Pink", "Purple", "Red", "Yellow"];
 
 /** Swatch fill (hex or gradient) shown for each colour filter option. */

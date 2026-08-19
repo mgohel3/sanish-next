@@ -11,8 +11,9 @@ const COLLECTIONS = [
     category: "Laminates",
     path: "/laminates",
     accent: "#85addc",
-    image: "/assets/img/material/shadesCollection.png",
+    image: "/assets/img/material/shadesCollection.jpg",
     thickness: "1.0mm",
+    pdf: "s_shades.pdf",
     desc: "Represents the pinnacle of excellence within the Sanish portfolio. Distinguished by its luxurious 1mm thickness, S'Shades combines sophisticated premium finishes with elevated aesthetics and superior functionality — crafted for spaces that demand the extraordinary.",
     highlights: ["1mm Premium Thickness", "Luxury Surface Finishes", "Superior Durability"],
   },
@@ -22,8 +23,9 @@ const COLLECTIONS = [
     category: "Laminates",
     path: "/laminates",
     accent: "#ac8cc0",
-    image: "/assets/img/material/threeCollection.jpg",
+    image: "/assets/img/material/threecollection.jpg",
     thickness: "1.0mm",
+    pdf: "three.pdf",
     desc: "Designed to captivate with timeless designs and captivating textures. Thre3 combines impeccable craftsmanship with a curated palette to elevate the aesthetics of any room — from residential bedrooms to premium commercial spaces.",
     highlights: ["Timeless Design Language", "Rich Texture Range", "Versatile Applications"],
   },
@@ -33,32 +35,35 @@ const COLLECTIONS = [
     category: "Laminates",
     path: "/laminates",
     accent: "#f39ba2",
-    image: "/assets/img/material/cool_colour_Collection.webp",
+    image: "/assets/img/material/cool-colour-collection.jpg",
     thickness: "0.8mm",
+    pdf: "cool_colors.pdf",
     desc: "A perfect solution for designers who value sleek, understated hues. Cool Colour's calm tones and modern finishes complement contemporary interiors, bringing a refined balance of softness and style to every surface.",
     highlights: ["Modern Pastel Palette", "Understated Elegance", "Matte & Satin Finishes"],
   },
   {
-    name: "0.8mm Series",
+    name: "Perspective V4",
     slug: "08mm",
     category: "Laminates",
     path: "/laminates",
     accent: "#fabf7d",
-    image: "/assets/img/material/shadesCollection.png",
+    image: "/assets/img/material/prespective-v4-collection.jpg",
     thickness: "0.8mm",
-    desc: "An eclectic range that delivers a refreshing vibe and extraordinary decor ideas. The 0.8mm Series offers exceptional value without compromising on the design diversity that Sanish is known for.",
+    pdf: "0.8mm.pdf",
+    desc: "An eclectic range that delivers a refreshing vibe and extraordinary decor ideas. Perspective V4 offers exceptional value without compromising on the design diversity that Sanish is known for.",
     highlights: ["Wide Design Variety", "Value-Focused Range", "Easy Application"],
   },
   {
-    name: "Fluted",
-    slug: "fluted",
-    category: "Louvers",
-    path: "/louvers",
+    name: "Thermo Laminates",
+    slug: "thermo",
+    category: "Thermo Laminates",
+    path: "/asa-sheets",
     accent: "#85addc",
-    image: "/assets/img/material/flutedCollection.webp",
-    thickness: "Panels",
-    desc: "Where elegance meets functionality. The Fluted Collection features architectural fluted textures ranging from subtle and sophisticated to bold and dramatic — ideal for feature walls, cabinetry fronts, and statement partitions.",
-    highlights: ["3D Fluted Texture", "Architectural Statement", "Feature Wall Ready"],
+    image: "/assets/img/material/thermocollection.jpg",
+    thickness: "1.0mm",
+    pdf: "thermo.pdf",
+    desc: "Engineered with extra weatherproof durability, our AASA-grade Thermo Laminates range is eco-friendly, highly solvent-resistant and built to hold its mechanical properties from scorching heat to low temperatures — ideal for outdoor cladding and high-exposure facades.",
+    highlights: ["Extra Weatherproof Durability", "Eco-Friendly — No UV Stabilizer Needed", "Highly Solvent & Heat Resistant"],
   },
 ];
 
@@ -95,11 +100,17 @@ export default function CollectionCarousel() {
     if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
   };
 
-  const openDownload = () => {
-    window.dispatchEvent(new CustomEvent("open-inquiry-popup", { detail: { downloadAfterSubmit: true } }));
-  };
-
   const col = COLLECTIONS[active];
+
+  const openDownload = () => {
+    window.dispatchEvent(new CustomEvent("open-inquiry-popup", {
+      detail: {
+        downloadAfterSubmit: true,
+        downloadUrl: `/assets/pdf/collections/${col.pdf}`,
+        downloadFilename: `Sanish-${col.name.replace(/[^a-zA-Z0-9]+/g, "-")}-Catalogue.pdf`,
+      },
+    }));
+  };
 
   return (
     <div
@@ -140,10 +151,10 @@ export default function CollectionCarousel() {
                   <div className="absolute inset-0"
                     style={{ background: "linear-gradient(120deg, rgba(10,8,18,0.45) 0%, rgba(10,8,18,0.05) 60%)" }} />
 
-                  {/* Category badge */}
+                  {/* Category badge — brand orange/yellow, consistent site-wide */}
                   <div className="absolute top-6 left-6">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full text-white"
-                      style={{ backgroundColor: c.accent, fontFamily: "var(--font-jakarta)" }}>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full"
+                      style={{ backgroundColor: "#fabf7d", color: "#24262b", fontFamily: "var(--font-jakarta)" }}>
                       {c.category}
                     </span>
                   </div>

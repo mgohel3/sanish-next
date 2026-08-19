@@ -35,7 +35,7 @@ export default function AboutUsPage() {
       {/* ── Innovation & Design ── */}
       <section className="home-section bg-[var(--bg-primary)]">
         <div className="site-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] lg:gap-[100px] items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] lg:gap-[100px] items-stretch">
             <div>
               <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-4 font-medium">
                 Best Laminate Company in India
@@ -56,9 +56,9 @@ export default function AboutUsPage() {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-[16/9] rounded-[24px] overflow-hidden bg-[var(--bg-secondary)] border border-[var(--border)] p-3 shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
+              <div className="h-full min-h-[420px] rounded-[24px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
                 <img
-                  src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200"
+                  src="/assets/img/about/innovation-design.jpg"
                   className="w-full h-full object-cover"
                   alt="Material Finishes"
                 />

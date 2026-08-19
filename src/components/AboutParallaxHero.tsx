@@ -40,9 +40,9 @@ export default function AboutParallaxHero() {
     >
       {/* Parallax image */}
       <img
-        src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2000"
+        src="/assets/img/about-page-banner.jpg"
         alt="About Sanish Laminates"
-        className="hero-bg-img absolute inset-0 w-full h-[120%] object-cover top-[-10%]"
+        className="hero-bg-img absolute inset-0 w-full h-[140%] object-cover object-top top-[-20%]"
       />
       {/* Overlay */}
       <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(11,12,14,0.82) 0%, rgba(11,12,14,0.30) 100%)" }} />

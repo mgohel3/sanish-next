@@ -1,8 +1,11 @@
+import Button from "@/components/ui/Button";
+import StoreBadges from "@/components/ui/StoreBadges";
+
 const PERKS = [
-  { label: "Earn Points",       desc: "Earn reward points on every purchase of Sanish products.",        color: "#85addc" },
-  { label: "Exclusive Offers",  desc: "Unlock member-only discounts, gifts, and seasonal promotions.",   color: "#f39ba2" },
-  { label: "Track Rewards",     desc: "Real-time tracking of your points balance and redemption history.", color: "#ac8cc0" },
-  { label: "Easy Redemption",   desc: "Redeem points instantly for cash discounts on your next order.",   color: "#fabf7d" },
+  { label: "Earn Points",       desc: "Earn reward points on every purchase of Sanish products.",        icon: "/assets/img/icon/rewards-earn-points.svg" },
+  { label: "Exclusive Offers",  desc: "Unlock member-only discounts, gifts, and seasonal promotions.",   icon: "/assets/img/icon/rewards-exclusive-offers.svg" },
+  { label: "Track Rewards",     desc: "Real-time tracking of your points balance and redemption history.", icon: "/assets/img/icon/rewards-track-rewards.svg" },
+  { label: "Easy Redemption",   desc: "Redeem points instantly for cash discounts on your next order.",   icon: "/assets/img/icon/rewards-easy-redemption.svg" },
 ];
 
 export default function RewardsHighlight() {
@@ -32,7 +35,7 @@ export default function RewardsHighlight() {
               {PERKS.map((perk) => (
                 <div key={perk.label} className="p-5 rounded-[18px]"
                   style={{ backgroundColor: "#FFFFFF", border: "1px solid var(--color-border-subtle)", boxShadow: "0 16px 40px rgba(30,30,46,0.04)" }}>
-                  <div className="w-2 h-2 rounded-full mb-3" style={{ backgroundColor: perk.color }} />
+                  <img src={perk.icon} alt="" className="w-8 h-8 mb-3" />
                   <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-1" style={{ fontFamily: "var(--font-jakarta)" }}>
                     {perk.label}
                   </div>
@@ -45,61 +48,11 @@ export default function RewardsHighlight() {
 
             {/* CTA */}
             <div className="flex flex-wrap items-center gap-4">
-            <a
-              href="https://play.google.com/store/apps/details?id=com.sapphirewoods.loyalty&hl=en_IN"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-5 py-3 text-white transition-all duration-200 hover:opacity-85 hover:-translate-y-0.5"
-              style={{
-                backgroundColor: "#0b0c0e",
-                borderRadius: "999px",
-                minWidth: "180px",
-                boxShadow: "0 12px 28px rgba(11,12,14,0.18)",
-                fontFamily: "var(--font-jakarta)",
-              }}
-            >
-              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0.5 21.5L11 11L0.5 0.5C0.2 0.8 0 1.2 0 1.7V20.3C0 20.8 0.2 21.2 0.5 21.5Z" fill="#EA4335"/>
-                <path d="M0.5 0.5L11 11L15.5 6.5L2 0C1.4-0.3 0.8-0.1 0.5 0.5Z" fill="#4FC3F7"/>
-                <path d="M0.5 21.5L11 11L15.5 15.5L2 22C1.4 22.3 0.8 22.1 0.5 21.5Z" fill="#4CAF50"/>
-                <path d="M19 12.9L15.5 15.5L11 11L15.5 6.5L19 9.1C19.9 9.6 20 10.4 20 11C20 11.6 19.9 12.4 19 12.9Z" fill="#FFCA28"/>
-              </svg>
-              <div>
-                <div className="text-white leading-none" style={{ fontSize: "9px", letterSpacing: "0.06em", opacity: 0.8 }}>GET IT ON</div>
-                <div className="text-white font-semibold leading-tight" style={{ fontSize: "15px", letterSpacing: "0.01em" }}>Google Play</div>
-              </div>
-            </a>
-
-            <a
-              href="https://apps.apple.com/us/app/srewards/id6758007860"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-5 py-3 text-white transition-all duration-200 hover:opacity-85 hover:-translate-y-0.5"
-              style={{
-                backgroundColor: "#0b0c0e",
-                borderRadius: "999px",
-                minWidth: "180px",
-                boxShadow: "0 12px 28px rgba(11,12,14,0.18)",
-                fontFamily: "var(--font-jakarta)",
-              }}
-            >
-              <svg width="18" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.41-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.113c.83-1.012 1.39-2.42 1.234-3.821-1.196.052-2.638.796-3.494 1.807-.767.9-1.442 2.35-1.26 3.71 1.338.104 2.687-.68 3.52-1.696z" />
-              </svg>
-              <div>
-                <div className="text-white leading-none" style={{ fontSize: "9px", letterSpacing: "0.06em", opacity: 0.8 }}>Download on the</div>
-                <div className="text-white font-semibold leading-tight" style={{ fontSize: "15px", letterSpacing: "0.01em" }}>App Store</div>
-              </div>
-            </a>
-
-            <div className="inline-flex items-center gap-2">
-              <a href="/rewards"
-                className="btn-pill btn-pill-ghost"
-                style={{ fontSize: "10.5px", padding: "13px 24px" }}>
+              <StoreBadges size="md" />
+              <Button href="/rewards" variant="ghost" size="sm">
                 Learn more about the programme →
-              </a>
+              </Button>
             </div>
-          </div>
 
           {/* Right — App visual */}
           </div>
@@ -109,87 +62,12 @@ export default function RewardsHighlight() {
             <div className="absolute w-[360px] h-[360px] rounded-full pointer-events-none"
               style={{ background: "radial-gradient(circle, rgba(133,173,220,0.18) 0%, transparent 70%)" }} />
 
-            {/* Phone mockup frame */}
-            <div className="relative z-10 w-[280px]"
-              style={{ borderRadius: "42px", overflow: "hidden", border: "2px solid rgba(255,255,255,0.12)", boxShadow: "0 40px 80px rgba(0,0,0,0.5)" }}>
-
-              {/* Status bar */}
-              <div className="flex justify-between items-center px-6 pt-4 pb-2"
-                style={{ backgroundColor: "#1a1d27" }}>
-                <span className="text-[10px] font-semibold text-white/50" style={{ fontFamily: "var(--font-jakarta)" }}>9:41</span>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3.5 h-2 border border-white/40 rounded-[2px] relative">
-                    <div className="absolute inset-[1.5px] right-auto w-2/3 bg-white/60 rounded-[1px]" />
-                  </div>
-                </div>
-              </div>
-
-              {/* App content */}
-              <div style={{ backgroundColor: "#1a1d27" }}>
-                {/* Header */}
-                <div className="px-5 pb-4 pt-2">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center"
-                      style={{ background: "linear-gradient(135deg, #85addc, #ac8cc0)" }}>
-                      <svg className="w-4 h-4" fill="white" viewBox="0 0 24 24">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="text-[13px] font-bold text-white" style={{ fontFamily: "var(--font-jakarta)" }}>S&apos;Rewards</div>
-                      <div className="text-[9px] text-white/40" style={{ fontFamily: "var(--font-jakarta)" }}>Sanish Loyalty Programme</div>
-                    </div>
-                  </div>
-
-                  {/* Points card */}
-                  <div className="rounded-2xl p-4 mb-4"
-                    style={{ background: "linear-gradient(135deg, #85addc20, #ac8cc020)", border: "1px solid rgba(133,173,220,0.25)" }}>
-                    <div className="text-[9px] uppercase tracking-[0.14em] text-white/50 mb-1" style={{ fontFamily: "var(--font-jakarta)" }}>Your Points</div>
-                    <div className="text-[28px] font-bold text-white" style={{ fontFamily: "var(--font-jakarta)" }}>4,250</div>
-                    <div className="text-[9px] text-white/40 mt-1" style={{ fontFamily: "var(--font-jakarta)" }}>≈ ₹ 425 redeemable</div>
-                  </div>
-
-                  {/* Recent activity */}
-                  {[
-                    { label: "Order #2847", pts: "+150 pts", color: "#85addc" },
-                    { label: "Order #2831", pts: "+320 pts", color: "#f39ba2" },
-                    { label: "Redeemed",    pts: "−200 pts", color: "#fabf7d" },
-                  ].map((row) => (
-                    <div key={row.label} className="flex justify-between items-center py-2.5 border-b"
-                      style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                      <span className="text-[10px] text-white/60" style={{ fontFamily: "var(--font-jakarta)" }}>{row.label}</span>
-                      <span className="text-[10px] font-bold" style={{ color: row.color, fontFamily: "var(--font-jakarta)" }}>{row.pts}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bottom nav bar */}
-              <div className="flex justify-around items-center px-2 py-3"
-                style={{ backgroundColor: "#141620", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                {["Home", "Orders", "Redeem", "Profile"].map((label, i) => (
-                  <div key={label} className="flex flex-col items-center gap-0.5">
-                    <div className="w-3.5 h-3.5 rounded-sm opacity-60" style={{ backgroundColor: i === 0 ? "#85addc" : "rgba(255,255,255,0.3)" }} />
-                    <span className="text-[7px]" style={{ color: i === 0 ? "#85addc" : "rgba(255,255,255,0.3)", fontFamily: "var(--font-jakarta)" }}>{label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Floating badge */}
-            <div className="absolute -bottom-3 -right-3 lg:right-8 flex items-center gap-2 px-4 py-2.5 rounded-2xl"
-              style={{ backgroundColor: "rgba(255,255,255,0.86)", border: "1px solid var(--color-border-subtle)", backdropFilter: "blur(12px)", boxShadow: "0 16px 40px rgba(30,30,46,0.10)" }}>
-              <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: "rgba(61,143,65,0.2)" }}>
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="#3d8f41">
-                  <path d="M3.18 23.76A1.98 1.98 0 012 22V2c0-.75.42-1.4 1.05-1.74L13.88 12 3.18 23.76z"/>
-                </svg>
-              </div>
-              <div>
-                <div className="text-[9px] font-bold text-[var(--text-primary)]" style={{ fontFamily: "var(--font-jakarta)" }}>Google Play</div>
-                <div className="text-[8px] text-[var(--text-secondary)]" style={{ fontFamily: "var(--font-jakarta)" }}>Free download</div>
-              </div>
-            </div>
+            {/* Phone mockup photo */}
+            <img
+              src="/assets/img/phone-mckp.jpg"
+              alt="S'Rewards app on a smartphone"
+              className="relative z-10 w-[340px] sm:w-[400px] h-auto rounded-[28px]"
+            />
           </div>
 
         </div>

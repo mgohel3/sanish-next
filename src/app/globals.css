@@ -174,7 +174,13 @@ body:has(button:hover) .cursor-follower {
   width: 100% !important;
 }
 
-/* ══ Premium Pill Buttons ═══════════════════════════════ */
+/* ══ Premium Pill Buttons ═══════════════════════════════
+   Wrapped in @layer base (same reasoning as the type scale above) —
+   without it, this unlayered `display: inline-flex` beats Tailwind's
+   layered `hidden`/`lg:flex` utilities regardless of source order, so
+   e.g. Header's `<Button className="hidden lg:flex">` never actually
+   hides on mobile. ══════════════════════════════════════ */
+@layer base {
 .btn-pill {
   display: inline-flex;
   align-items: center;
@@ -215,6 +221,100 @@ body:has(button:hover) .cursor-follower {
   color: var(--accent-pink);
   transform: translateY(-2px);
 }
+
+/* Size modifiers — same font/tracking/shape, different scale */
+.btn-pill-sm {
+  padding: 10px 22px;
+  font-size: 10px;
+}
+
+.btn-pill-lg {
+  padding: 16px 36px;
+  font-size: 12px;
+}
+
+/* For buttons sitting on dark or photographic backgrounds */
+.btn-pill-light {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--accent-blue);
+}
+
+.btn-pill-light:hover {
+  background: white;
+  box-shadow: 0 14px 36px rgba(255, 255, 255, 0.30);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.btn-pill-glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: white;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+}
+
+.btn-pill-glass:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-pill:disabled,
+.btn-pill[aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+  transform: none !important;
+}
+
+/* ══ Icon Button (circular) — arrows, search, close, socials ══ */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(30, 30, 46, 0.14);
+  background: white;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.4s var(--ease-luxury);
+  flex-shrink: 0;
+}
+
+.btn-icon:hover {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-icon-sm {
+  width: 38px;
+  height: 38px;
+}
+
+.btn-icon-glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: white;
+}
+
+.btn-icon-glass:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: white;
+}
+
+.btn-icon:disabled,
+.btn-icon[aria-disabled="true"] {
+  opacity: 0.4;
+  pointer-events: none;
+  transform: none !important;
+}
+} /* /@layer base — pill + icon buttons */
 
 /* ══ Rounded Card System (brand dots identity) ═════════ */
 .card-rounded {
@@ -382,12 +482,18 @@ a[class*="flex"][class*="px-"][class*="py-"] {
 }
 
 button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
+a:focus-visible {
   outline: 2px solid var(--accent-pink);
   outline-offset: 3px;
+}
+
+input:focus,
+input:focus-visible,
+select:focus,
+select:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline: none;
 }
 
 .filter-control,
@@ -413,7 +519,6 @@ textarea:focus-visible {
   background: #24262b;
 }
 
-.page-hero__image,
 .page-hero__overlay {
   position: absolute;
   inset: 0;
@@ -421,12 +526,37 @@ textarea:focus-visible {
   height: 100%;
 }
 
+/* Always fills the band's full height and crops left/right only, never
+   top/bottom — banner source images (e.g. rewards-banner.jpg) are all ~3.4:1,
+   wider than the hero band itself gets on very wide viewports (1920px+), so
+   plain `object-fit: cover` (fill both axes, crop whichever overflows) was
+   cropping into the subject vertically once container width/height exceeded
+   the image's own aspect ratio. Fixing at the CSS level since every current
+   banner asset shares this same aspect ratio. */
 .page-hero__image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  transform: translateX(-50%);
   object-fit: cover;
 }
 
 .page-hero__overlay {
   background: linear-gradient(90deg, rgba(11, 12, 14, 0.78), rgba(11, 12, 14, 0.24));
+}
+
+/* For banner images that aren't ~3.4:1 — fills the band width-first and crops
+   top/bottom instead of leaving gaps on the sides. */
+.page-hero__image--fill {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
 }
 
 .page-hero__content {
@@ -577,6 +707,21 @@ textarea:focus-visible {
   justify-content: space-between;
   gap: 32px;
   margin-bottom: 48px;
+}
+
+/* Light divider between stacked homepage sections */
+.home-section-divider {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: clamp(24px, 4vw, 64px);
+  padding-right: clamp(24px, 4vw, 64px);
+}
+
+.home-section-divider::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: rgba(30, 30, 46, 0.1);
 }
 
 @media (max-width: 1023px) {

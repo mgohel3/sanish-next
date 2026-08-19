@@ -15,9 +15,9 @@ const ICON_FACEBOOK = (
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
   </svg>
 );
-const ICON_PINTEREST = (
+const ICON_YOUTUBE = (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.406.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.781c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.688 0 1.029-.653 2.568-.992 3.992-.285 1.193.597 2.164 1.777 2.164 2.133 0 3.771-2.249 3.771-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.289 1.198c-.046.19-.153.232-.349.141-1.3-.604-2.115-2.502-2.115-4.032 0-3.284 2.388-6.302 6.892-6.302 3.636 0 6.466 2.593 6.466 6.059 0 3.615-2.279 6.526-5.441 6.526-1.062 0-2.061-.552-2.403-1.205l-.653 2.491c-.236.902-.876 2.031-1.306 2.719A11.96 11.96 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z" />
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
   </svg>
 );
 const ICON_LINKEDIN = (
@@ -27,13 +27,13 @@ const ICON_LINKEDIN = (
 );
 
 const COLLECTIONS = [
-  { label: "S'Shades Premium",   href: "/products?collection=sshades" },
-  { label: "Thre3",              href: "/products?collection=thre3" },
-  { label: "Cool Colour",        href: "/products?collection=cool-colour" },
-  { label: "0.8mm Series",       href: "/products?collection=08mm" },
-  { label: "Fluted",             href: "/products?collection=fluted" },
-  { label: "Sanish Perspective", href: "/products?collection=perspective" },
-  { label: "View All Products",  href: "/products" },
+  { label: "S'Shades Premium",   href: "/collection" },
+  { label: "Thre3",              href: "/collection" },
+  { label: "Cool Colour",        href: "/collection" },
+  { label: "Perspective V4",     href: "/collection" },
+  { label: "Thermo Laminates",   href: "/collection" },
+  { label: "Sanish Perspective", href: "/collection" },
+  { label: "View All Collections", href: "/collection" },
 ];
 
 const COMPANY = [
@@ -53,7 +53,7 @@ export default function FooterApple() {
     { href: social.facebook  || "#", icon: ICON_FACEBOOK,  label: "Facebook" },
     { href: social.instagram || "#", icon: ICON_INSTAGRAM, label: "Instagram" },
     { href: social.linkedin  || "#", icon: ICON_LINKEDIN,  label: "LinkedIn" },
-    { href: social.pinterest || "#", icon: ICON_PINTEREST, label: "Pinterest" },
+    { href: social.youtube   || "#", icon: ICON_YOUTUBE,   label: "YouTube" },
   ];
 
   return (
@@ -107,7 +107,7 @@ export default function FooterApple() {
             <h4 className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Collections</h4>
             <div className="flex flex-col gap-2">
               {COLLECTIONS.map((c) => (
-                <Link key={c.href} href={c.href}
+                <Link key={c.label} href={c.href}
                   className="text-[15px] text-[var(--text-secondary)] hover:text-[var(--accent-blue)] hover:pl-1.5 transition-all">
                   {c.label}
                 </Link>
@@ -188,12 +188,12 @@ export default function FooterApple() {
       {/* Bottom bar */}
       <div style={{ backgroundColor: "#e5e7eb" }} className="border-t border-black/5 py-6">
         <div className="site-container flex flex-wrap items-center justify-between gap-4">
-          <div className="text-[13px]" style={{ color: "#9A9A9A" }}>
+          <div className="text-[13px]" style={{ color: "var(--text-secondary)" }}>
             {footer.copyright}
           </div>
           <div className="flex gap-5">
-            <Link href="/privacy-policy" className="text-[13px] hover:text-[var(--accent-blue)] transition-colors" style={{ color: "#9A9A9A" }}>Privacy Policy</Link>
-            <Link href="/terms-conditions" className="text-[13px] hover:text-[var(--accent-blue)] transition-colors" style={{ color: "#9A9A9A" }}>Terms & Conditions</Link>
+            <Link href="/privacy-policy" className="text-[13px] hover:text-[var(--accent-blue)] transition-colors" style={{ color: "var(--text-secondary)" }}>Privacy Policy</Link>
+            <Link href="/terms-conditions" className="text-[13px] hover:text-[var(--accent-blue)] transition-colors" style={{ color: "var(--text-secondary)" }}>Terms & Conditions</Link>
           </div>
           <div className="flex gap-3">
             {socialLinks.map((s) => (

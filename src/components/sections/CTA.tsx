@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Button from "@/components/ui/Button";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,45 +60,19 @@ export default function CTA() {
             Contact our design consultants to explore the complete Sanish Laminates collection and discuss your bespoke requirements.
           </p>
           <div className="flex items-center justify-center gap-5 flex-wrap">
-            {/* Primary — white glass pill */}
-            <a
-              href="#"
-              className="group relative overflow-hidden text-[var(--accent-blue)] text-[11.5px] font-semibold px-8 py-3.5 flex items-center gap-2 transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_16px_40px_rgba(0,0,0,0.22)]"
-              style={{
-                background: "rgba(255,255,255,0.95)",
-                borderRadius: "999px",
-                fontFamily: "var(--font-jakarta)",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                boxShadow: "0 8px 28px rgba(0,0,0,0.15)",
-              }}
-            >
-              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-[var(--accent-blue)]/8 skew-x-12" />
-              <span className="relative z-10">View Catalogue</span>
-              <svg className="w-[13px] h-[13px] relative z-10 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
-
-            {/* Secondary — glass border pill */}
-            <a
-              href="mailto:info@sanishlaminate.com"
-              className="group relative overflow-hidden text-white text-[11.5px] font-semibold px-8 py-3.5 flex items-center gap-2 transition-all duration-300 hover:-translate-y-[3px] hover:bg-white/[0.18] hover:border-white/70"
-              style={{
-                background: "rgba(255,255,255,0.08)",
-                backdropFilter: "blur(10px)",
-                border: "1.5px solid rgba(255,255,255,0.35)",
-                borderRadius: "999px",
-                fontFamily: "var(--font-jakarta)",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-              }}
-            >
-              <span className="relative z-10">Contact Sales Team</span>
+            <Button href="#" variant="light" className="group">
+              <span>View Catalogue</span>
               <svg className="w-[13px] h-[13px] group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </a>
+            </Button>
+
+            <Button href="mailto:info@sanishlaminate.com" variant="glass" className="group">
+              <span>Contact Sales Team</span>
+              <svg className="w-[13px] h-[13px] group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Button>
           </div>
 
         </div>

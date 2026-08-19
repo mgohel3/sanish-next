@@ -9,12 +9,15 @@ import Blog from "@/components/sections/Blog";
 import RewardsHighlight from "@/components/sections/RewardsHighlight";
 import CTA from "@/components/sections/CTA";
 import FooterApple from "@/components/FooterApple";
+import { getRandomGalleryTiles } from "@/lib/gallery";
 
 export const metadata = {
   title: "Home - Apple | Sanish Laminates",
 };
 
 export default function HomeApple() {
+  const applicationTiles = getRandomGalleryTiles(5);
+
   return (
     <main className="bg-[var(--bg-primary)]">
       <HeaderApple />
@@ -23,7 +26,7 @@ export default function HomeApple() {
       <HorizontalShowcase />
       <SpecialEdition />
       <WhyUsCarousel />
-      <Applications />
+      <Applications tiles={applicationTiles} />
       <Blog />
       <RewardsHighlight />
       <CTA />

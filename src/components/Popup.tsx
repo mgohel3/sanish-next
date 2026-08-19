@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Button from "@/components/ui/Button";
+import IconButton from "@/components/ui/IconButton";
+import { submitInquiry } from "@/lib/inquiries";
 
 export default function Popup() {
   const [render, setRender] = useState(false);
   const [show, setShow] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
-  const pendingDownload = useRef(false);
+  const pendingDownload = useRef<{ url: string; filename: string } | null>(null);
 
   const openPopup = () => {
     setRender(true);
@@ -17,8 +18,13 @@ export default function Popup() {
 
   useEffect(() => {
     const onOpen = (e: Event) => {
-      const detail = (e as CustomEvent<{ downloadAfterSubmit?: boolean }>).detail;
-      if (detail?.downloadAfterSubmit) pendingDownload.current = true;
+      const detail = (e as CustomEvent<{ downloadAfterSubmit?: boolean; downloadUrl?: string; downloadFilename?: string }>).detail;
+      pendingDownload.current = detail?.downloadAfterSubmit
+        ? {
+            url: detail.downloadUrl || "/assets/pdf/sanish-catalogue.pdf",
+            filename: detail.downloadFilename || "Sanish-Laminates-Catalogue.pdf",
+          }
+        : null;
       setHasTriggered(true);
       openPopup();
     };
@@ -30,36 +36,13 @@ export default function Popup() {
   useEffect(() => {
     if (hasTriggered) return;
 
-    gsap.registerPlugin(ScrollTrigger);
-
-    const triggerPopup = () => {
+    const timer = setTimeout(() => {
       if (hasTriggered) return;
       setHasTriggered(true);
       openPopup();
-    };
-
-    const timer = setTimeout(() => {
-      triggerPopup();
     }, 30000);
 
-    const footerLeadSection =
-      document.getElementById("cta-section") ||
-      document.getElementById("footer");
-    let st: ScrollTrigger | null = null;
-
-    if (footerLeadSection) {
-      st = ScrollTrigger.create({
-        trigger: footerLeadSection,
-        start: "top 78%",
-        once: true,
-        onEnter: triggerPopup,
-      });
-    }
-
-    return () => {
-      clearTimeout(timer);
-      if (st) st.kill();
-    };
+    return () => clearTimeout(timer);
   }, [hasTriggered]);
 
   const handleClose = () => {
@@ -67,13 +50,15 @@ export default function Popup() {
     setTimeout(() => setRender(false), 500);
   };
 
-  const [form, setForm] = useState({ name: "", phone: "", email: "", pincode: "", enquire_type: "" });
+  const [form, setForm] = useState({ name: "", phone: "", email: "", pincode: "", enquire_type: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
   if (!render) return null;
 
   return (
     <div
-      className={`fixed inset-0 z-[1000] flex items-center justify-center transition-all duration-500 ${
+      className={`fixed inset-0 z-[1000] flex items-center justify-center p-4 overflow-y-auto transition-all duration-500 ${
         show
           ? "bg-black/65 backdrop-blur-[6px] opacity-100 visible"
           : "bg-black/0 backdrop-blur-none opacity-0 invisible"
@@ -81,13 +66,31 @@ export default function Popup() {
       onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
       <div
-        className={`relative max-w-[500px] w-[92%] rounded-[28px] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.12)] transform transition-all duration-500 ease-out ${
+        className={`relative w-full max-w-[500px] max-h-[90vh] flex flex-col rounded-[28px] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.12)] transform transition-all duration-500 ease-out ${
           show ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-95"
         }`}
       >
+        {/* Close button — pinned above the scrollable content */}
+        <IconButton onClick={handleClose} size="sm" aria-label="Close" className="absolute top-4 right-4 z-20">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </IconButton>
+
+        <div className="min-h-0 overflow-y-auto overflow-x-hidden">
         {/* ── Branded header zone ─────────────────────────── */}
         <div
-          className="relative px-9 pt-9 pb-7"
+          className="relative px-6 pt-8 pb-6 sm:px-9 sm:pt-9 sm:pb-7"
           style={{
             background:
               "linear-gradient(135deg, #EBF1F8 0%, #F5EDF4 40%, #FBF0EA 100%)",
@@ -111,37 +114,9 @@ export default function Popup() {
             }}
           />
 
-          {/* Close button */}
-          <button
-            onClick={handleClose}
-            className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full bg-black/8 hover:bg-black/15 transition-colors"
-            aria-label="Close"
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-[#3A3A4A]"
-            >
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-
-          {/* Logo dot grid */}
-          <div className="grid grid-cols-2 gap-[1.5px] w-fit mb-5">
-            {(["#fabf7d", "#ac8cc0", "#f39ba2", "#85addc"] as const).map((c) => (
-              <span
-                key={c}
-                className="block w-3 h-3 rounded-full"
-                style={{ backgroundColor: c }}
-              />
-            ))}
+          {/* Logo */}
+          <div className="mb-5 pr-8">
+            <img src="/assets/img/logo/black-logo.svg" alt="Sanish Laminates" className="h-8 w-auto" />
           </div>
 
           <div
@@ -166,25 +141,44 @@ export default function Popup() {
         </div>
 
         {/* ── Form zone ───────────────────────────────────── */}
-        <div className="bg-white px-9 py-8">
+        <div className="bg-white px-6 py-6 sm:px-9 sm:py-8">
           <form
             className="flex flex-col gap-3.5"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
+              setSubmitError(false);
+              setSubmitting(true);
+              const ok = await submitInquiry({
+                name: form.name,
+                email: form.email,
+                phone: form.phone,
+                type: "contact",
+                message: [
+                  form.message,
+                  form.pincode ? `Pin Code: ${form.pincode}` : "",
+                  form.enquire_type ? `Enquire Type: ${form.enquire_type}` : "",
+                ].filter(Boolean).join("\n"),
+              });
+              setSubmitting(false);
+              if (!ok) {
+                setSubmitError(true);
+                return;
+              }
               if (pendingDownload.current) {
+                const { url, filename } = pendingDownload.current;
                 const a = document.createElement("a");
-                a.href = "/assets/catalogue.pdf";
-                a.download = "Sanish-Laminates-Catalogue.pdf";
+                a.href = url;
+                a.download = filename;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                pendingDownload.current = false;
+                pendingDownload.current = null;
               }
               handleClose();
             }}
           >
             {/* Row 1: Name + Phone */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 { key: "name",  type: "text", placeholder: "Name *",  required: true },
                 { key: "phone", type: "tel",  placeholder: "Phone *", required: true },
@@ -200,7 +194,7 @@ export default function Popup() {
               ))}
             </div>
             {/* Row 2: Email + Pin Code */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 { key: "email",   type: "email", placeholder: "Email *",    required: true },
                 { key: "pincode", type: "text",  placeholder: "Pin Code *", required: true },
@@ -230,18 +224,32 @@ export default function Popup() {
               <option value="consumer">Consumer</option>
             </select>
 
-            <button type="submit"
-              className="w-full mt-1 relative overflow-hidden rounded-2xl py-4 text-[13px] font-semibold tracking-[0.07em] text-white transition-all duration-300 hover:-translate-y-[2px]"
-              style={{ background: "#85addc", boxShadow: "0 8px 28px rgba(133,173,220,0.4)", fontFamily: "var(--font-jakarta)" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 14px 36px rgba(123,158,196,0.60)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 28px rgba(123,158,196,0.45)"; }}
-            >
-              <span className="relative z-10">Submit Inquiry</span>
-            </button>
+            {/* Message */}
+            <textarea
+              placeholder={"Enter the Product IDs You're Interested In\ne.g.,\nLM-19928\nLM-19920\nLM-19785"}
+              rows={5}
+              value={form.message}
+              onChange={(e) => setForm({ ...form, message: e.target.value })}
+              className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200 resize-none"
+              style={{ background: "#F7F7F9", border: "1.5px solid transparent", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
+              onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #f39ba2"; e.currentTarget.style.background = "#fff"; }}
+              onBlur={(e) => { e.currentTarget.style.border = "1.5px solid transparent"; e.currentTarget.style.background = "#F7F7F9"; }}
+            />
+
+            {submitError && (
+              <p className="text-center text-[12px]" style={{ color: "#d64545", fontFamily: "var(--font-jakarta)" }}>
+                Something went wrong sending your inquiry. Please try again.
+              </p>
+            )}
+
+            <Button type="submit" variant="primary" fullWidth disabled={submitting}>
+              {submitting ? "Submitting…" : "Submit Inquiry"}
+            </Button>
             <p className="text-center text-[11px] mt-1" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
               We typically respond within 24 hours.
             </p>
           </form>
+        </div>
         </div>
       </div>
     </div>

@@ -6,13 +6,14 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { products, collections, finishes, designTypes, colors, COLOR_SWATCH, type Product, type ProductCategory } from "@/lib/products";
 import PageHero from "@/components/PageHero";
+import Button from "@/components/ui/Button";
 
 /* ── URL slug → display name mappings ── */
 const COLLECTION_SLUG_MAP: Record<string, string> = {
   sshades:       "S'Shades",
   thre3:         "Thre3",
   "cool-colour": "Cool Colour",
-  "08mm":        "0.8mm",
+  "08mm":        "Perspective V4",
   fluted:        "Fluted",
   perspective:   "All",
 };
@@ -100,18 +101,16 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
           </div>
           <div className="flex gap-2.5 mt-auto">
             <a href={waLink} target="_blank" rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl text-[12.5px] font-semibold text-white transition-all duration-300 hover:-translate-y-[2px]"
-              style={{ background: "linear-gradient(135deg,#25D366,#1DAE52)", boxShadow: "0 6px 18px rgba(37,211,102,0.30)", fontFamily: "var(--font-jakarta)" }}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="white">
+              className="btn-pill btn-pill-sm flex-1 justify-center text-white"
+              style={{ background: "linear-gradient(135deg,#25D366,#1DAE52)", boxShadow: "0 6px 18px rgba(37,211,102,0.30)" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
               </svg>
               WhatsApp
             </a>
-            <a href={enquiryLink}
-              className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl text-[12.5px] font-semibold text-white transition-all duration-300 hover:-translate-y-[2px]"
-              style={{ background: "#85addc", boxShadow: "0 6px 18px rgba(133,173,220,0.35)", fontFamily: "var(--font-jakarta)" }}>
+            <Button href={enquiryLink} variant="primary" size="sm" className="flex-1 justify-center">
               Enquire Now
-            </a>
+            </Button>
           </div>
           <Link href={`/products/${product.slug}`} className="mt-3 text-center text-[12px] font-semibold transition-opacity hover:opacity-60"
             style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
@@ -300,7 +299,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                     <li key={c}>
                       <button onClick={() => applyCollection(c)} className="w-full text-left px-4 py-2.5 rounded-xl text-[13px] transition-all duration-200"
                         style={{
-                          backgroundColor: activeCollection === c ? "#ac8cc0" : "transparent",
+                          backgroundColor: activeCollection === c ? "#85addc" : "transparent",
                           color: activeCollection === c ? "white" : "#6B6B80",
                           fontWeight: activeCollection === c ? 600 : 400,
                           fontFamily: "var(--font-jakarta)",
@@ -325,8 +324,8 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                           onClick={() => applyDesign(isAll ? null : d)}
                           className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
                           style={{
-                            backgroundColor: isActive ? "rgba(123,158,196,0.12)" : "transparent",
-                            color: isActive ? "#ac8cc0" : "#6B6B80",
+                            backgroundColor: isActive ? "rgba(133,173,220,0.12)" : "transparent",
+                            color: isActive ? "#85addc" : "#6B6B80",
                             fontWeight: isActive ? 600 : 400,
                             fontFamily: "var(--font-jakarta)",
                           }}>
@@ -346,8 +345,8 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                     <li key={f}>
                       <button onClick={() => applyFinish(f)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
                         style={{
-                          backgroundColor: activeFinish === f ? "rgba(123,158,196,0.12)" : "transparent",
-                          color: activeFinish === f ? "#ac8cc0" : "#6B6B80",
+                          backgroundColor: activeFinish === f ? "rgba(133,173,220,0.12)" : "transparent",
+                          color: activeFinish === f ? "#85addc" : "#6B6B80",
                           fontWeight: activeFinish === f ? 600 : 400,
                           fontFamily: "var(--font-jakarta)",
                         }}>
@@ -398,20 +397,20 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                 <div className="space-y-2">
                   <div className="text-[10px] uppercase tracking-[0.12em] font-semibold" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Active filters</div>
                   {activeCollection !== "All" && (
-                    <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(123,158,196,0.10)", border: "1px solid rgba(123,158,196,0.2)" }}>
-                      <span className="font-semibold" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>{activeCollection}</span>
+                    <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
+                      <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{activeCollection}</span>
                       <button onClick={() => applyCollection("All")} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
                     </div>
                   )}
                   {activeDesign && (
-                    <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(123,158,196,0.10)", border: "1px solid rgba(123,158,196,0.2)" }}>
-                      <span className="font-semibold" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>{activeDesign} Design</span>
+                    <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
+                      <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{activeDesign} Design</span>
                       <button onClick={() => applyDesign(null)} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
                     </div>
                   )}
                   {activeFinish !== "All Finishes" && (
-                    <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(123,158,196,0.10)", border: "1px solid rgba(123,158,196,0.2)" }}>
-                      <span className="font-semibold" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>{activeFinish}</span>
+                    <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
+                      <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{activeFinish}</span>
                       <button onClick={() => applyFinish("All Finishes")} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
                     </div>
                   )}
@@ -484,7 +483,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
             ) : (
               <div className="py-20 text-center border border-dashed rounded-2xl" style={{ borderColor: "rgba(30,30,46,0.12)" }}>
                 <p className="text-[15px] mb-4" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>No surfaces match your filters.</p>
-                <button onClick={clearAll} className="text-[13px] font-semibold transition-opacity hover:opacity-70" style={{ color: "#ac8cc0", fontFamily: "var(--font-jakarta)" }}>
+                <button onClick={clearAll} className="text-[13px] font-semibold transition-opacity hover:opacity-70" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
                   Clear all filters
                 </button>
               </div>

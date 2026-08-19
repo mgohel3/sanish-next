@@ -10,6 +10,7 @@ import Applications from "@/components/sections/Applications";
 import Blog from "@/components/sections/Blog";
 import CTA from "@/components/sections/CTA";
 import Footer from "@/components/Footer";
+import { getRandomGalleryTiles } from "@/lib/gallery";
 
 export const metadata = {
   title: "Sanish Laminates | Home Classic — Premium Decorative Surfaces",
@@ -17,6 +18,8 @@ export const metadata = {
 };
 
 export default function Home1() {
+  const applicationTiles = getRandomGalleryTiles(5);
+
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
       <Header />
@@ -27,7 +30,7 @@ export default function Home1() {
       <SpecialEdition />
       <Trust />
       <Infrastructure />
-      <Applications />
+      <Applications tiles={applicationTiles} />
       <Blog />
       <CTA />
       <Footer />

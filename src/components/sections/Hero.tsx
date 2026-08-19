@@ -3,48 +3,54 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import Link from "next/link";
+import Button from "@/components/ui/Button";
+import IconButton from "@/components/ui/IconButton";
 
 /* ─── Slide Data ─────────────────────────────────────────────── */
-const slides = [
+/* Native aspect ratio of the slide images — used to size the right-side visual */
+const SLIDE_ASPECT = "16 / 9";
+
+const allSlides = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1800",
-    tag: "New 2024 Collection",
-    line1: "Where Architecture",
-    line2: "Meets Artistry",
-    sub: "Premium decorative laminates crafted for architects, designers, and luxury interiors.",
-    accent: "#ac8cc0",
-    bg: "#F0EDF7",
-    orb1: "rgba(172,140,192,0.22)",
-    orb2: "rgba(201,122,146,0.14)",
+    image: "/assets/img/hero/slides/slide-1.jpg",
+    tag: "Premium Craftsmanship",
+    line1: "Surfaces That",
+    line2: "Define Excellence",
+    sub: "From decorative laminates to Thermo Laminates and architectural panels — 25+ years of craftsmanship behind every surface.",
+    accent: "#85addc",
+    bg: "#EEF3FA",
+    orb1: "rgba(133,173,220,0.22)",
+    orb2: "rgba(243,155,162,0.14)",
+    imageOnly: true, // full-width image, no text/tag/badge/buttons on this slide
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1800",
-    tag: "S'Shades Collection",
-    line1: "Crafted For",
-    line2: "Elegant Spaces",
-    sub: "High-gloss, matte and textured finishes that redefine interior surfaces.",
+    image: "/assets/img/hero/slides/slide-2.jpg",
+    tag: "Laminates Collection",
+    line1: "Premium Laminates",
+    line2: "For Every Space",
+    sub: "High-gloss, matte and textured finishes crafted for architects, designers and luxury interiors — explore our complete laminates range.",
     accent: "#ac8cc0",
-    bg: "#f3f4f6",
-    orb1: "rgba(232,149,109,0.22)",
-    orb2: "rgba(232,180,154,0.14)",
+    bg: "#F1EDF7",
+    orb1: "rgba(172,140,192,0.22)",
+    orb2: "rgba(250,191,125,0.14)",
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=1800",
-    tag: "Architectural Series",
-    line1: "Texture That",
-    line2: "Speaks Design",
-    sub: "From woodgrains to metallics — surfaces that transform spaces into masterpieces.",
-    accent: "#ac8cc0",
-    bg: "#F7EFF3",
-    orb1: "rgba(201,122,146,0.22)",
+    image: "/assets/img/hero/slides/slide-3.jpg",
+    tag: "Thermo Laminates Collection",
+    line1: "Built To Last",
+    line2: "Thermo Panels",
+    sub: "Engineered for UV and weather resistance — durable Thermo Laminate panels built for lasting performance on modern facades.",
+    accent: "#f39ba2",
+    bg: "#FBF0F2",
+    orb1: "rgba(243,155,162,0.22)",
     orb2: "rgba(172,140,192,0.12)",
   },
   {
     id: 4,
-    image: "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?q=80&w=1800",
+    image: "/assets/img/hero/slides/slide-4.jpg",
     tag: "Fluted Panels",
     line1: "Defining Modern",
     line2: "Living Spaces",
@@ -53,8 +59,11 @@ const slides = [
     bg: "#EEF2F7",
     orb1: "rgba(172,140,192,0.20)",
     orb2: "rgba(232,149,109,0.12)",
+    hidden: true, // TODO: re-enable once a slide-4 image is ready
   },
 ];
+
+const slides = allSlides.filter((s) => !s.hidden);
 
 const SLIDE_DURATION = 6500;
 
@@ -76,8 +85,7 @@ export default function Hero() {
     if (!contentRef.current) return;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-      tl.fromTo(".h-tag",     { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, 0)
-        .fromTo(".h-line1",   { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1 }, 0.1)
+      tl.fromTo(".h-line1",   { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1 }, 0)
         .fromTo(".h-line2",   { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1 }, 0.22)
         .fromTo(".h-divider", { scaleX: 0 },          { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, 0.55)
         .fromTo(".h-sub",     { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, 0.6)
@@ -89,7 +97,7 @@ export default function Hero() {
 
   /* ── Text Out ── */
   const animOut = useCallback((cb: () => void) => {
-    gsap.to([".h-tag",".h-line1",".h-line2",".h-divider",".h-sub",".h-btn",".h-stats"], {
+    gsap.to([".h-line1",".h-line2",".h-divider",".h-sub",".h-btn",".h-stats"], {
       y: -20, opacity: 0, duration: 0.45, stagger: 0.025,
       ease: "power3.in", overwrite: true, onComplete: cb,
     });
@@ -136,7 +144,6 @@ export default function Hero() {
       gsap.to(".hero-orb-a", { x: x * 35, y: y * 25, duration: 2.5, ease: "power3.out", overwrite: true });
       gsap.to(".hero-orb-b", { x: -x * 22, y: -y * 18, duration: 3, ease: "power3.out", overwrite: true });
       gsap.to(".hero-slab-a", { x: x * 14, y: y * 10, duration: 2, ease: "power3.out", overwrite: true });
-      gsap.to(".hero-slab-b", { x: -x * 9, y: y * 6, duration: 2.5, ease: "power3.out", overwrite: true });
       gsap.to(".hero-badge", { x: x * 6, y: y * 4, duration: 2, ease: "power3.out", overwrite: true });
     };
     section.addEventListener("mousemove", onMove);
@@ -210,7 +217,25 @@ export default function Hero() {
       {/* ── Grain texture ── */}
       <div className="grain-texture" style={{ zIndex: 3 }} />
 
+      {/* ── Full-width image-only slide (no text/tag/badge/buttons) ── */}
+      {slide.imageOnly && (
+        <div className="absolute inset-0 z-[2] overflow-hidden">
+          {slides.map((s, i) => (
+            s.imageOnly && (
+              <div
+                key={s.id}
+                className="absolute inset-0"
+                style={{ opacity: i === current ? 1 : 0, transition: "opacity 1300ms cubic-bezier(0.4,0,0.2,1)", zIndex: i === current ? 2 : 1 }}
+              >
+                <img src={s.image} alt={s.line1 || "Banner"} className="w-full h-full object-cover" />
+              </div>
+            )
+          ))}
+        </div>
+      )}
+
       {/* ── Main layout ── */}
+      {!slide.imageOnly && (
       <div className="site-container relative z-10 w-full grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-0 items-center">
 
         {/* ── LEFT: Text ── */}
@@ -220,9 +245,9 @@ export default function Hero() {
           <div className="mb-7 space-y-1">
             <div className="overflow-hidden pb-2">
               <h1
-                className="h-line1 block leading-[1.25] tracking-tight"
+                className="h-line1 block leading-[1.18] tracking-tight whitespace-nowrap"
                 style={{
-                  fontSize: "clamp(34px, 4.6vw, 68px)",
+                  fontSize: "clamp(26px, 3.9vw, 68px)",
                   fontWeight: 500,
                   color: "#1E1E2E",
                 }}
@@ -232,9 +257,9 @@ export default function Hero() {
             </div>
             <div className="overflow-hidden pb-2">
               <h1
-                className="h-line2 block leading-[1.25] tracking-tight"
+                className="h-line2 block leading-[1.18] tracking-tight whitespace-nowrap"
                 style={{
-                  fontSize: "clamp(34px, 4.6vw, 68px)",
+                  fontSize: "clamp(26px, 3.9vw, 68px)",
                   fontWeight: 500,
                   color: slide.accent,
                   transition: "color 800ms ease",
@@ -247,13 +272,13 @@ export default function Hero() {
 
           {/* Divider */}
           <div
-            className="h-divider h-[2px] w-14 mb-7 origin-left"
+            className="h-divider h-[2px] w-14 mb-6 origin-left"
             style={{ backgroundColor: slide.accent, borderRadius: "999px", transition: "background-color 800ms ease" }}
           />
 
           {/* Sub copy */}
           <p
-            className="h-sub text-[15px] leading-[1.9] max-w-[390px] mb-10"
+            className="h-sub text-[14px] leading-[1.8] max-w-[380px] mb-10"
             style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)", fontWeight: 300 }}
           >
             {slide.sub}
@@ -261,34 +286,27 @@ export default function Hero() {
 
           {/* Pill Buttons */}
           <div className="flex flex-wrap gap-6 mb-10 items-center">
-            <Link
-              href="/surface-explorer"
-              className="inline-flex items-center gap-2 px-7 py-3.5 transition-all duration-300 group"
+            <Button
+              href="/collection"
+              variant="primary"
+              className="h-btn group"
               style={{
                 backgroundColor: slide.accent,
-                color: "#FFFFFF",
-                fontFamily: "var(--font-jakarta)",
-                fontSize: "14px",
-                fontWeight: 500,
+                boxShadow: `0 8px 28px ${slide.accent}45`,
+                transition: "background-color 800ms ease, box-shadow 800ms ease, filter 250ms ease",
               }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.opacity = "0.9";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.opacity = "1";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.filter = "brightness(1.08)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.filter = "brightness(1)"; }}
             >
               <span>Explore Collection</span>
               <svg className="w-[14px] h-[14px] group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </Link>
+            </Button>
 
             <Link
               href="/about-us"
-              className="inline-flex items-center gap-2 transition-all duration-300 group"
+              className="h-btn inline-flex items-center gap-2 transition-all duration-300 group"
               style={{
                 color: "#1E1E2E",
                 fontFamily: "var(--font-jakarta)",
@@ -324,13 +342,18 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ── RIGHT: Images ── */}
-        <div className="relative h-[480px] lg:h-[580px] hidden md:flex items-center justify-center">
+        {/* ── RIGHT: Image ── */}
+        <div className="relative hidden md:flex items-center justify-center">
 
-          {/* Main slab */}
+          {/* Single slab — sized to the source image's native aspect ratio */}
           <div
-            className="hero-slab-a absolute top-0 right-0 w-[64%] h-[75%] overflow-hidden gpu"
-            style={{ borderRadius: "24px", boxShadow: "0 40px 80px rgba(30,30,46,0.12)", willChange: "transform" }}
+            className="hero-slab-a relative w-full overflow-hidden gpu"
+            style={{
+              aspectRatio: SLIDE_ASPECT,
+              borderRadius: "24px",
+              boxShadow: "0 40px 80px rgba(30,30,46,0.12)",
+              willChange: "transform",
+            }}
           >
             {slides.map((s, i) => (
               <div key={s.id} className="absolute inset-0"
@@ -344,38 +367,18 @@ export default function Hero() {
             ))}
           </div>
 
-          {/* Secondary slab */}
-          <div
-            className="hero-slab-b absolute bottom-0 left-0 w-[44%] h-[50%] overflow-hidden gpu"
-            style={{ borderRadius: "20px", boxShadow: "0 24px 48px rgba(30,30,46,0.09)", willChange: "transform" }}
-          >
-            {slides.map((s, i) => (
-              <div key={s.id} className="absolute inset-0"
-                style={{ opacity: i === current ? 1 : 0, transition: "opacity 1600ms cubic-bezier(0.4,0,0.2,1)", zIndex: i === current ? 2 : 1 }}>
-                <img
-                  src={slides[(i + 2) % slides.length].image}
-                  alt="Secondary"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-            {/* Soft edge fade matching bg */}
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: `linear-gradient(to right, ${slide.bg}CC, transparent)`, transition: "background 1400ms ease" }} />
-          </div>
-
           {/* Floating badge */}
           <div
             className="hero-badge glass-card absolute px-5 py-4 z-20 gpu"
             style={{
-              bottom: "22%", right: "2%",
+              bottom: "6%", right: "-2%",
               willChange: "transform",
               borderRadius: "20px",
               boxShadow: "0 16px 40px rgba(30,30,46,0.08)",
             }}
           >
             <div className="flex items-center gap-3">
-              <div className="grid grid-cols-2 gap-[3px]">
+              <div className="grid grid-cols-2 gap-[1px]">
                 {["#85addc","#ac8cc0","#f39ba2","#fabf7d"].map((c) => (
                   <span key={c} className="block w-3 h-3 rounded-full" style={{ backgroundColor: c }} />
                 ))}
@@ -387,21 +390,21 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Accent pill tag */}
+          {/* Accent pill tag — brand orange, matches badge color used site-wide (product cards, etc.) */}
           <div
-            className="absolute top-6 left-[18%] z-20 px-4 py-2 text-white text-[9.5px] uppercase tracking-[0.16em] font-semibold"
+            className="absolute top-6 left-6 z-20 px-4 py-2 text-white text-[9.5px] uppercase tracking-[0.16em] font-semibold"
             style={{
-              backgroundColor: slide.accent,
+              backgroundColor: "#fabf7d",
               borderRadius: "999px",
               fontFamily: "var(--font-jakarta)",
-              transition: "background-color 800ms ease",
-              boxShadow: `0 6px 18px ${slide.accent}55`,
+              boxShadow: "0 6px 18px rgba(250,191,125,0.4)",
             }}
           >
             {slide.tag}
           </div>
         </div>
       </div>
+      )}
 
       {/* ── Bottom Controls ── */}
       <div className="absolute bottom-0 left-0 right-0 z-20">
@@ -440,35 +443,14 @@ export default function Hero() {
             </span>
 
             {[
-              { fn: goPrev, d: "M19 12H5M12 19l-7-7 7-7" },
-              { fn: goNext, d: "M5 12h14M12 5l7 7-7 7" },
-            ].map(({ fn, d }, i) => (
-              <button
-                key={i}
-                onClick={fn}
-                className="group flex items-center justify-center transition-all duration-300"
-                style={{
-                  width: 38, height: 38,
-                  borderRadius: "50%",
-                  border: "1.5px solid rgba(30,30,46,0.14)",
-                  background: "transparent",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = slide.accent;
-                  (e.currentTarget as HTMLElement).style.background = `${slide.accent}12`;
-                  (e.currentTarget as HTMLElement).style.transform = "scale(1.1)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(30,30,46,0.14)";
-                  (e.currentTarget as HTMLElement).style.background = "transparent";
-                  (e.currentTarget as HTMLElement).style.transform = "scale(1)";
-                }}
-              >
-                <svg className="w-[12px] h-[12px]" fill="none" stroke="#1E1E2E" strokeWidth="1.8" viewBox="0 0 24 24">
+              { fn: goPrev, d: "M19 12H5M12 19l-7-7 7-7", label: "Previous slide" },
+              { fn: goNext, d: "M5 12h14M12 5l7 7-7 7", label: "Next slide" },
+            ].map(({ fn, d, label }, i) => (
+              <IconButton key={i} size="sm" aria-label={label} onClick={fn}>
+                <svg className="w-[12px] h-[12px]" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
                   <path d={d} strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </button>
+              </IconButton>
             ))}
           </div>
         </div>

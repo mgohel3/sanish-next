@@ -9,8 +9,11 @@ import Blog from "@/components/sections/Blog";
 import RewardsHighlight from "@/components/sections/RewardsHighlight";
 import CTA from "@/components/sections/CTA";
 import Footer from "@/components/Footer";
+import { getRandomGalleryTiles } from "@/lib/gallery";
 
 export default function Home() {
+  const applicationTiles = getRandomGalleryTiles(5);
+
   return (
     <main className="bg-[var(--bg-primary)]">
       <Header />
@@ -19,8 +22,9 @@ export default function Home() {
       <HorizontalShowcase />
       <SpecialEdition />
       <WhyUsCarousel />
-      <Applications />
-      <Blog />
+      <Applications tiles={applicationTiles} />
+      {/* Editorial section hidden for now — re-enable <Blog /> when ready */}
+      <div className="home-section-divider" />
       <RewardsHighlight />
       <CTA />
       <Footer />

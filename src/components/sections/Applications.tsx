@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { HomeGalleryTile } from "@/lib/gallery";
 
-export default function Applications() {
+export default function Applications({ tiles }: { tiles: HomeGalleryTile[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const masonryRef = useRef<HTMLDivElement>(null);
 
@@ -39,50 +41,26 @@ export default function Applications() {
               Architectural Applications
             </h2>
           </div>
-          <div className="flex gap-4">
-            <button className="text-[13px] font-medium text-[var(--text-primary)] border-b border-[var(--text-primary)] pb-1 hover:text-[var(--accent-blue)] hover:border-[var(--accent-blue)] transition-all">All</button>
-            <button className="text-[13px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] pb-1 transition-all">Kitchens</button>
-            <button className="text-[13px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] pb-1 transition-all">Commercial</button>
-            <button className="text-[13px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] pb-1 transition-all">Retail</button>
-          </div>
+          <Link href="/applications" className="btn-pill btn-pill-ghost flex-shrink-0" style={{ textTransform: "none" }}>
+            View All Applications →
+          </Link>
         </div>
 
-        <div ref={masonryRef} className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-          {/* Masonry Items */}
-          <div className="masonry-item relative group overflow-hidden break-inside-avoid">
-            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=600" alt="Application 1" className="w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <span className="text-white font-serif text-xl tracking-wide translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Modern Kitchen</span>
-            </div>
-          </div>
-          
-          <div className="masonry-item relative group overflow-hidden break-inside-avoid">
-            <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=600" alt="Application 2" className="w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <span className="text-white font-serif text-xl tracking-wide translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Retail Space</span>
-            </div>
-          </div>
-
-          <div className="masonry-item relative group overflow-hidden break-inside-avoid">
-            <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=600" alt="Application 3" className="w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <span className="text-white font-serif text-xl tracking-wide translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Corporate Office</span>
-            </div>
-          </div>
-
-          <div className="masonry-item relative group overflow-hidden break-inside-avoid">
-            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=600" alt="Application 4" className="w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <span className="text-white font-serif text-xl tracking-wide translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Luxury Living</span>
-            </div>
-          </div>
-
-          <div className="masonry-item relative group overflow-hidden break-inside-avoid">
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600" alt="Application 5" className="w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <span className="text-white font-serif text-xl tracking-wide translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Boutique Hotel</span>
-            </div>
-          </div>
+        <div ref={masonryRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[300px_300px] gap-6">
+          {/* Real product tiles, picked from the catalogue galleries */}
+          {tiles.map((tile, i) => (
+            <Link
+              key={`${tile.catalogueSlug}-${tile.id}`}
+              href={`/applications/gallery/${tile.catalogueSlug}/${tile.id}`}
+              className={`masonry-item relative group overflow-hidden rounded-[20px] block aspect-[4/3] lg:aspect-auto ${i === 2 ? "lg:row-span-2" : ""}`}
+            >
+              <img src={tile.src} alt={`${tile.catalogueName} — Laminate #${tile.id}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
+                <span className="text-white font-serif text-xl tracking-wide translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{tile.catalogueName}</span>
+                <span className="text-white/80 text-xs tracking-wide mt-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">Laminate #{tile.id}</span>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

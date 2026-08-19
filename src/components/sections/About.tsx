@@ -7,6 +7,19 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Some browsers/contexts don't honour the `autoplay` attribute even with
+  // `muted` + `playsInline` set — a background video that's meant to be
+  // constantly moving instead sits frozen on its first frame, which reads
+  // as broken, especially while it's visibly growing during the scroll
+  // reveal below. Explicitly calling `.play()` covers that gap; the
+  // rejected-promise catch is required because browsers reject it instead
+  // of throwing when autoplay is genuinely blocked, and an unhandled
+  // rejection would otherwise surface as a console error for no benefit.
+  useEffect(() => {
+    videoRef.current?.play().catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current || !mediaRef.current) return;
@@ -72,9 +85,14 @@ export default function About() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          // A longer scroll distance makes the reveal read as deliberate
-          // and cinematic rather than a quick snap.
-          end: "+=150%",
+          // Kept short deliberately: at 150% (1.5 viewport-heights) the
+          // video spends most of that distance still small while
+          // `power2.inOut` eases slowly in and out, so the majority of the
+          // scroll reads as a mostly-empty page with a small floating
+          // video rather than a reveal — a much shorter distance still
+          // gives the growth room to read as smooth motion (not a snap)
+          // without the long empty-feeling scroll before it pays off.
+          end: "+=60%",
           // A numeric scrub (vs. `true`) adds a short catch-up lag behind
           // the scrollbar, giving the motion inertia/weight instead of
           // feeling rigidly 1:1 with the mouse wheel — kept short so it
@@ -154,6 +172,7 @@ export default function About() {
           }}
         >
           <video
+            ref={videoRef}
             src="https://videos.pexels.com/video-files/3163534/3163534-uhd_2560_1440_30fps.mp4"
             autoPlay
             loop
