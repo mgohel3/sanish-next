@@ -1,5 +1,4 @@
-import fs from "fs";
-import path from "path";
+import galleryManifest from "@/generated/gallery-manifest.json";
 
 /**
  * Design Gallery — catalogue-grouped, room-scene preview images handed over by the
@@ -7,11 +6,11 @@ import path from "path";
  * (2026-08-19): full CMS bulk-upload panel deferred, see note in
  * dashboard/views/seo_views.py-adjacent apps for future work.
  *
- * This scans public/assets/img/gallery/<slug>/ at request time — client instruction
+ * A prebuild script scans public/assets/img/gallery/<slug>/ — client instruction
  * (2026-08-19): "create folders, I will add images manually, if folder is empty then
- * it will not appear on website." So: add a file to a catalogue folder, it shows up;
- * folder stays empty, that catalogue is skipped entirely. No code changes needed to
- * add images to an EXISTING catalogue folder.
+ * it will not appear on website." So: add a file to a catalogue folder, it shows up
+ * after the next build; folder stays empty, that catalogue is skipped entirely. No
+ * code changes needed to add images to an EXISTING catalogue folder.
  *
  * Each image's `id` is the numeric product/laminate code the designer used in the
  * filename (e.g. "10005_PW.jpg" → id "10005") — the "_PW" ("preview") suffix the
@@ -38,10 +37,6 @@ export interface GalleryCatalogue {
   thumbnail: string;
   images: GalleryImage[];
 }
-
-const GALLERY_ROOT = path.join(process.cwd(), "public", "assets", "img", "gallery");
-
-const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"]);
 
 // Known catalogue slugs get a proper display name; anything new falls back to a
 // title-cased version of the folder name so an unlisted slug still works.
@@ -74,36 +69,17 @@ function extractProductId(filenameNoExt: string): string {
   return match ? match[0] : filenameNoExt;
 }
 
-/** Scans public/assets/img/gallery/ and returns only catalogues that have at least one image. */
+/** Returns catalogues discovered by the build-time gallery manifest generator. */
 export function getGalleryCatalogues(): GalleryCatalogue[] {
-  let folderNames: string[] = [];
-  try {
-    folderNames = fs.readdirSync(GALLERY_ROOT, { withFileTypes: true })
-      .filter((entry) => entry.isDirectory() && !entry.name.startsWith("."))
-      .map((entry) => entry.name);
-  } catch {
-    return [];
-  }
-
-  const catalogues: GalleryCatalogue[] = folderNames.map((slug) => {
-    const dir = path.join(GALLERY_ROOT, slug);
-    let files: string[] = [];
-    try {
-      files = fs.readdirSync(dir).filter((f) => IMAGE_EXTENSIONS.has(path.extname(f).toLowerCase()));
-    } catch {
-      files = [];
-    }
-    files.sort();
-
+  const catalogues: GalleryCatalogue[] = galleryManifest.map(({ slug, files }) => {
     // A file literally named "cover.<ext>" (case-insensitive) is the catalogue's
     // chosen thumbnail for the tile grid — not a product, so it's excluded from
     // `images` below. No cover file? Falls back to the first product image.
-    const coverFile = files.find((f) => path.basename(f, path.extname(f)).toLowerCase() === "cover");
+    const coverFile = files.find((filename) => filename.replace(/\.[^.]+$/, "").toLowerCase() === "cover");
     const productFiles = coverFile ? files.filter((f) => f !== coverFile) : files;
 
     const images: GalleryImage[] = productFiles.map((filename) => {
-      const ext = path.extname(filename);
-      const id = extractProductId(path.basename(filename, ext));
+      const id = extractProductId(filename.replace(/\.[^.]+$/, ""));
       return { id, src: `/assets/img/gallery/${slug}/${filename}` };
     });
 
