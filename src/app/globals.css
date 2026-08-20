@@ -730,6 +730,25 @@ textarea:focus-visible {
     padding-top: 80px;
     padding-bottom: 80px;
   }
+
+  /* About video has no scroll/grow animation below the lg breakpoint
+     (see About.tsx matchMedia) — the vignette exists only to fade out as
+     part of that animation, so with it disabled it would otherwise sit
+     permanently darkening the video instead of reading as a normal clip. */
+  .about-media-vignette {
+    display: none;
+  }
+
+  /* Desktop sizes this box with an explicit clamp() height (tuned for the
+     scroll-grow animation) that wins over aspect-ratio since height is set
+     explicitly inline. Below lg there's no animation to tune for, so force
+     a plain 16:9 box driven by width instead — !important is required to
+     beat the inline style at this breakpoint only. */
+  .about-media-wrap {
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+  }
+
 }
 
 @media (max-width: 767px) {

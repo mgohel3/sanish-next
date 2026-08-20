@@ -39,8 +39,9 @@ export default function WhyUsCarousel() {
 
   useEffect(() => {
     const updateVisibleCards = () => {
+      // Mobile and tablet both show one card at a time — only the lg
+      // (desktop/laptop) breakpoint keeps the original 3-up layout.
       if (window.innerWidth >= 1024) setVisibleCards(3);
-      else if (window.innerWidth >= 640) setVisibleCards(2);
       else setVisibleCards(1);
     };
 

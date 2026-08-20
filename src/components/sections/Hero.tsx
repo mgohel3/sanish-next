@@ -14,6 +14,10 @@ const allSlides = [
   {
     id: 1,
     image: "/assets/img/hero/slides/slide-1.jpg",
+    // Purpose-cropped portrait (400x600) version for mobile/tablet — the
+    // landscape desktop image can't fill a portrait frame without either
+    // heavy side-cropping or large letterboxed gaps.
+    mobileImage: "/assets/img/hero/slides/slide-1-mobile.jpg",
     tag: "Premium Craftsmanship",
     line1: "Surfaces That",
     line2: "Define Excellence",
@@ -227,7 +231,10 @@ export default function Hero() {
                 className="absolute inset-0"
                 style={{ opacity: i === current ? 1 : 0, transition: "opacity 1300ms cubic-bezier(0.4,0,0.2,1)", zIndex: i === current ? 2 : 1 }}
               >
-                <img src={s.image} alt={s.line1 || "Banner"} className="w-full h-full object-cover" />
+                <picture>
+                  {s.mobileImage && <source media="(max-width: 1023px)" srcSet={s.mobileImage} />}
+                  <img src={s.image} alt={s.line1 || "Banner"} className="w-full h-full object-cover" />
+                </picture>
               </div>
             )
           ))}
@@ -343,7 +350,7 @@ export default function Hero() {
         </div>
 
         {/* ── RIGHT: Image ── */}
-        <div className="relative hidden md:flex items-center justify-center">
+        <div className="relative flex items-center justify-center">
 
           {/* Single slab — sized to the source image's native aspect ratio */}
           <div

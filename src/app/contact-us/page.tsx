@@ -18,6 +18,7 @@ export default function ContactUsPage() {
         title="Contact Us"
         image="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000"
         description="Speak with our team about products, samples, specifications and dealer support."
+        imageFill
       />
 
       <section className="home-section bg-[var(--bg-primary)]">
