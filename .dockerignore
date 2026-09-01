@@ -1,0 +1,17 @@
+.git
+.gitignore
+.github
+node_modules
+.next
+out
+build
+coverage
+*.log
+dev-server.log
+dev-server-error.log
+.env
+.env.*
+.vercel
+*.tsbuildinfo
+Dockerfile
+.dockerignore
