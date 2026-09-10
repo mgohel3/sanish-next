@@ -91,6 +91,7 @@ export default function Header() {
 
   const [scrolled, setScrolled] = useState(false);
   const [activeMega, setActiveMega] = useState<MegaType | null>(null);
+  const [productsOpen, setProductsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [featuredIdx, setFeaturedIdx] = useState(0);
   const pathname = usePathname();
@@ -133,6 +134,7 @@ export default function Header() {
     const onClick = (e: MouseEvent) => {
       if (megaRef.current && !megaRef.current.contains(e.target as Node)) {
         setActiveMega(null);
+        setProductsOpen(false);
       }
     };
     document.addEventListener("mousedown", onClick);
@@ -164,13 +166,81 @@ export default function Header() {
 
             <Link href="/" className={navLinkCls}
               style={isActive("/") ? activeStyle : undefined}
-              onClick={() => { setActiveMega(null); }}>
+              onClick={() => { setActiveMega(null); setProductsOpen(false); }}>
               Home
             </Link>
 
+            {/* PRODUCTS — dropdown with 3 sub-categories */}
+            <div className="relative" style={{ isolation: "isolate" }}>
+              <button
+                className={`${navLinkCls} flex items-center gap-1.5 bg-transparent border-0 cursor-pointer`}
+                style={["/laminates", "/louvers", "/asa-sheets", "/products"].some(p => pathname.startsWith(p)) ? activeStyle : undefined}
+                onClick={() => { setProductsOpen(prev => !prev); setActiveMega(null); }}
+              >
+                Products
+                <svg
+                  className="w-3 h-3 opacity-40 transition-transform duration-300"
+                  style={{ transform: productsOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                  fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"
+                >
+                  <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              {productsOpen && (
+                <div
+                  className="absolute left-0"
+                  style={{
+                    top: "calc(100% + 14px)",
+                    backgroundColor: "white",
+                    borderRadius: "18px",
+                    minWidth: "230px",
+                    padding: "10px",
+                    boxShadow: "0 20px 50px rgba(30,30,46,0.14)",
+                    border: "1px solid rgba(30,30,46,0.07)",
+                    zIndex: 9999,
+                    animation: "dropIn 0.2s cubic-bezier(0.16,1,0.3,1) both",
+                  }}
+                >
+                  <style>{`@keyframes dropIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}`}</style>
+                  <div className="px-3 pt-2 pb-1.5 text-[9px] uppercase tracking-[0.18em] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                    Product Range
+                  </div>
+                  {[
+                    { href: "/laminates",  label: "Laminates",        sub: "Decorative surface sheets", dot: "#85addc" },
+                    { href: "/louvers",    label: "Louvers",          sub: "Architectural panels",      dot: "#ac8cc0" },
+                    { href: "/asa-sheets", label: "Thermo Laminates", sub: "Outdoor surfaces",          dot: "#fabf7d" },
+                  ].map((item) => (
+                    <Link key={item.href} href={item.href}
+                      className="flex items-center gap-3 px-3 py-2.5 transition-all duration-200 hover:bg-[var(--bg-secondary)]"
+                      style={{ borderRadius: "12px" }}
+                      onClick={() => setProductsOpen(false)}
+                    >
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: pathname.startsWith(item.href) ? item.dot : "rgba(30,30,46,0.15)" }} />
+                      <div>
+                        <div className="text-[13px] font-semibold leading-none mb-0.5"
+                          style={{ color: pathname.startsWith(item.href) ? "var(--accent-blue)" : "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>
+                          {item.label}
+                        </div>
+                        <div className="text-[10.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{item.sub}</div>
+                      </div>
+                    </Link>
+                  ))}
+                  <div className="h-px mx-3 my-1" style={{ backgroundColor: "rgba(30,30,46,0.06)" }} />
+                  <Link href="/products"
+                    className="flex items-center px-3 py-2.5 transition-all duration-200 hover:bg-[var(--bg-secondary)]"
+                    style={{ borderRadius: "12px" }}
+                    onClick={() => setProductsOpen(false)}
+                  >
+                    <span className="text-[12px] font-semibold" style={{ color: "var(--accent-blue)", fontFamily: "var(--font-jakarta)" }}>View All Products →</span>
+                  </Link>
+                </div>
+              )}
+            </div>
+
             <Link href="/collection" className={navLinkCls}
               style={isActive("/collection") ? activeStyle : undefined}
-              onClick={() => { setActiveMega(null); }}>
+              onClick={() => { setActiveMega(null); setProductsOpen(false); }}>
               Collection
             </Link>
 
@@ -181,7 +251,7 @@ export default function Header() {
                   style={isActive(l.url) ? activeStyle : undefined}
                   target={l.open_new_tab ? "_blank" : undefined}
                   rel={l.open_new_tab ? "noopener noreferrer" : undefined}
-                  onClick={() => { setActiveMega(null); }}>
+                  onClick={() => { setActiveMega(null); setProductsOpen(false); }}>
                   {l.label}
                 </Link>
               ))}
@@ -411,6 +481,10 @@ export default function Header() {
         <nav className="flex flex-col gap-1">
           {[
             { href: "/",             label: "Home",              sub: null },
+            { href: "/laminates",    label: "Laminates",         sub: "Decorative surfaces" },
+            { href: "/louvers",      label: "Louvers",           sub: "Architectural panels" },
+            { href: "/asa-sheets",   label: "Thermo Laminates",  sub: "Outdoor surfaces" },
+            { href: "/products",     label: "View All Products", sub: "Full product catalogue" },
             { href: "/collection",   label: "Collection",        sub: "All collections" },
             { href: "/applications", label: "Applications",      sub: null },
             { href: "/about-us",     label: "About Us",          sub: null },

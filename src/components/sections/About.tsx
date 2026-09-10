@@ -3,8 +3,22 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { AboutContent } from "@/lib/homepage";
 
-export default function About() {
+const DEFAULT_ABOUT: Required<AboutContent> = {
+  heading: "Innovation That Shapes Modern Spaces",
+  body:
+    "<p>Founded in 2017, Sanish Laminates has emerged as one of India's fastest-growing premium laminate brands. Research-led quality and expressive design set us apart in the decorative surface industry.</p>" +
+    "<p>We continuously push boundaries to elevate interiors, bringing timeless appeal, durability and responsible manufacturing to every surface we create.</p>",
+  cta_label: "Read Our Story",
+  cta_url: "/about-us",
+  media_url: "https://videos.pexels.com/video-files/3163534/3163534-uhd_2560_1440_30fps.mp4",
+};
+
+const isVideo = (url: string) => /\.(mp4|webm|ogg|mov)(\?|$)/i.test(url);
+
+export default function About({ content }: { content?: AboutContent }) {
+  const c = { ...DEFAULT_ABOUT, ...content };
   const sectionRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -157,19 +171,19 @@ export default function About() {
       <div className="site-container grid grid-cols-1 items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
         <div>
           <h2 className="about-copy-reveal home-heading mb-7">
-            Innovation That Shapes Modern Spaces
+            {c.heading}
           </h2>
-          <p className="about-copy-reveal mb-5 max-w-xl text-[15px] leading-[1.8] text-[var(--text-secondary)]">
-            Founded in 2017, Sanish Laminates has emerged as one of India&apos;s fastest-growing premium laminate brands. Research-led quality and expressive design set us apart in the decorative surface industry.
-          </p>
-          <p className="about-copy-reveal mb-9 max-w-xl text-[15px] leading-[1.8] text-[var(--text-secondary)]">
-            We continuously push boundaries to elevate interiors, bringing timeless appeal, durability and responsible manufacturing to every surface we create.
-          </p>
-          <div className="about-copy-reveal">
-            <a href="/about-us" className="btn-pill btn-pill-primary">
-              Read Our Story
-            </a>
-          </div>
+          <div
+            className="about-copy-reveal mb-9 max-w-xl text-[15px] leading-[1.8] text-[var(--text-secondary)] space-y-5"
+            dangerouslySetInnerHTML={{ __html: c.body }}
+          />
+          {c.cta_label && c.cta_url && (
+            <div className="about-copy-reveal">
+              <a href={c.cta_url} className="btn-pill btn-pill-primary">
+                {c.cta_label}
+              </a>
+            </div>
+          )}
         </div>
 
         <div
@@ -182,16 +196,25 @@ export default function About() {
             zIndex: 60,
           }}
         >
-          <video
-            ref={videoRef}
-            src="https://videos.pexels.com/video-files/3163534/3163534-uhd_2560_1440_30fps.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            aria-label="Sanish material and manufacturing film"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
+          {isVideo(c.media_url) ? (
+            <video
+              ref={videoRef}
+              src={c.media_url}
+              autoPlay
+              loop
+              muted
+              playsInline
+              aria-label="Sanish material and manufacturing film"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={c.media_url}
+              alt={c.heading}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          )}
           <div
             className="about-media-vignette"
             aria-hidden="true"

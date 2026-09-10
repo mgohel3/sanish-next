@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { HeadingLinkContent } from "@/lib/homepage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,7 +28,10 @@ const posts = [
   },
 ];
 
-export default function Blog() {
+export default function Blog({ content = {} }: { content?: HeadingLinkContent }) {
+  const heading = content.heading || "Editorial";
+  const ctaLabel = content.cta_label || "View All Articles →";
+  const ctaUrl = content.cta_url || "/blog";
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -49,11 +53,11 @@ export default function Blog() {
         <div className="home-heading-row">
           <div>
             <h2 className="home-heading">
-              Editorial
+              {heading}
             </h2>
           </div>
-          <a href="#" className="btn-pill btn-pill-ghost flex-shrink-0" style={{ textTransform: "none" }}>
-            View All Articles →
+          <a href={ctaUrl} className="btn-pill btn-pill-ghost flex-shrink-0" style={{ textTransform: "none" }}>
+            {ctaLabel}
           </a>
         </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,6 +9,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+  const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.4,
@@ -16,6 +20,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       gestureOrientation: "vertical",
       smoothWheel: true,
     });
+    lenisRef.current = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -25,15 +30,42 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     gsap.ticker.lagSmoothing(0);
 
     // When ScrollTrigger recalculates (after pins resolve), tell Lenis to resize
-    ScrollTrigger.addEventListener("refresh", () => lenis.resize());
+    const onRefresh = () => lenis.resize();
+    ScrollTrigger.addEventListener("refresh", onRefresh);
     ScrollTrigger.refresh();
 
     return () => {
+      ScrollTrigger.removeEventListener("refresh", onRefresh);
       lenis.destroy();
       gsap.ticker.remove(tick);
-      ScrollTrigger.removeEventListener("refresh", () => lenis.resize());
+      lenisRef.current = null;
     };
   }, []);
+
+  // On client-side navigation the document height changes but Lenis keeps the
+  // old scroll limit (symptom: page won't scroll all the way down). Re-measure
+  // after the new route paints. Two rAFs + a delayed pass covers late layout
+  // (fonts, images, hero crop).
+  useEffect(() => {
+    const lenis = lenisRef.current;
+    if (!lenis) return;
+
+    lenis.scrollTo(0, { immediate: true });
+
+    const remeasure = () => {
+      lenis.resize();
+      ScrollTrigger.refresh();
+    };
+    const r1 = requestAnimationFrame(() => requestAnimationFrame(remeasure));
+    const t1 = setTimeout(remeasure, 300);
+    const t2 = setTimeout(remeasure, 1000);
+
+    return () => {
+      cancelAnimationFrame(r1);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [pathname]);
 
   return <>{children}</>;
 }

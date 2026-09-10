@@ -5,8 +5,18 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { HomeGalleryTile } from "@/lib/gallery";
+import type { HeadingLinkContent } from "@/lib/homepage";
 
-export default function Applications({ tiles }: { tiles: HomeGalleryTile[] }) {
+export default function Applications({
+  tiles,
+  content = {},
+}: {
+  tiles: HomeGalleryTile[];
+  content?: HeadingLinkContent;
+}) {
+  const heading = content.heading || "Architectural Applications";
+  const ctaLabel = content.cta_label || "View All Applications →";
+  const ctaUrl = content.cta_url || "/applications";
   const sectionRef = useRef<HTMLElement>(null);
   const masonryRef = useRef<HTMLDivElement>(null);
 
@@ -38,11 +48,11 @@ export default function Applications({ tiles }: { tiles: HomeGalleryTile[] }) {
         <div className="home-heading-row">
           <div>
             <h2 className="home-heading">
-              Architectural Applications
+              {heading}
             </h2>
           </div>
-          <Link href="/applications" className="btn-pill btn-pill-ghost flex-shrink-0" style={{ textTransform: "none" }}>
-            View All Applications →
+          <Link href={ctaUrl} className="btn-pill btn-pill-ghost flex-shrink-0" style={{ textTransform: "none" }}>
+            {ctaLabel}
           </Link>
         </div>
 

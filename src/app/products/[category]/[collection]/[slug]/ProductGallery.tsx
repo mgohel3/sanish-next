@@ -15,16 +15,16 @@ export default function ProductGallery({
 
   return (
     <div className="lg:sticky lg:top-[100px]">
-      {/* Main image */}
+      {/* Main image — shown at its natural aspect ratio, never cropped */}
       <div
-        className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6] cursor-zoom-in group"
+        className="relative flex items-center justify-center overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06] cursor-zoom-in group p-3"
         onClick={() => setZoomed(true)}
       >
         <img
           key={active}
           src={images[active]}
           alt={name}
-          className="w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.03]"
+          className="max-h-[72vh] w-auto max-w-full object-contain rounded-lg transition-transform duration-500 group-hover:scale-[1.02]"
         />
         <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm text-white rounded-full px-3 py-1.5 text-[10.5px] font-medium tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -36,26 +36,28 @@ export default function ProductGallery({
       </div>
 
       {/* Thumbnails */}
-      <div className="grid grid-cols-4 gap-2.5">
-        {images.map((img, i) => (
-          <button
-            key={i}
-            onClick={() => setActive(i)}
-            className="aspect-square rounded-xl overflow-hidden transition-all duration-200"
-            style={{
-              border: i === active ? "2px solid #85addc" : "2px solid transparent",
-              opacity: i === active ? 1 : 0.6,
-              transform: i === active ? "scale(0.96)" : "scale(1)",
-            }}
-          >
-            <img
-              src={img}
-              alt={`${name} view ${i + 1}`}
-              className="w-full h-full object-cover"
-            />
-          </button>
-        ))}
-      </div>
+      {images.length > 1 && (
+        <div className="grid grid-cols-4 gap-2.5">
+          {images.map((img, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              className="aspect-square rounded-xl overflow-hidden bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06] transition-all duration-200"
+              style={{
+                border: i === active ? "2px solid #85addc" : "2px solid transparent",
+                opacity: i === active ? 1 : 0.6,
+                transform: i === active ? "scale(0.96)" : "scale(1)",
+              }}
+            >
+              <img
+                src={img}
+                alt={`${name} view ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Lightbox */}
       {zoomed && (

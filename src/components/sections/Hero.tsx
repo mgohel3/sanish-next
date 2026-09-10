@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import IconButton from "@/components/ui/IconButton";
+import type { HeroContent } from "@/lib/homepage";
 
 /* ─── Slide Data ─────────────────────────────────────────────── */
 /* Native aspect ratio of the slide images — used to size the right-side visual */
@@ -67,11 +68,11 @@ const allSlides = [
   },
 ];
 
-const slides = allSlides.filter((s) => !s.hidden);
+const DEFAULT_SLIDES = allSlides.filter((s) => !s.hidden);
 
 const SLIDE_DURATION = 6500;
 
-export default function Hero() {
+export default function Hero({ content }: { content?: HeroContent }) {
   const [current, setCurrent] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -82,7 +83,33 @@ export default function Hero() {
   const rafRef = useRef<number | null>(null);
   const startRef = useRef(Date.now());
 
-  const slide = slides[current];
+  // CMS slides carry text + images only; the per-slide colour styling
+  // (accent / bg / orbs) is reused from the built-in slide at the same index.
+  const slides = useMemo(() => {
+    const cmsSlides = content?.slides;
+    if (!cmsSlides || cmsSlides.length === 0) return DEFAULT_SLIDES;
+    return cmsSlides.map((s, i) => {
+      const style = DEFAULT_SLIDES[i % DEFAULT_SLIDES.length];
+      return {
+        id: i + 1,
+        image: s.image || style.image,
+        mobileImage: s.mobile_image || undefined,
+        tag: s.tag ?? "",
+        line1: s.line1 ?? "",
+        line2: s.line2 ?? "",
+        sub: s.sub ?? "",
+        accent: style.accent,
+        bg: style.bg,
+        orb1: style.orb1,
+        orb2: style.orb2,
+        imageOnly: !!s.image_only,
+        ctaLabel: s.cta_label || "Explore Collection",
+        ctaUrl: s.cta_url || "/collection",
+      };
+    });
+  }, [content?.slides]);
+
+  const slide = slides[current] ?? slides[0];
 
   /* ── Text In — line-mask reveal ── */
   const animIn = useCallback(() => {

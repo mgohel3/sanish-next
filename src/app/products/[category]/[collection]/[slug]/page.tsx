@@ -1,10 +1,16 @@
-import { getProductBySlug, getRelatedProducts, products, type Product } from "@/lib/products";
-import { notFound } from "next/navigation";
+import { products, type Product } from "@/lib/products";
+import {
+  fetchProductBySlug,
+  fetchRelatedProducts,
+  fetchProducts,
+  productHref,
+  toSlug,
+} from "@/lib/catalog";
+import { notFound, redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import ProductGallery from "./ProductGallery";
-import PageHero from "@/components/PageHero";
 import InquireButton from "@/components/InquireButton";
 
 /* ── Derived product metadata ────────────────────────────── */
@@ -38,17 +44,35 @@ function getDesignType(p: Product): string {
 
 /* ── Page ────────────────────────────────────────────────── */
 export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+  return products.map((p) => ({
+    category: toSlug(p.category) || "laminates",
+    collection: toSlug(p.collection) || "none",
+    slug: p.slug,
+  }));
 }
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = {
+  params: Promise<{ category: string; collection: string; slug: string }>;
+};
 
 export default async function ProductPage({ params }: Props) {
-  const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const { category, collection, slug } = await params;
+  const product = await fetchProductBySlug(slug);
   if (!product) notFound();
 
-  const related      = getRelatedProducts(product.relatedSlugs);
+  // Canonicalise the URL — keep /products/<category>/<collection>/<slug> honest.
+  const canonical = productHref(product);
+  if (`/products/${category}/${collection}/${slug}` !== canonical) {
+    redirect(canonical);
+  }
+
+  // Related = other products in the same category
+  const categorySlug = toSlug(product.category);
+  const sameCategory = await fetchProducts(categorySlug);
+  let related = sameCategory.filter((p) => p.slug !== product.slug).slice(0, 3);
+  if (related.length === 0) {
+    related = await fetchRelatedProducts(product.relatedSlugs).then((r) => r.slice(0, 3));
+  }
   const code         = `SL-${String(product.id).padStart(4, "0")}`;
   const productType  = getProductType(product);
   const surfaceCat   = getSurfaceCategory(product);
@@ -76,12 +100,6 @@ export default async function ProductPage({ params }: Props) {
   return (
     <main className="min-h-screen" style={{ backgroundColor: "var(--bg-primary)" }}>
       <Header />
-      <PageHero
-        eyebrow={`${product.collection} Collection`}
-        title={product.name}
-        image={product.images[0]}
-        description={product.shortDescription}
-      />
 
       {/* ── Breadcrumb ─────────────────────────────────── */}
       <div className="border-b" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
@@ -90,10 +108,14 @@ export default async function ProductPage({ params }: Props) {
             <Link href="/" className="hover:text-[#f39ba2] transition-colors">Home</Link>
             <span className="opacity-40">/</span>
             <Link href="/collection" className="hover:text-[#f39ba2] transition-colors">Collection</Link>
-            <span className="opacity-40">/</span>
-            <Link href="/collection" className="hover:text-[#f39ba2] transition-colors">
-              {product.collection}
-            </Link>
+            {product.collection && (
+              <>
+                <span className="opacity-40">/</span>
+                <Link href="/collection" className="hover:text-[#f39ba2] transition-colors">
+                  {product.collection}
+                </Link>
+              </>
+            )}
             <span className="opacity-40">/</span>
             <span style={{ color: "var(--text-primary)" }}>{product.name}</span>
           </nav>
@@ -240,8 +262,8 @@ export default async function ProductPage({ params }: Props) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {related.map((rp) => (
-                <Link key={rp.slug} href={`/products/${rp.slug}`} className="group block">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6]">
+                <Link key={rp.slug} href={productHref(rp)} className="group block">
+                  <div className="relative aspect-square overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06]">
                     <img src={rp.images[0]} alt={rp.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     {rp.badge && (
                       <span className="absolute top-3 left-3 text-[9px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full text-white"
@@ -254,7 +276,7 @@ export default async function ProductPage({ params }: Props) {
                     </div>
                   </div>
                   <h3 className="font-serif text-[19px] mb-1" style={{ color: "var(--text-primary)" }}>{rp.name}</h3>
-                  <p className="text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{rp.collection} · {rp.finish}</p>
+                  <p className="text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{[rp.collection, rp.finish].filter(Boolean).join(" · ")}</p>
                 </Link>
               ))}
             </div>

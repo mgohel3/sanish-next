@@ -1,18 +1,21 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback, type MouseEvent } from "react";
+import { useRef, useState, useEffect, useMemo, useCallback, type MouseEvent } from "react";
+import type { HorizontalShowcaseContent } from "@/lib/homepage";
 
-const collections = [
-  { name: "S'Shades", sub: "Premium Finishes", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Shades Collection.jpg", accent: "#fabf7d" },
-  { name: "Thre3", sub: "Exclusive Designs", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Thre3 Collection.jpg", accent: "#fabf7d" },
-  { name: "Perspective V4", sub: "Durable Series", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/Our Collections_0.8mm Collection.jpg", accent: "#fabf7d" },
-  { name: "Thermo", sub: "Weather Resistant", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/thermocollection.jpg", accent: "#fabf7d" },
+const ACCENT = "#fabf7d";
+
+const DEFAULT_COLLECTIONS = [
+  { name: "S'Shades", sub: "Premium Finishes", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Shades Collection.jpg", accent: ACCENT },
+  { name: "Thre3", sub: "Exclusive Designs", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Thre3 Collection.jpg", accent: ACCENT },
+  { name: "Perspective V4", sub: "Durable Series", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/Our Collections_0.8mm Collection.jpg", accent: ACCENT },
+  { name: "Thermo", sub: "Weather Resistant", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/thermocollection.jpg", accent: ACCENT },
   // TODO: temporary placeholder — swap for a real Louvers collection card/image once one exists.
-  { name: "Cool Colour", sub: "Modern Shades", category: "Louvers", image: "/assets/img/material/15-08-2026/Our Collections_Cool Colour Collection.jpg", accent: "#fabf7d" },
+  { name: "Cool Colour", sub: "Modern Shades", category: "Louvers", image: "/assets/img/material/15-08-2026/Our Collections_Cool Colour Collection.jpg", accent: ACCENT },
 ];
 
 // Louvers filter tab hidden for now — re-enable once a real Louvers collection exists.
-const filters = ["Laminates", "Thermo Laminates"];
+const DEFAULT_FILTERS = ["Laminates", "Thermo Laminates"];
 
 const AUTOPLAY_DELAY = 4000;
 const SCROLL_DURATION = 350; // ms — native "smooth" scroll drags on for large jumps, so we animate it ourselves
@@ -21,14 +24,36 @@ function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3);
 }
 
-// A clone of the first card is appended after the last one so autoplay can
-// keep scrolling forward past the end instead of snapping backward; once the
-// clone is reached we jump the scroll position back to the real first card
-// with no animation, invisibly, since the clone looks identical.
-const displayItems = [...collections, collections[0]];
-const CLONE_IDX = collections.length;
+export default function HorizontalShowcase({ content = {} }: { content?: HorizontalShowcaseContent }) {
+  const heading = content.heading || "Our Collections";
 
-export default function HorizontalShowcase() {
+  const collections = useMemo(() => {
+    if (content.collections && content.collections.length > 0) {
+      return content.collections.map((c) => ({
+        name: c.name || "",
+        sub: c.sub || "",
+        category: c.category || "",
+        image: c.image || "",
+        accent: ACCENT,
+      }));
+    }
+    return DEFAULT_COLLECTIONS;
+  }, [content.collections]);
+
+  const filters = useMemo(() => {
+    if (content.filters && content.filters.length > 0) {
+      return content.filters.map((f) => f.label || "").filter(Boolean);
+    }
+    return DEFAULT_FILTERS;
+  }, [content.filters]);
+
+  // A clone of the first card is appended after the last one so autoplay can
+  // keep scrolling forward past the end instead of snapping backward; once the
+  // clone is reached we jump the scroll position back to the real first card
+  // with no animation, invisibly, since the clone looks identical.
+  const displayItems = useMemo(() => [...collections, collections[0]], [collections]);
+  const CLONE_IDX = collections.length;
+
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const scrollAnimRef = useRef<number | null>(null);
@@ -137,7 +162,7 @@ export default function HorizontalShowcase() {
         {/* Header — title left-aligned, filter tabs centred */}
         <div className="mb-10">
           <h2 className="home-heading mb-6">
-            Our Collections
+            {heading}
           </h2>
 
           {/* Filter Tabs */}

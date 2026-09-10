@@ -42,7 +42,7 @@ const COMPANY = [
   { label: "Applications",   href: "/applications" },
   { label: "Rewards",        href: "/rewards" },
   { label: "Contact Us",     href: "/contact-us" },
-  { label: "Blog",           href: "#" },
+  { label: "Blog",           href: "/blog" },
 ];
 
 export default function FooterApple() {

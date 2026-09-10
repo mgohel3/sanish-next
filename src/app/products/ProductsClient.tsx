@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
-import { products, collections, finishes, colors, COLOR_SWATCH, type Product } from "@/lib/products";
+import { collections, finishes, colors, COLOR_SWATCH, type Product } from "@/lib/products";
 import PageHero from "@/components/PageHero";
+import { productHref } from "@/lib/catalog";
 import Button from "@/components/ui/Button";
 import IconButton from "@/components/ui/IconButton";
 
@@ -141,7 +142,7 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
               Enquire Now
             </Button>
           </div>
-          <Link href={`/products/${product.slug}`} className="mt-3 text-center text-[12px] font-semibold transition-opacity hover:opacity-60"
+          <Link href={productHref(product)} className="mt-3 text-center text-[12px] font-semibold transition-opacity hover:opacity-60"
             style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
             View Full Details →
           </Link>
@@ -152,7 +153,7 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
 }
 
 /* ── Main Client Component ───────────────────────────────── */
-export default function ProductsClient() {
+export default function ProductsClient({ products }: { products: Product[] }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -461,7 +462,7 @@ export default function ProductsClient() {
                 {filtered.map((product) => (
                   <div key={product.id} className="group block">
                     <div className="relative aspect-[4/5] mb-4 overflow-hidden rounded-2xl bg-[#f3f4f6]">
-                      <Link href={`/products/${product.slug}`} className="absolute inset-0 block w-full h-full z-0">
+                      <Link href={productHref(product)} className="absolute inset-0 block w-full h-full z-0">
                         <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       </Link>
                       <div className="absolute top-3.5 left-3.5 z-10 pointer-events-none">
@@ -479,7 +480,7 @@ export default function ProductsClient() {
                         </div>
                       )}
                       <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 z-10 pointer-events-none">
-                        <Button href={`/products/${product.slug}`} variant="light" size="sm" className="pointer-events-auto transform translate-y-3 group-hover:translate-y-0 transition-all duration-300">
+                        <Button href={productHref(product)} variant="light" size="sm" className="pointer-events-auto transform translate-y-3 group-hover:translate-y-0 transition-all duration-300">
                           View Product
                         </Button>
                         <div className="flex items-center gap-2 transform translate-y-3 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto" style={{ transitionDelay: "40ms" }}>
@@ -497,7 +498,7 @@ export default function ProductsClient() {
                         </div>
                       </div>
                     </div>
-                    <Link href={`/products/${product.slug}`} className="block">
+                    <Link href={productHref(product)} className="block">
                       <h3 className="text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors" style={{ color: "var(--text-primary)" }}>
                         {product.name}
                       </h3>

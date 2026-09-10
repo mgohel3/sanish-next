@@ -41,6 +41,7 @@ const COLLECTIONS = [
 const COMPANY = [
   { label: "About Us",       href: "/about-us" },
   { label: "Applications",   href: "/applications" },
+  { label: "Blog",           href: "/blog" },
   { label: "Rewards",        href: "/rewards" },
   { label: "Contact Us",     href: "/contact-us" },
 ];

@@ -2,36 +2,44 @@
 
 import { useState, useEffect, useRef } from "react";
 import IconButton from "@/components/ui/IconButton";
+import type { WhyUsContent } from "@/lib/homepage";
 
-const CARDS = [
+const DEFAULT_HEADING = "Built to Last. <em>Designed to Impress.</em>";
+
+const DEFAULT_CARDS = [
   {
     title: "ISI Certified",
     desc: "All our laminates conform to IS 2046 standards — guaranteed quality you can trust.",
-    icon: <img src="/assets/img/icon/why-us/isi-certified.svg" alt="" className="w-10 h-10" />,
+    icon: "/assets/img/icon/why-us/isi-certified.svg",
   },
   {
     title: "Scratch Resistant",
     desc: "Our laminate surface is engineered to resist everyday scratches, scuffs, and abrasions.",
-    icon: <img src="/assets/img/icon/why-us/scratch-resistant.svg" alt="" className="w-10 h-10" />,
+    icon: "/assets/img/icon/why-us/scratch-resistant.svg",
   },
   {
     title: "Moisture Proof",
     desc: "Formulated to withstand humid environments — perfect for kitchens and bathrooms.",
-    icon: <img src="/assets/img/icon/why-us/moisture-proof.svg" alt="" className="w-10 h-10" />,
+    icon: "/assets/img/icon/why-us/moisture-proof.svg",
   },
   {
     title: "Fire Retardant",
     desc: "Formulated with fire-retardant properties for added safety in commercial applications.",
-    icon: <img src="/assets/img/icon/why-us/fire-retardant.svg" alt="" className="w-10 h-10" />,
+    icon: "/assets/img/icon/why-us/fire-retardant.svg",
   },
   {
     title: "Easy to Clean",
     desc: "Stain-resistant topcoat — a simple wipe is all it takes to restore a pristine finish.",
-    icon: <img src="/assets/img/icon/why-us/easy-to-clean.svg" alt="" className="w-10 h-10" />,
+    icon: "/assets/img/icon/why-us/easy-to-clean.svg",
   },
 ];
 
-export default function WhyUsCarousel() {
+export default function WhyUsCarousel({ content = {} }: { content?: WhyUsContent }) {
+  const heading = content.heading || DEFAULT_HEADING;
+  const CARDS =
+    content.cards && content.cards.length > 0
+      ? content.cards.map((c) => ({ title: c.title || "", desc: c.desc || "", icon: c.icon || "" }))
+      : DEFAULT_CARDS;
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
   const paused = useRef(false);
@@ -83,9 +91,7 @@ export default function WhyUsCarousel() {
         {/* Header */}
         <div className="home-heading-row">
           <div>
-            <h2 className="home-heading">
-              Built to Last. <em>Designed to Impress.</em>
-            </h2>
+            <h2 className="home-heading" dangerouslySetInnerHTML={{ __html: heading }} />
           </div>
 
           {/* Nav arrows */}
@@ -117,7 +123,7 @@ export default function WhyUsCarousel() {
                 className="shrink-0 p-8 bg-white border border-[var(--color-border-subtle)] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(30,30,46,0.06)] transition-all duration-300"
                 style={{ width: cardWidth, borderRadius: "24px" }}>
                 <div className="w-12 h-12 flex items-center justify-center mb-6">
-                  {card.icon}
+                  {card.icon ? <img src={card.icon} alt="" className="w-10 h-10" /> : null}
                 </div>
                 <h3 className="text-[17px] font-semibold text-[var(--text-primary)] mb-3">
                   {card.title}

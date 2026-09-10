@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button";
 import StoreBadges from "@/components/ui/StoreBadges";
+import type { RewardsContent } from "@/lib/homepage";
 
 const PERKS = [
   { label: "Earn Points",       desc: "Earn reward points on every purchase of Sanish products.",        icon: "/assets/img/icon/rewards-earn-points.svg" },
@@ -8,7 +9,22 @@ const PERKS = [
   { label: "Easy Redemption",   desc: "Redeem points instantly for cash discounts on your next order.",   icon: "/assets/img/icon/rewards-easy-redemption.svg" },
 ];
 
-export default function RewardsHighlight() {
+const DEFAULT_REWARDS = {
+  heading: "S'Rewards App",
+  body: "Join thousands of carpenters and contractors already earning with Sanish. Download the S'Rewards app and start turning every purchase into points, gifts, and cash rewards.",
+  cta_label: "Learn more about the programme →",
+  cta_url: "/rewards",
+};
+
+export default function RewardsHighlight({ content = {} }: { content?: RewardsContent }) {
+  const heading = content.heading || DEFAULT_REWARDS.heading;
+  const body = content.body || DEFAULT_REWARDS.body;
+  const ctaLabel = content.cta_label || DEFAULT_REWARDS.cta_label;
+  const ctaUrl = content.cta_url || DEFAULT_REWARDS.cta_url;
+  const perks =
+    content.perks && content.perks.length > 0
+      ? content.perks.map((p) => ({ label: p.label || "", desc: p.desc || "", icon: p.icon || "" }))
+      : PERKS;
   return (
     <section className="home-section--compact relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #F3F4F6 100%)" }}>
       {/* Subtle gradient blobs */}
@@ -23,16 +39,16 @@ export default function RewardsHighlight() {
           {/* Left — Content */}
           <div>
             <h2 className="home-heading mb-5">
-              S&apos;Rewards App
+              {heading}
             </h2>
             <p className="text-[15px] leading-[1.8] mb-8 max-w-lg"
               style={{ color: "var(--text-secondary)", fontFamily: "var(--font-jakarta)" }}>
-              Join thousands of carpenters and contractors already earning with Sanish. Download the S&apos;Rewards app and start turning every purchase into points, gifts, and cash rewards.
+              {body}
             </p>
 
             {/* Perks grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-              {PERKS.map((perk) => (
+              {perks.map((perk) => (
                 <div key={perk.label} className="p-5 rounded-[18px]"
                   style={{ backgroundColor: "#FFFFFF", border: "1px solid var(--color-border-subtle)", boxShadow: "0 16px 40px rgba(30,30,46,0.04)" }}>
                   <img src={perk.icon} alt="" className="w-8 h-8 mb-3" />
@@ -49,8 +65,8 @@ export default function RewardsHighlight() {
             {/* CTA */}
             <div className="flex flex-wrap items-center gap-4">
               <StoreBadges size="md" />
-              <Button href="/rewards" variant="ghost" size="sm">
-                Learn more about the programme →
+              <Button href={ctaUrl} variant="ghost" size="sm">
+                {ctaLabel}
               </Button>
             </div>
 
