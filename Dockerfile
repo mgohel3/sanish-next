@@ -24,5 +24,8 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
 COPY --from=build /app/next.config.ts ./next.config.ts
+# next.config.ts imports this at runtime (redirects()), so it must exist in the
+# runtime image too — `next start` re-loads the config outside the .next bundle.
+COPY --from=build /app/src/legacy-blog-redirects.json ./src/legacy-blog-redirects.json
 EXPOSE 3000
 CMD ["npm", "start"]
