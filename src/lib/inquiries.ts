@@ -8,6 +8,7 @@ export interface InquiryPayload {
   message?: string;
   city?: string;
   source_page?: string;
+  recaptcha_token?: string | null;
 }
 
 export async function submitInquiry(payload: InquiryPayload): Promise<boolean> {
@@ -24,6 +25,7 @@ export async function submitInquiry(payload: InquiryPayload): Promise<boolean> {
         message: payload.message || "",
         city: payload.city || "",
         source_page: payload.source_page || (typeof window !== "undefined" ? window.location.pathname : ""),
+        recaptcha_token: payload.recaptcha_token || "",
       }),
     });
     return res.ok;

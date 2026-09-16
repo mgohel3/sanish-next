@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import IconButton from "@/components/ui/IconButton";
+import Lightbox from "@/components/ui/Lightbox";
 
 export default function ProductGallery({
   images,
@@ -61,27 +61,7 @@ export default function ProductGallery({
 
       {/* Lightbox */}
       {zoomed && (
-        <div
-          className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/85 backdrop-blur-sm"
-          onClick={() => setZoomed(false)}
-        >
-          <img
-            src={images[active]}
-            alt={name}
-            className="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          />
-          <IconButton
-            variant="glass"
-            aria-label="Close"
-            className="absolute top-6 right-6"
-            onClick={() => setZoomed(false)}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
-          </IconButton>
-        </div>
+        <Lightbox src={images[active]} alt={name} onClose={() => setZoomed(false)} />
       )}
     </div>
   );

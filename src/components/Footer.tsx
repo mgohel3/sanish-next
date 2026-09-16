@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { useSiteSettings } from "@/components/SiteSettingsProvider";
+import { useSiteSettings, useNavData } from "@/components/SiteSettingsProvider";
 import BrandMonogram from "@/components/BrandMonogram";
 import IconButton from "@/components/ui/IconButton";
 import StoreBadges from "@/components/ui/StoreBadges";
@@ -42,13 +42,19 @@ const COMPANY = [
   { label: "About Us",       href: "/about-us" },
   { label: "Applications",   href: "/applications" },
   { label: "Blog",           href: "/blog" },
+  { label: "FAQs",           href: "/faq" },
   { label: "Rewards",        href: "/rewards" },
   { label: "Contact Us",     href: "/contact-us" },
 ];
 
 export default function Footer() {
   const settings = useSiteSettings();
+  const nav = useNavData();
   const { social, footer } = settings;
+
+  const companyLinks = nav.navLinks.footer_company.length > 0
+    ? nav.navLinks.footer_company.map((l) => ({ label: l.label, href: l.url, newTab: l.open_new_tab }))
+    : COMPANY.map((c) => ({ label: c.label, href: c.href, newTab: false }));
 
   const socialLinks = [
     { href: social.facebook  || "#", icon: ICON_FACEBOOK,  label: "Facebook" },
@@ -120,8 +126,9 @@ export default function Footer() {
           <div>
             <h4 className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Company</h4>
             <div className="flex flex-col gap-2">
-              {COMPANY.map((c) => (
-                <Link key={c.href} href={c.href}
+              {companyLinks.map((c) => (
+                <Link key={c.href} href={c.href} target={c.newTab ? "_blank" : undefined}
+                  rel={c.newTab ? "noopener noreferrer" : undefined}
                   className="text-[15px] text-[var(--text-secondary)] hover:text-[var(--accent-blue)] hover:pl-1.5 transition-all">
                   {c.label}
                 </Link>

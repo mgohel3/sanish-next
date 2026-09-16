@@ -3,6 +3,9 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import { submitInquiry, type InquiryType } from "@/lib/inquiries";
+import { useSiteSettings } from "@/components/SiteSettingsProvider";
+import { getRecaptchaV3Token } from "@/lib/recaptcha";
+import RecaptchaCheckbox from "@/components/RecaptchaCheckbox";
 
 const COLLECTION_LABELS: Record<string, string> = {
   sshades: "S'Shades Premium",
@@ -29,6 +32,8 @@ export default function CollectionInquiryForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [v2Token, setV2Token] = useState<string | null>(null);
+  const { recaptcha } = useSiteSettings();
 
   if (submitted) {
     return (
@@ -53,6 +58,18 @@ export default function CollectionInquiryForm() {
       onSubmit={async (e) => {
         e.preventDefault();
         setSubmitError(false);
+
+        let recaptchaToken: string | null = null;
+        if (recaptcha.version === "v3") {
+          recaptchaToken = await getRecaptchaV3Token(recaptcha.site_key, "submit_collection_inquiry");
+        } else if (recaptcha.version === "v2") {
+          if (!v2Token) {
+            setSubmitError(true);
+            return;
+          }
+          recaptchaToken = v2Token;
+        }
+
         setSubmitting(true);
         const ok = await submitInquiry({
           name: form.name,
@@ -64,6 +81,7 @@ export default function CollectionInquiryForm() {
             form.purpose ? `Purpose: ${PURPOSE_LABELS[form.purpose] || form.purpose}` : "",
             form.message,
           ].filter(Boolean).join("\n"),
+          recaptcha_token: recaptchaToken,
         });
         setSubmitting(false);
         if (!ok) {
@@ -138,6 +156,10 @@ export default function CollectionInquiryForm() {
           className="w-full px-4 py-3 rounded-xl border border-[var(--color-border-subtle)] bg-white text-[14px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-blue)] transition-colors resize-none"
           style={{ fontFamily: "var(--font-jakarta)" }} />
       </div>
+
+      {recaptcha.version === "v2" && (
+        <RecaptchaCheckbox siteKey={recaptcha.site_key} onVerify={setV2Token} />
+      )}
 
       {submitError && (
         <p className="text-[13px]" style={{ color: "#d64545", fontFamily: "var(--font-jakarta)" }}>

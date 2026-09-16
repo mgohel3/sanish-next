@@ -6,6 +6,7 @@ import PageHero from "@/components/PageHero";
 import BlogSidebar from "@/components/blog/BlogSidebar";
 import RelatedPosts from "@/components/blog/RelatedPosts";
 import ShareButtons from "@/components/blog/ShareButtons";
+import BlogFaqAccordion from "@/components/blog/BlogFaqAccordion";
 import {
   fetchBlogPosts,
   fetchBlogPostBySlug,
@@ -32,11 +33,11 @@ export async function generateMetadata({ params }: Props) {
   if (!post) return {};
   return {
     title: `${post.seoTitle || post.title} | Sanish Laminates`,
-    description: post.metaDescription || undefined,
+    description: post.metaDescription || post.excerpt || undefined,
     keywords: post.metaKeywords || undefined,
     openGraph: {
       title: post.seoTitle || post.title,
-      description: post.metaDescription || undefined,
+      description: post.metaDescription || post.excerpt || undefined,
       images: post.image ? [{ url: post.image }] : undefined,
       type: "article",
     },
@@ -55,6 +56,11 @@ export default async function BlogPostPage({ params }: Props) {
 
   const body = (
     <>
+      <h1 className="blog-post-title">{post.title}</h1>
+      {(post.excerpt || post.metaDescription) && (
+        <p className="blog-post-description">{post.excerpt || post.metaDescription}</p>
+      )}
+
       {/* meta row */}
       <div
         className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.14em] mb-8"
@@ -72,6 +78,8 @@ export default async function BlogPostPage({ params }: Props) {
         className="blog-content"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
+
+      {post.faqs.length > 0 && <BlogFaqAccordion faqs={post.faqs} />}
 
       {post.tags.length > 0 && (
         <div className="mt-12 flex flex-wrap gap-2">
@@ -132,13 +140,30 @@ export default async function BlogPostPage({ params }: Props) {
         title={post.title}
         image={post.image || FALLBACK_HERO}
         imageFill
-        description={post.metaDescription || undefined}
+        breadcrumbOnly
         breadcrumb={[
           { label: "Home", href: "/" },
           { label: "Blog", href: "/blog" },
           { label: post.title },
         ]}
       />
+
+      {post.autoFaqSchema && post.faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: post.faqs.map((f) => ({
+                "@type": "Question",
+                name: f.question,
+                acceptedAnswer: { "@type": "Answer", text: f.answer },
+              })),
+            }),
+          }}
+        />
+      )}
 
       <div className="home-section bg-[var(--bg-primary)]">
         {withSidebar ? (

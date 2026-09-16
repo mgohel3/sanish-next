@@ -52,10 +52,16 @@ export interface BlogPostSummary {
   id: number;
   title: string;
   slug: string;
+  excerpt: string;
   image: string | null;
   imageAlt: string;
   categories: BlogCategory[];
   date: string; // ISO — published_at ?? created
+}
+
+export interface BlogFaq {
+  question: string;
+  answer: string;
 }
 
 export interface BlogPost extends BlogPostSummary {
@@ -70,6 +76,8 @@ export interface BlogPost extends BlogPostSummary {
   metaDescription: string;
   metaKeywords: string;
   updated: string;
+  faqs: BlogFaq[];
+  autoFaqSchema: boolean;
 }
 
 /* ── API shapes ──────────────────────────────────────────── */
@@ -79,6 +87,7 @@ interface ApiPostList {
   id: number;
   title: string;
   slug: string;
+  excerpt?: string;
   image: string | null;
   featured_image: ApiImage;
   categories: BlogCategory[];
@@ -99,6 +108,8 @@ interface ApiPostDetail extends ApiPostList {
   meta_description: string;
   meta_keywords: string;
   updated: string;
+  faqs?: { question: string; answer: string }[];
+  auto_faq_schema?: boolean;
 }
 
 /* ── mapping ─────────────────────────────────────────────── */
@@ -113,6 +124,7 @@ function mapSummary(raw: ApiPostList): BlogPostSummary {
     id: raw.id,
     title: raw.title,
     slug: raw.slug,
+    excerpt: raw.excerpt || "",
     image: imgUrl(raw),
     imageAlt: raw.featured_image?.alt_text || raw.title,
     categories: raw.categories || [],
@@ -136,6 +148,8 @@ function mapDetail(raw: ApiPostDetail): BlogPost {
     metaDescription: raw.meta_description || "",
     metaKeywords: raw.meta_keywords || "",
     updated: raw.updated,
+    faqs: raw.faqs || [],
+    autoFaqSchema: raw.auto_faq_schema || false,
   };
 }
 

@@ -6,12 +6,13 @@ import CatalogueImageGrid from "@/components/sections/CatalogueImageGrid";
 import { getGalleryCatalogues, getCatalogueBySlug } from "@/lib/gallery";
 
 export async function generateStaticParams() {
-  return getGalleryCatalogues().map((c) => ({ catalogue: c.slug }));
+  const catalogues = await getGalleryCatalogues();
+  return catalogues.map((c) => ({ catalogue: c.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ catalogue: string }> }) {
   const { catalogue: slug } = await params;
-  const catalogue = getCatalogueBySlug(slug);
+  const catalogue = await getCatalogueBySlug(slug);
   if (!catalogue) return {};
   return {
     title: `${catalogue.name} — Design Gallery | Sanish Laminates`,
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ catalogue
 
 export default async function CatalogueGalleryPage({ params }: { params: Promise<{ catalogue: string }> }) {
   const { catalogue: slug } = await params;
-  const catalogue = getCatalogueBySlug(slug);
+  const catalogue = await getCatalogueBySlug(slug);
   if (!catalogue) notFound();
 
   return (

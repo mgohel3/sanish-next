@@ -18,12 +18,19 @@ const CATALOGUE_PDF_FILES: Record<string, string> = {
   "thermo":       "thermo.pdf",
 };
 
-export function openCataloguePdfPopup(slug: string, name: string) {
+/**
+ * `cmsUrl`, when given (a `Collection.pdf_catalog` URL from the CMS Media
+ * Library — see `fetchCollections()` / `findCollectionPdfUrl()` in
+ * `./catalog`), takes priority over the bundled static file so uploading a
+ * new PDF in the CMS updates the download without a code change/redeploy.
+ */
+export function openCataloguePdfPopup(slug: string, name: string, cmsUrl?: string) {
   const pdf = CATALOGUE_PDF_FILES[slug];
+  const downloadUrl = cmsUrl || (pdf ? `/assets/pdf/collections/${pdf}` : undefined);
   window.dispatchEvent(new CustomEvent("open-inquiry-popup", {
     detail: {
       downloadAfterSubmit: true,
-      downloadUrl: pdf ? `/assets/pdf/collections/${pdf}` : undefined,
+      downloadUrl,
       downloadFilename: `Sanish-${name.replace(/[^a-zA-Z0-9]+/g, "-")}-Catalogue.pdf`,
     },
   }));

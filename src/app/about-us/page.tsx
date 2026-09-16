@@ -1,13 +1,28 @@
 /* eslint-disable react/no-unescaped-entities, @next/next/no-img-element */
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AboutParallaxHero from "@/components/AboutParallaxHero";
 import AboutMissionSection from "@/components/sections/AboutMissionSection";
+import PageBlocks from "@/components/PageBlockRenderer";
+import { getSitePage } from "@/lib/pages";
 
 export const metadata = {
   title: "About Us | Sanish Laminates",
   description: "Best Laminate Company in India. Innovation and Design.",
 };
+
+export default async function AboutUsPage() {
+  const page = await getSitePage("about-us");
+
+  return (
+    <main style={{ backgroundColor: "var(--bg-primary)" }}>
+      <Header />
+      {page && page.sections.length > 0 ? <PageBlocks sections={page.sections} /> : <StaticAboutUs />}
+      <Footer />
+    </main>
+  );
+}
 
 const CERTS = [
   {
@@ -26,10 +41,10 @@ const CERTS = [
   },
 ];
 
-export default function AboutUsPage() {
+/** Original hard-coded layout — shown when the CMS about-us page has no sections yet. */
+function StaticAboutUs() {
   return (
-    <main style={{ backgroundColor: "var(--bg-primary)" }}>
-      <Header />
+    <>
       <AboutParallaxHero />
 
       {/* ── Innovation & Design ── */}
@@ -140,14 +155,12 @@ export default function AboutUsPage() {
               Whether you're an architect working on a large-scale project or a homeowner looking for the perfect finish, our team is here to assist you with expert advice.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="/contact-us" className="btn-pill btn-pill-primary">Contact Our Team</a>
-              <a href="/collection" className="btn-pill btn-pill-ghost">Explore Collection</a>
+              <Link href="/contact-us" className="btn-pill btn-pill-primary">Contact Our Team</Link>
+              <Link href="/collection" className="btn-pill btn-pill-ghost">Explore Collection</Link>
             </div>
           </div>
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </>
   );
 }

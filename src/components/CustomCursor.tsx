@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
 export default function CustomCursor() {
+  const pathname = usePathname();
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
@@ -81,6 +83,8 @@ export default function CustomCursor() {
       clearTimeout(t);
     };
   }, []);
+
+  if (pathname?.startsWith("/cms-preview")) return null;
 
   return (
     <>

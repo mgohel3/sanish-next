@@ -69,8 +69,47 @@ function extractProductId(filenameNoExt: string): string {
   return match ? match[0] : filenameNoExt;
 }
 
-/** Returns catalogues discovered by the build-time gallery manifest generator. */
-export function getGalleryCatalogues(): GalleryCatalogue[] {
+/**
+ * Live catalogues from the CMS (`GET /api/gallery/catalogues/`) — the
+ * `gallery` Django app, seeded from the exact same files this manifest used
+ * to read from disk, now add/remove/reorder-able from `/cms/gallery/`
+ * without touching the file system. Falls back to the on-disk manifest
+ * below if the API is ever unreachable, so nothing regresses.
+ */
+async function fetchApiCatalogues(): Promise<GalleryCatalogue[] | null> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+  try {
+    const res = await fetch(`${apiUrl}/gallery/catalogues/`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as GalleryCatalogue[];
+    if (!Array.isArray(data) || data.length === 0) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function sortCatalogues(catalogues: GalleryCatalogue[]): GalleryCatalogue[] {
+  return [...catalogues].sort((a, b) => {
+    const ai = CATALOGUE_ORDER.indexOf(a.slug);
+    const bi = CATALOGUE_ORDER.indexOf(b.slug);
+    if (ai === -1 && bi === -1) return a.slug.localeCompare(b.slug);
+    if (ai === -1) return 1;
+    if (bi === -1) return -1;
+    return ai - bi;
+  });
+}
+
+export async function getGalleryCatalogues(): Promise<GalleryCatalogue[]> {
+  const apiCatalogues = await fetchApiCatalogues();
+  if (apiCatalogues) return sortCatalogues(apiCatalogues);
+  return getStaticGalleryCatalogues();
+}
+
+/** Original on-disk-manifest reader — kept as the fallback source. */
+function getStaticGalleryCatalogues(): GalleryCatalogue[] {
   const catalogues: GalleryCatalogue[] = galleryManifest.map(({ slug, files }) => {
     // A file literally named "cover.<ext>" (case-insensitive) is the catalogue's
     // chosen thumbnail for the tile grid — not a product, so it's excluded from
@@ -107,12 +146,13 @@ export function getGalleryCatalogues(): GalleryCatalogue[] {
     });
 }
 
-export function getCatalogueBySlug(slug: string): GalleryCatalogue | undefined {
-  return getGalleryCatalogues().find((c) => c.slug === slug);
+export async function getCatalogueBySlug(slug: string): Promise<GalleryCatalogue | undefined> {
+  const catalogues = await getGalleryCatalogues();
+  return catalogues.find((c) => c.slug === slug);
 }
 
-export function getGalleryImage(catalogueSlug: string, id: string) {
-  const catalogue = getCatalogueBySlug(catalogueSlug);
+export async function getGalleryImage(catalogueSlug: string, id: string) {
+  const catalogue = await getCatalogueBySlug(catalogueSlug);
   const image = catalogue?.images.find((img) => img.id === id);
   return catalogue && image ? { catalogue, image } : null;
 }
@@ -138,8 +178,8 @@ function shuffle<T>(arr: T[]): T[] {
  * populated catalogue first (so all catalogues stay represented), then
  * filled up to `count` from the remaining pool. Picked fresh per build.
  */
-export function getRandomGalleryTiles(count = 5): HomeGalleryTile[] {
-  const catalogues = getGalleryCatalogues();
+export async function getRandomGalleryTiles(count = 5): Promise<HomeGalleryTile[]> {
+  const catalogues = await getGalleryCatalogues();
   const toTile = (c: GalleryCatalogue, img: GalleryImage): HomeGalleryTile => ({
     catalogueSlug: c.slug,
     catalogueName: c.name,

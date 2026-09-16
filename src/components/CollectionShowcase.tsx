@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import { openCataloguePdfPopup } from "@/lib/cataloguePdf";
+import { fetchCollections, findCollectionPdfUrl, type CollectionMeta } from "@/lib/catalog";
 
 const COLLECTIONS = [
   {
@@ -71,11 +73,17 @@ function openInquiryPopup() {
   window.dispatchEvent(new CustomEvent("open-inquiry-popup", { detail: { downloadAfterSubmit: false } }));
 }
 
-function openCataloguePopup(col: (typeof COLLECTIONS)[number]) {
-  openCataloguePdfPopup(col.slug, col.name);
+function openCataloguePopup(col: (typeof COLLECTIONS)[number], cmsCollections: CollectionMeta[]) {
+  openCataloguePdfPopup(col.slug, col.name, findCollectionPdfUrl(col.name, cmsCollections));
 }
 
 export default function CollectionShowcase() {
+  const [cmsCollections, setCmsCollections] = useState<CollectionMeta[]>([]);
+
+  useEffect(() => {
+    fetchCollections().then(setCmsCollections);
+  }, []);
+
   return (
     <div className="flex flex-col">
       {COLLECTIONS.map((col, i) => {
@@ -145,7 +153,7 @@ export default function CollectionShowcase() {
                         <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </Button>
-                    <Button type="button" variant="ghost" onClick={() => openCataloguePopup(col)}>
+                    <Button type="button" variant="ghost" onClick={() => openCataloguePopup(col, cmsCollections)}>
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" strokeLinecap="round" strokeLinejoin="round"/>
                         <polyline points="7 10 12 15 17 10" strokeLinecap="round" strokeLinejoin="round"/>

@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
+import PageBlocks from "@/components/PageBlockRenderer";
+import { getSitePage } from "@/lib/pages";
 
 export const metadata = {
   title: "Terms & Conditions | Sanish Laminates",
@@ -81,10 +83,22 @@ const SECTIONS: { heading: string; body: string[] }[] = [
   },
 ];
 
-export default function TermsConditionsPage() {
+export default async function TermsConditionsPage() {
+  const page = await getSitePage("terms-conditions");
+
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
       <Header />
+      {page && page.sections.length > 0 ? <PageBlocks sections={page.sections} /> : <StaticTermsConditions />}
+      <Footer />
+    </main>
+  );
+}
+
+/** Original hard-coded layout — shown when the CMS page has no sections yet. */
+function StaticTermsConditions() {
+  return (
+    <>
       <PageHero
         eyebrow="Legal"
         title="Terms & Conditions"
@@ -112,8 +126,6 @@ export default function TermsConditionsPage() {
           ))}
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </>
   );
 }

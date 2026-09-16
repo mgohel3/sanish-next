@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const BG   = "#2C3E50";
 const ON   = "#F5F2EE";
 const ACC  = "#C4916A";
@@ -30,14 +32,14 @@ export default function Home2Process() {
               style={{ color: "rgba(245,242,238,0.75)", fontFamily: "var(--font-heebo)" }}>
               Sanish Laminates are high-pressure decorative laminates (HPDL) manufactured in our state-of-the-art plant using a multi-step process that ensures consistency across every batch.
             </p>
-            <a href="/about-us"
+            <Link href="/about-us"
               className="inline-flex items-center gap-2 text-[13px] font-medium transition-opacity hover:opacity-75"
               style={{ color: ACC, fontFamily: "var(--font-heebo)" }}>
               About Our Manufacturing
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </a>
+            </Link>
           </div>
 
           {/* Right — steps */}

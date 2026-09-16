@@ -20,6 +20,19 @@ export interface SiteSettingsFooter {
   newsletter_text: string;
 }
 
+export interface SiteSettingsAnalytics {
+  ga4_id: string;
+  gtm_id: string;
+  fb_pixel_id: string;
+  clarity_id: string;
+  gsc_verification: string;
+}
+
+export interface SiteSettingsRecaptcha {
+  version: "off" | "v2" | "v3";
+  site_key: string;
+}
+
 export interface SiteSettings {
   site_name: string;
   tagline: string;
@@ -43,6 +56,8 @@ export interface SiteSettings {
   social: SiteSettingsSocial;
   header: SiteSettingsHeader;
   footer: SiteSettingsFooter;
+  analytics: SiteSettingsAnalytics;
+  recaptcha: SiteSettingsRecaptcha;
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
@@ -86,6 +101,17 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
     newsletter_text:
       "Subscribe for new collections, design inspiration, and exclusive dealer offers.",
   },
+  analytics: {
+    ga4_id: "",
+    gtm_id: "",
+    fb_pixel_id: "",
+    clarity_id: "",
+    gsc_verification: "",
+  },
+  recaptcha: {
+    version: "off",
+    site_key: "",
+  },
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {
@@ -103,7 +129,9 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     for (const key of Object.keys(social) as (keyof SiteSettingsSocial)[]) {
       if (fetched.social?.[key]) social[key] = fetched.social[key];
     }
-    return { ...fetched, social };
+    const analytics = { ...DEFAULT_SITE_SETTINGS.analytics, ...fetched.analytics };
+    const recaptcha = { ...DEFAULT_SITE_SETTINGS.recaptcha, ...fetched.recaptcha };
+    return { ...fetched, social, analytics, recaptcha };
   } catch {
     return DEFAULT_SITE_SETTINGS;
   }

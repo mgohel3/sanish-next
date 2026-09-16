@@ -2,10 +2,14 @@ import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductsClient from "./ProductsClient";
-import { fetchProducts } from "@/lib/catalog";
+import { fetchProducts, fetchCategories, fetchCollections } from "@/lib/catalog";
 
 export default async function ProductsPage() {
-  const items = await fetchProducts();
+  const [items, categories, collections] = await Promise.all([
+    fetchProducts(),
+    fetchCategories(),
+    fetchCollections(),
+  ]);
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }} className="min-h-screen">
       <Header />
@@ -14,7 +18,7 @@ export default async function ProductsPage() {
           Loading products…
         </div>
       }>
-        <ProductsClient products={items} />
+        <ProductsClient products={items} categories={categories} collections={collections} />
       </Suspense>
       <Footer />
     </main>

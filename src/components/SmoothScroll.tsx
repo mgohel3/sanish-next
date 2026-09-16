@@ -34,7 +34,17 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     ScrollTrigger.addEventListener("refresh", onRefresh);
     ScrollTrigger.refresh();
 
+    // Document height can change after Lenis has already measured it — filtering
+    // a product grid, images finishing their load, etc. Watch <body> and
+    // re-measure whenever its size changes, instead of relying on fixed delays.
+    const resizeObserver = new ResizeObserver(() => {
+      lenis.resize();
+      ScrollTrigger.refresh();
+    });
+    resizeObserver.observe(document.body);
+
     return () => {
+      resizeObserver.disconnect();
       ScrollTrigger.removeEventListener("refresh", onRefresh);
       lenis.destroy();
       gsap.ticker.remove(tick);

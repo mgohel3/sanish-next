@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import BlockBackground from "@/components/BlockBackground";
 import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -12,6 +13,13 @@ import CTA from "@/components/sections/CTA";
 import RichTextBlock from "@/components/sections/blocks/RichTextBlock";
 import ImageTextBlock from "@/components/sections/blocks/ImageTextBlock";
 import CtaBannerBlock from "@/components/sections/blocks/CtaBannerBlock";
+import TestimonialsBlock from "@/components/sections/blocks/TestimonialsBlock";
+import GalleryBlock from "@/components/sections/blocks/GalleryBlock";
+import TeamBlock from "@/components/sections/blocks/TeamBlock";
+import PricingBlock from "@/components/sections/blocks/PricingBlock";
+import StatsBlock from "@/components/sections/blocks/StatsBlock";
+import LogosStripBlock from "@/components/sections/blocks/LogosStripBlock";
+import VideoEmbedBlock from "@/components/sections/blocks/VideoEmbedBlock";
 import Footer from "@/components/Footer";
 import { getRandomGalleryTiles } from "@/lib/gallery";
 import { getHomeSections, type HomeSectionData } from "@/lib/homepage";
@@ -19,7 +27,7 @@ import { getHomeSections, type HomeSectionData } from "@/lib/homepage";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default async function Home() {
-  const applicationTiles = getRandomGalleryTiles(5);
+  const applicationTiles = await getRandomGalleryTiles(5);
   const sections = await getHomeSections();
 
   // Registry: CMS block_type → rendered section. Unknown types are skipped.
@@ -36,6 +44,13 @@ export default async function Home() {
     rich_text: (c) => <RichTextBlock content={c} />,
     image_text: (c) => <ImageTextBlock content={c} />,
     cta_banner: (c) => <CtaBannerBlock content={c} />,
+    testimonials: (c) => <TestimonialsBlock content={c} />,
+    gallery: (c) => <GalleryBlock content={c} />,
+    team: (c) => <TeamBlock content={c} />,
+    pricing: (c) => <PricingBlock content={c} />,
+    stats: (c) => <StatsBlock content={c} />,
+    logos_strip: (c) => <LogosStripBlock content={c} />,
+    video_embed: (c) => <VideoEmbedBlock content={c} />,
   };
 
   return (
@@ -45,7 +60,11 @@ export default async function Home() {
         sections.map((s: HomeSectionData, i) => {
           const render = registry[s.block_type];
           if (!render) return null;
-          return <Fragment key={`${s.block_type}-${i}`}>{render(s.content)}</Fragment>;
+          return (
+            <Fragment key={`${s.block_type}-${i}`}>
+              <BlockBackground content={s.content}>{render(s.content)}</BlockBackground>
+            </Fragment>
+          );
         })
       ) : (
         <StaticHome tiles={applicationTiles} />
@@ -56,7 +75,7 @@ export default async function Home() {
 }
 
 /** Original hard-coded layout — shown when the CMS home API is unavailable. */
-function StaticHome({ tiles }: { tiles: ReturnType<typeof getRandomGalleryTiles> }) {
+function StaticHome({ tiles }: { tiles: Awaited<ReturnType<typeof getRandomGalleryTiles>> }) {
   return (
     <>
       <Hero />

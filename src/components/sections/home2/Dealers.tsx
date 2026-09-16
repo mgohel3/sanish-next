@@ -34,7 +34,7 @@ export default function Home2Dealers() {
             </h2>
             <p className="text-[15px] leading-[1.75] mb-8"
               style={{ color: C.textS, fontFamily: "var(--font-heebo)" }}>
-              With a growing network spanning 15 states, Sanish Laminates is accessible to contractors, interior designers, and homeowners everywhere. Become an authorised dealer and join India's fastest-growing laminate brand.
+              With a growing network spanning 15 states, Sanish Laminates is accessible to contractors, interior designers, and homeowners everywhere. Become an authorised dealer and join India&apos;s fastest-growing laminate brand.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/find-a-dealer"

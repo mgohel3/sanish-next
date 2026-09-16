@@ -1,31 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useCmsForm, type FormFieldSchema } from "@/lib/forms";
+import RecaptchaCheckbox from "@/components/RecaptchaCheckbox";
 
 const BG  = "#2C3E50";
 const ON  = "#F5F2EE";
 const ACC = "#C4916A";
 
-export default function Home2SampleCTA() {
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", email: "", pincode: "", enquire_type: "" });
+/**
+ * Mirrors the CMS "Sample Request Form" (`sample-request`) exactly — the
+ * instant-render fallback until that schema loads. Add/remove/relabel fields
+ * from `/cms/forms/sample-request/`; submissions still land in Leads.
+ */
+const FALLBACK_FIELDS: FormFieldSchema[] = [
+  { name: "name", field_type: "text", label: "Name", placeholder: "Your name", required: true, options: [] },
+  { name: "phone", field_type: "tel", label: "Phone", placeholder: "+91 XXXXX XXXXX", required: true, options: [] },
+  { name: "email", field_type: "email", label: "Email", placeholder: "your@email.com", required: true, options: [] },
+  { name: "pincode", field_type: "text", label: "Pin Code", placeholder: "e.g. 110001", required: true, options: [] },
+  { name: "enquire_type", field_type: "select", label: "Enquire Type", required: true, options: ["Commercial", "Consumer"] },
+];
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
-      await fetch(`${apiUrl}/inquiries/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name, phone: form.phone, email: form.email,
-          message: `Sample request — Pin Code: ${form.pincode} | Enquire Type: ${form.enquire_type}`,
-          inquiry_type: "sample_request",
-        }),
-      });
-    } catch {}
-    setSubmitted(true);
-  };
+export default function Home2SampleCTA() {
+  const { fields, values, setValue, submitting, submitted, error, submitLabel, successMessage, handleSubmit, recaptcha } =
+    useCmsForm("sample-request", FALLBACK_FIELDS, "Request My Free Samples", "Our team will contact you within 24 hours to confirm your sample selections.");
+
+  const lineFields = fields.filter((f) => ["text", "email", "tel", "number"].includes(f.field_type));
+  const otherFields = fields.filter((f) => !lineFields.includes(f));
 
   return (
     <section className="relative home-section overflow-hidden" style={{ backgroundColor: BG }}>
@@ -89,64 +89,80 @@ export default function Home2SampleCTA() {
                   style={{ color: ON, fontFamily: "var(--font-heebo)" }}>Request Received!</h3>
                 <p className="text-[14px]"
                   style={{ color: "rgba(245,242,238,0.6)", fontFamily: "var(--font-heebo)" }}>
-                  Our team will contact you within 24 hours to confirm your sample selections.
+                  {successMessage}
                 </p>
               </div>
             ) : (
               <>
                 <h3 className="text-[20px] font-medium mb-6"
                   style={{ color: ON, fontFamily: "var(--font-heebo)" }}>Request Free Samples</h3>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Row 1: Name + Phone */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {[
-                      { key: "name",  label: "Name *",  type: "text", ph: "Your name",       req: true },
-                      { key: "phone", label: "Phone *", type: "tel",  ph: "+91 XXXXX XXXXX", req: true },
-                    ].map(({ key, label, type, ph, req }) => (
-                      <div key={key}>
-                        <label className="text-[11px] font-medium uppercase tracking-[0.1em] mb-1.5 block"
-                          style={{ color: ON, fontFamily: "var(--font-heebo)" }}>{label}</label>
-                        <input required={req} type={type} placeholder={ph}
-                          value={(form as Record<string,string>)[key]}
-                          onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                          className="w-full px-4 py-3 text-[14px] border outline-none transition-colors"
-                          style={{ borderRadius: "12px", color: ON, backgroundColor: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.15)", fontFamily: "var(--font-heebo)" }} />
-                      </div>
-                    ))}
-                  </div>
-                  {/* Row 2: Email + Pin Code */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {[
-                      { key: "email",   label: "Email *",    type: "email", ph: "your@email.com", req: true },
-                      { key: "pincode", label: "Pin Code *", type: "text",  ph: "e.g. 110001",    req: true },
-                    ].map(({ key, label, type, ph, req }) => (
-                      <div key={key}>
-                        <label className="text-[11px] font-medium uppercase tracking-[0.1em] mb-1.5 block"
-                          style={{ color: ON, fontFamily: "var(--font-heebo)" }}>{label}</label>
-                        <input required={req} type={type} placeholder={ph}
-                          value={(form as Record<string,string>)[key]}
-                          onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                          className="w-full px-4 py-3 text-[14px] border outline-none transition-colors"
-                          style={{ borderRadius: "12px", color: ON, backgroundColor: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.15)", fontFamily: "var(--font-heebo)" }} />
-                      </div>
-                    ))}
-                  </div>
-                  {/* Enquire Type */}
-                  <div>
-                    <label className="text-[11px] font-medium uppercase tracking-[0.1em] mb-1.5 block"
-                      style={{ color: ON, fontFamily: "var(--font-heebo)" }}>Enquire Type *</label>
-                    <select required value={form.enquire_type} onChange={(e) => setForm({ ...form, enquire_type: e.target.value })}
-                      className="w-full px-4 py-3 text-[14px] border outline-none transition-colors appearance-none"
-                      style={{ borderRadius: "12px", color: ON, backgroundColor: BG, borderColor: "rgba(255,255,255,0.15)", fontFamily: "var(--font-heebo)" }}>
-                      <option value="" disabled>Select type</option>
-                      <option value="commercial">Commercial</option>
-                      <option value="consumer">Consumer</option>
-                    </select>
-                  </div>
-                  <button type="submit"
+                <form onSubmit={(e) => handleSubmit(e)} className="space-y-4">
+                  {lineFields.length > 0 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {lineFields.map((field) => (
+                        <div key={field.name}>
+                          <label className="text-[11px] font-medium uppercase tracking-[0.1em] mb-1.5 block"
+                            style={{ color: ON, fontFamily: "var(--font-heebo)" }}>
+                            {field.label}{field.required ? " *" : ""}
+                          </label>
+                          <input required={field.required} type={field.field_type} placeholder={field.placeholder}
+                            value={values[field.name] || ""}
+                            onChange={(e) => setValue(field.name, e.target.value)}
+                            className="w-full px-4 py-3 text-[14px] border outline-none transition-colors"
+                            style={{ borderRadius: "12px", color: ON, backgroundColor: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.15)", fontFamily: "var(--font-heebo)" }} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {otherFields.map((field) => {
+                    if (field.field_type === "select") {
+                      return (
+                        <div key={field.name}>
+                          <label className="text-[11px] font-medium uppercase tracking-[0.1em] mb-1.5 block"
+                            style={{ color: ON, fontFamily: "var(--font-heebo)" }}>
+                            {field.label}{field.required ? " *" : ""}
+                          </label>
+                          <select required={field.required} value={values[field.name] || ""}
+                            onChange={(e) => setValue(field.name, e.target.value)}
+                            className="w-full px-4 py-3 text-[14px] border outline-none transition-colors appearance-none"
+                            style={{ borderRadius: "12px", color: ON, backgroundColor: BG, borderColor: "rgba(255,255,255,0.15)", fontFamily: "var(--font-heebo)" }}>
+                            <option value="" disabled>Select type</option>
+                            {field.options.map((opt) => (
+                              <option key={opt} value={opt}>{opt}</option>
+                            ))}
+                          </select>
+                        </div>
+                      );
+                    }
+                    if (field.field_type === "textarea") {
+                      return (
+                        <div key={field.name}>
+                          <label className="text-[11px] font-medium uppercase tracking-[0.1em] mb-1.5 block"
+                            style={{ color: ON, fontFamily: "var(--font-heebo)" }}>
+                            {field.label}{field.required ? " *" : ""}
+                          </label>
+                          <textarea required={field.required} placeholder={field.placeholder} rows={4}
+                            value={values[field.name] || ""}
+                            onChange={(e) => setValue(field.name, e.target.value)}
+                            className="w-full px-4 py-3 text-[14px] border outline-none transition-colors resize-none"
+                            style={{ borderRadius: "12px", color: ON, backgroundColor: "rgba(255,255,255,0.10)", borderColor: "rgba(255,255,255,0.15)", fontFamily: "var(--font-heebo)" }} />
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                  {recaptcha.version === "v2" && (
+                    <RecaptchaCheckbox siteKey={recaptcha.siteKey} onVerify={recaptcha.onVerify} />
+                  )}
+                  {error && (
+                    <p className="text-[12px]" style={{ color: "#e08080", fontFamily: "var(--font-heebo)" }}>
+                      Something went wrong. Please try again.
+                    </p>
+                  )}
+                  <button type="submit" disabled={submitting}
                     className="w-full py-4 text-[13px] font-medium text-white uppercase tracking-[0.08em] transition-all hover:-translate-y-0.5 hover:opacity-90"
                     style={{ backgroundColor: ACC, borderRadius: "14px", fontFamily: "var(--font-heebo)" }}>
-                    Request My Free Samples
+                    {submitting ? "Submitting…" : submitLabel}
                   </button>
                   <p className="text-[11px] text-center" style={{ color: "rgba(245,242,238,0.35)", fontFamily: "var(--font-heebo)" }}>
                     Free delivery. No credit card required.

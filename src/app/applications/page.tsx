@@ -17,8 +17,8 @@ export const metadata = {
     "Explore Sanish Laminate applications across kitchens, wardrobes, wall panels, commercial interiors and modular furniture.",
 };
 
-export default function ApplicationsPage() {
-  const catalogues = getGalleryCatalogues();
+export default async function ApplicationsPage() {
+  const catalogues = await getGalleryCatalogues();
 
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>

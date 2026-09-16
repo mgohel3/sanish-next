@@ -37,6 +37,37 @@ export function categorySlugForRoute(routeKey: string): string {
   return ROUTE_TO_CATEGORY_SLUG[routeKey] ?? routeKey;
 }
 
+const CATEGORY_SLUG_TO_ROUTE: Record<string, string> = Object.fromEntries(
+  Object.entries(ROUTE_TO_CATEGORY_SLUG).map(([route, slug]) => [slug, route]),
+);
+
+/** e.g. "thermo-laminates" -> "asa-sheets" (the listing page route). */
+export function categoryRouteForSlug(categorySlug: string): string {
+  return CATEGORY_SLUG_TO_ROUTE[categorySlug] ?? categorySlug;
+}
+
+/* ── collection display name -> the `?collection=` slug the listing pages
+   filter on (ProductListClient's COLLECTION_SLUG_MAP, inverted) ── */
+const COLLECTION_NAME_TO_SLUG: Record<string, string> = {
+  "S'Shades": "sshades",
+  "Thre3": "thre3",
+  "Cool Colour": "cool-colour",
+  "Perspective V4": "08mm",
+  "Fluted": "fluted",
+};
+
+export function collectionSlugForName(name: string): string | null {
+  return COLLECTION_NAME_TO_SLUG[name] ?? null;
+}
+
+/** Listing-page URL for a product's collection, e.g. /laminates?collection=sshades.
+ * Falls back to the plain category listing page if the collection has no known slug. */
+export function collectionHref(p: { category?: string; collection?: string }): string {
+  const route = categoryRouteForSlug(toSlug(p.category || "") || "laminates");
+  const colSlug = p.collection ? collectionSlugForName(p.collection) : null;
+  return colSlug ? `/${route}?collection=${colSlug}` : `/${route}`;
+}
+
 /* ── product URL: /products/<category>/<collection>/<slug> ── */
 // Mirrors Django's slugify for the names we use (spaces/underscores → "-").
 export function toSlug(value: string): string {
@@ -63,6 +94,7 @@ type ApiProduct = {
   id: number;
   slug: string;
   name: string;
+  sku?: string;
   category_name?: string;
   collection_name?: string;
   short_description?: string;
@@ -71,13 +103,26 @@ type ApiProduct = {
   thickness?: string;
   dimensions?: string;
   surface?: string;
+  product_type?: string;
+  surface_category?: string;
   application?: string;
+  tech_specs?: Record<string, string>;
+  show_surface?: boolean;
+  show_product_type?: boolean;
+  show_finish?: boolean;
+  show_surface_category?: boolean;
+  show_thickness?: boolean;
+  show_dimensions?: boolean;
+  show_application?: boolean;
+  show_design_type?: boolean;
   design_type?: string;
   color?: string;
   badge?: string;
   accent_color?: string;
   features?: string[];
   image_urls?: string[];
+  application_image?: string;
+  texture_variants?: { label: string; image: string }[];
   related_slugs?: string[];
 };
 
@@ -86,18 +131,32 @@ function mapApiProduct(raw: ApiProduct): Product {
     id: raw.id,
     slug: raw.slug,
     name: raw.name,
+    sku: raw.sku || "",
     collection: raw.collection_name || "",
     finish: raw.finish || "",
     thickness: raw.thickness || "",
     dimensions: raw.dimensions || "",
     surface: raw.surface || "",
+    productType: raw.product_type || "",
+    surfaceCategory: raw.surface_category || "",
     application: raw.application || "",
+    techSpecs: raw.tech_specs || {},
+    showSurface: raw.show_surface ?? true,
+    showProductType: raw.show_product_type ?? true,
+    showFinish: raw.show_finish ?? true,
+    showSurfaceCategory: raw.show_surface_category ?? true,
+    showThickness: raw.show_thickness ?? true,
+    showDimensions: raw.show_dimensions ?? true,
+    showApplication: raw.show_application ?? true,
+    showDesignType: raw.show_design_type ?? true,
     badge: (raw.badge || undefined) as Product["badge"],
     accentColor: raw.accent_color || "#85addc",
     shortDescription: raw.short_description || "",
     description: raw.description || "",
     features: raw.features || [],
     images: raw.image_urls || [],
+    applicationImage: raw.application_image || "",
+    textureVariants: raw.texture_variants || [],
     relatedSlugs: raw.related_slugs || [],
     category: (raw.category_name || "Laminates") as ProductCategory,
     designType: (raw.design_type || "Solid") as DesignType,
@@ -138,6 +197,71 @@ export async function fetchRelatedProducts(slugs: string[]): Promise<Product[]> 
   const all = await fetchProducts();
   const bySlug = new Map(all.map((p) => [p.slug, p]));
   return slugs.map((s) => bySlug.get(s)).filter((p): p is Product => Boolean(p));
+}
+
+/* ── collection PDF catalogues (CMS-managed, per Collection) ───────────── */
+export interface CollectionMeta {
+  id: number;
+  name: string;
+  slug: string;
+  pdfUrl: string;
+  pdfTitle: string;
+}
+
+export async function fetchCollections(): Promise<CollectionMeta[]> {
+  try {
+    const res = await fetch(`${API_BASE}/collections/`, { next: { revalidate: REVALIDATE } });
+    if (!res.ok) throw new Error(String(res.status));
+    const data = (await res.json()) as Array<{
+      id: number;
+      name: string;
+      slug: string;
+      pdf_catalog?: { url: string; title?: string } | null;
+    }>;
+    return data.map((c) => ({
+      id: c.id,
+      name: c.name,
+      slug: c.slug,
+      pdfUrl: c.pdf_catalog?.url || "",
+      pdfTitle: c.pdf_catalog?.title || "",
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function normalizeCollectionName(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+/** Best-effort match between a storefront collection display name (e.g. "S'Shades
+ * Premium") and a CMS Collection's `name`/`slug` — names don't always line up
+ * exactly, so this falls back to a loose substring match. */
+export function findCollectionPdfUrl(displayName: string, collections: CollectionMeta[]): string {
+  const target = normalizeCollectionName(displayName);
+  const match = collections.find((c) => {
+    const n = normalizeCollectionName(c.name);
+    return n === target || target.includes(n) || n.includes(target);
+  });
+  return match?.pdfUrl || "";
+}
+
+/* ── full category list (for the /products sidebar filter) ──────────── */
+export interface CategoryOption {
+  name: string;
+  slug: string;
+}
+
+export async function fetchCategories(): Promise<CategoryOption[]> {
+  try {
+    const res = await fetch(`${API_BASE}/categories/`, { next: { revalidate: REVALIDATE } });
+    if (!res.ok) throw new Error(String(res.status));
+    const data = (await res.json()) as Array<{ name: string; slug: string }>;
+    if (!Array.isArray(data)) throw new Error("bad payload");
+    return data.map((c) => ({ name: c.name, slug: c.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function fetchCategoryMeta(slug: string): Promise<CategoryMeta | null> {

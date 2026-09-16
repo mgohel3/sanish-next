@@ -1,9 +1,10 @@
-import { products, type Product } from "@/lib/products";
+import { products } from "@/lib/products";
 import {
   fetchProductBySlug,
   fetchRelatedProducts,
   fetchProducts,
   productHref,
+  collectionHref,
   toSlug,
 } from "@/lib/catalog";
 import { notFound, redirect } from "next/navigation";
@@ -11,36 +12,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import ProductGallery from "./ProductGallery";
+import TextureSwatches from "./TextureSwatches";
 import InquireButton from "@/components/InquireButton";
-
-/* ── Derived product metadata ────────────────────────────── */
-function getProductType(p: Product): string {
-  if (p.collection === "Fluted")    return "Decorative Panel";
-  if (p.surface.includes("PVC"))    return "PVC Panel";
-  if (p.collection === "S'Shades")  return "Premium Laminate (1mm)";
-  if (p.finish === "High Gloss")    return "High Gloss Laminate";
-  if (p.surface.includes("Metallic")) return "Metallic Laminate";
-  if (["Matte","Ultra Matte","Satin","Suede"].includes(p.finish)) return "Solid Colour Laminate";
-  return "Decorative Laminate Sheet";
-}
-
-function getSurfaceCategory(p: Product): string {
-  if (p.collection === "Fluted")                        return "Architectural Panel";
-  if (p.finish === "High Gloss")                        return "Glossy Surface";
-  if (p.finish === "Ultra Matte" || p.finish === "Matte") return "Matt Surface";
-  if (p.finish === "Suede" || p.finish === "Satin")     return "Suede Surface";
-  if (p.finish === "Textured")                          return "Textured Surface";
-  if (p.finish === "Metallic")                          return "Metallic Surface";
-  return "Decorative Surface";
-}
-
-function getDesignType(p: Product): string {
-  if (p.collection === "Fluted")     return "Architectural";
-  if (p.collection === "Cool Colour")return "Colour";
-  if (p.finish === "Metallic")       return "Metallic";
-  if (p.finish === "Textured")       return "Wood Grain";
-  return "Solid Colour";
-}
 
 /* ── Page ────────────────────────────────────────────────── */
 export function generateStaticParams() {
@@ -73,13 +46,13 @@ export default async function ProductPage({ params }: Props) {
   if (related.length === 0) {
     related = await fetchRelatedProducts(product.relatedSlugs).then((r) => r.slice(0, 3));
   }
-  const code         = `SL-${String(product.id).padStart(4, "0")}`;
-  const productType  = getProductType(product);
-  const surfaceCat   = getSurfaceCategory(product);
-  const designType   = getDesignType(product);
+  const code         = product.sku || "";
+  const productType  = product.productType || "";
+  const surfaceCat   = product.surfaceCategory || "";
+  const designType   = product.designType || "";
 
   const waText = encodeURIComponent(
-    `Hi, I'm interested in ${product.name} (${code}) from the ${product.collection} collection. Could you please provide more details and a quotation?`
+    `Hi, I'm interested in ${product.name}${code ? ` (${code})` : ""} from the ${product.collection} collection. Could you please provide more details and a quotation?`
   );
   const waLink     = `https://wa.me/917027777032?text=${waText}`;
   const enquiryLink = `/contact-us?product=${product.slug}&name=${encodeURIComponent(product.name)}`;
@@ -87,15 +60,43 @@ export default async function ProductPage({ params }: Props) {
   const badgeColor =
     "#fabf7d";
 
-  const specs = [
-    { label: "Design / Surface",  value: product.surface },
-    { label: "Product Type",      value: productType },
-    { label: "Finish / Texture",  value: product.finish },
-    { label: "Surface Category",  value: surfaceCat },
-    { label: "Thickness",         value: product.thickness },
-    { label: "Standard Size",     value: product.dimensions },
-    { label: "Applications",      value: product.application },
-  ];
+  // Only show rows the admin has both filled in AND left toggled on in the CMS.
+  const standardSpecs = [
+    { label: "Design / Surface",  value: product.surface,     show: product.showSurface },
+    { label: "Product Type",      value: productType,         show: product.showProductType },
+    { label: "Finish / Texture",  value: product.finish,      show: product.showFinish },
+    { label: "Surface Category",  value: surfaceCat,          show: product.showSurfaceCategory },
+    { label: "Thickness",         value: product.thickness,   show: product.showThickness },
+    { label: "Standard Size",     value: product.dimensions,  show: product.showDimensions },
+    { label: "Applications",      value: product.application, show: product.showApplication },
+  ].filter((row) => row.show !== false && row.value && row.value.trim() !== "");
+
+  // Custom key/value pairs added via the CMS "Technical Specs" repeater — shown
+  // when present, but skipped if a standard row above already covers the same
+  // information. The bulk import seeded almost every product with the same
+  // four generic keys (Thickness / Sheet Size / Surface / Range), which just
+  // restate the dedicated Thickness / Standard Size / Design-Surface fields
+  // and the collection shown elsewhere on the page — so those labels are
+  // always redundant here regardless of exact value formatting.
+  const REDUNDANT_TECH_SPEC_LABELS = new Set(["thickness", "sheet size", "surface", "range"]);
+  const standardValues = new Set(standardSpecs.map((row) => row.value.trim().toLowerCase()));
+  const customSpecs = Object.entries(product.techSpecs || {})
+    .filter(([label, value]) =>
+      value && value.trim() !== "" &&
+      !REDUNDANT_TECH_SPEC_LABELS.has(label.trim().toLowerCase()) &&
+      !standardValues.has(value.trim().toLowerCase())
+    )
+    .map(([label, value]) => ({ label, value }));
+
+  const specs = [...standardSpecs, ...customSpecs];
+  const textureVariants = (product.textureVariants || []).filter((t) => t.image);
+
+  const categoryTags = [
+    { value: productType, show: product.showProductType },
+    { value: surfaceCat,  show: product.showSurfaceCategory },
+    { value: designType,  show: product.showDesignType },
+  ].filter((tag) => tag.show !== false && tag.value).map((tag) => tag.value);
+  const collectionListHref = collectionHref(product);
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: "var(--bg-primary)" }}>
@@ -134,9 +135,11 @@ export default async function ProductPage({ params }: Props) {
 
             {/* Row 1: Collection + product badge */}
             <div className="flex items-center gap-3 mb-3">
-              <span className="text-[10.5px] font-semibold tracking-[0.18em] uppercase" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
-                {product.collection} Collection
-              </span>
+              {product.collection && (
+                <span className="text-[10.5px] font-semibold tracking-[0.18em] uppercase" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
+                  {product.collection} Collection
+                </span>
+              )}
               {product.badge && (
                 <span className="text-[9.5px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full text-white"
                   style={{ backgroundColor: badgeColor, fontFamily: "var(--font-jakarta)" }}>
@@ -147,7 +150,7 @@ export default async function ProductPage({ params }: Props) {
 
             {/* Row 2: Category tags */}
             <div className="flex flex-wrap gap-2 mb-4">
-              {[productType, surfaceCat, designType].map((tag) => (
+              {categoryTags.map((tag) => (
                 <span key={tag} className="text-[10px] font-semibold px-3 py-1 rounded-full"
                   style={{
                     backgroundColor: "rgba(30,30,46,0.06)",
@@ -168,31 +171,56 @@ export default async function ProductPage({ params }: Props) {
 
             {/* Product code + collection link (same row) */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
-              <p className="text-[12px] tracking-[0.12em] uppercase" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
-                Product Code: {code}
-              </p>
-              <Link
-                href="/collection"
-                className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase font-semibold transition-opacity hover:opacity-70"
-                style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}
-              >
-                Part of the {product.collection} Collection
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </Link>
+              {code && (
+                <p className="text-[12px] tracking-[0.12em] uppercase" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                  Product Code: {code}
+                </p>
+              )}
+              {product.collection && (
+                <Link
+                  href={collectionListHref}
+                  className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase font-semibold transition-opacity hover:opacity-70"
+                  style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}
+                >
+                  Part of the {product.collection} Collection
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
+              )}
             </div>
 
             {/* Short description */}
+            {product.shortDescription && (
             <p className="text-[15px] leading-relaxed mb-8" style={{ color: "#5A5A6A", fontFamily: "var(--font-jakarta)" }}>
               {product.shortDescription}
             </p>
+            )}
+
+            {/* ── Application image — the finish applied in a room, shown
+                 below the title rather than mixed into the swatch gallery ── */}
+            {product.applicationImage && (
+            <div className="rounded-2xl overflow-hidden mb-8 bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06]">
+              <img
+                src={product.applicationImage}
+                alt={`${product.name} applied in an interior`}
+                className="w-full max-h-[420px] object-cover"
+              />
+            </div>
+            )}
+
+            {/* ── Texture variants — labeled reference swatches for the other
+                 finishes this shade is available in; click to zoom ── */}
+            {textureVariants.length > 0 && (
+              <TextureSwatches variants={textureVariants} name={product.name} />
+            )}
 
             {/* ── Specs table ── */}
+            {specs.length > 0 && (
             <div className="rounded-2xl overflow-hidden mb-8" style={{ border: "1px solid rgba(30,30,46,0.08)" }}>
               <div className="grid grid-cols-2 px-5 py-3" style={{ backgroundColor: "#1E1E2E" }}>
-                <span className="text-[13px] font-semibold text-white" style={{ fontFamily: "var(--font-jakarta)" }}>Sanish</span>
-                <span className="text-[13px] font-semibold text-white" style={{ fontFamily: "var(--font-jakarta)" }}>Laminate</span>
+                <span className="text-[13px] font-semibold text-white" style={{ fontFamily: "var(--font-jakarta)" }}>Specification</span>
+                <span className="text-[13px] font-semibold text-white" style={{ fontFamily: "var(--font-jakarta)" }}>Details</span>
               </div>
               {specs.map((row, i) => (
                 <div key={row.label} className="grid grid-cols-2 px-5 py-3.5 border-t"
@@ -202,8 +230,10 @@ export default async function ProductPage({ params }: Props) {
                 </div>
               ))}
             </div>
+            )}
 
             {/* ── Features ── */}
+            {product.features.length > 0 && (
             <div className="mb-10">
               <p className="text-[10.5px] font-semibold tracking-[0.18em] uppercase mb-3" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                 Key Features
@@ -217,6 +247,7 @@ export default async function ProductPage({ params }: Props) {
                 ))}
               </div>
             </div>
+            )}
 
             {/* ── CTA Buttons ── */}
             <div className="flex flex-col sm:flex-row gap-3">

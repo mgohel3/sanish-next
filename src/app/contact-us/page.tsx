@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
+import PageBlocks from "@/components/PageBlockRenderer";
+import { getSitePage } from "@/lib/pages";
 import { MapPin, Phone, Mail } from "lucide-react";
 
 export const metadata = {
@@ -9,10 +11,22 @@ export const metadata = {
   description: "Get in touch with Sanish Laminates for inquiries, dealer network details, or any other questions.",
 };
 
-export default function ContactUsPage() {
+export default async function ContactUsPage() {
+  const page = await getSitePage("contact-us");
+
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
       <Header />
+      {page && page.sections.length > 0 ? <PageBlocks sections={page.sections} /> : <StaticContactUs />}
+      <Footer />
+    </main>
+  );
+}
+
+/** Original hard-coded layout — shown when the CMS contact-us page has no sections yet. */
+function StaticContactUs() {
+  return (
+    <>
       <PageHero
         eyebrow="Get in Touch"
         title="Contact Us"
@@ -102,8 +116,6 @@ export default function ContactUsPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </>
   );
 }

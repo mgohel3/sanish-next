@@ -1,11 +1,40 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type FocusEvent } from "react";
+import { usePathname } from "next/navigation";
 import Button from "@/components/ui/Button";
 import IconButton from "@/components/ui/IconButton";
-import { submitInquiry } from "@/lib/inquiries";
+import { useCmsForm, type FormFieldSchema } from "@/lib/forms";
+import RecaptchaCheckbox from "@/components/RecaptchaCheckbox";
+
+/**
+ * Mirrors the CMS "Inquiry Popup" form (`inquiry-popup`) exactly — the
+ * instant-render fallback until that schema loads. Add/remove/relabel fields
+ * from `/cms/forms/inquiry-popup/`; submissions still land in Leads.
+ */
+const FALLBACK_FIELDS: FormFieldSchema[] = [
+  { name: "name", field_type: "text", label: "Name", required: true, options: [] },
+  { name: "phone", field_type: "tel", label: "Phone", required: true, options: [] },
+  { name: "email", field_type: "email", label: "Email", required: true, options: [] },
+  { name: "pincode", field_type: "text", label: "Pin Code", required: true, options: [] },
+  { name: "enquire_type", field_type: "select", label: "Enquire Type", required: true, options: ["Commercial", "Consumer"] },
+  {
+    name: "message",
+    field_type: "textarea",
+    label: "Message",
+    placeholder: "Enter the Product IDs You're Interested In\ne.g.,\nLM-19928\nLM-19920\nLM-19785",
+    required: false,
+    options: [],
+  },
+];
+
+const fieldStyle = { background: "#F7F7F9", border: "1.5px solid transparent", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" };
+const onFocus = (e: FocusEvent<HTMLElement>) => { e.currentTarget.style.border = "1.5px solid #f39ba2"; e.currentTarget.style.background = "#fff"; };
+const onBlur = (e: FocusEvent<HTMLElement>) => { e.currentTarget.style.border = "1.5px solid transparent"; e.currentTarget.style.background = "#F7F7F9"; };
 
 export default function Popup() {
+  const pathname = usePathname();
+  const isPreview = pathname?.startsWith("/cms-preview");
   const [render, setRender] = useState(false);
   const [show, setShow] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
@@ -34,7 +63,7 @@ export default function Popup() {
   }, []);
 
   useEffect(() => {
-    if (hasTriggered) return;
+    if (hasTriggered || isPreview) return;
 
     const timer = setTimeout(() => {
       if (hasTriggered) return;
@@ -43,18 +72,35 @@ export default function Popup() {
     }, 30000);
 
     return () => clearTimeout(timer);
-  }, [hasTriggered]);
+  }, [hasTriggered, isPreview]);
 
   const handleClose = () => {
     setShow(false);
     setTimeout(() => setRender(false), 500);
   };
 
-  const [form, setForm] = useState({ name: "", phone: "", email: "", pincode: "", enquire_type: "", message: "" });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const { fields, values, setValue, submitting, error, submitLabel, handleSubmit, recaptcha } =
+    useCmsForm("inquiry-popup", FALLBACK_FIELDS, "Submit Inquiry", "Thanks — we typically respond within 24 hours.");
 
   if (!render) return null;
+
+  const lineFields = fields.filter((f) => ["text", "email", "tel", "number"].includes(f.field_type));
+  const otherFields = fields.filter((f) => !lineFields.includes(f));
+
+  const onSubmit = (e: { preventDefault: () => void }) =>
+    handleSubmit(e, undefined, () => {
+      if (pendingDownload.current) {
+        const { url, filename } = pendingDownload.current;
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        pendingDownload.current = null;
+      }
+      handleClose();
+    });
 
   return (
     <div
@@ -142,108 +188,77 @@ export default function Popup() {
 
         {/* ── Form zone ───────────────────────────────────── */}
         <div className="bg-white px-6 py-6 sm:px-9 sm:py-8">
-          <form
-            className="flex flex-col gap-3.5"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              setSubmitError(false);
-              setSubmitting(true);
-              const ok = await submitInquiry({
-                name: form.name,
-                email: form.email,
-                phone: form.phone,
-                type: "contact",
-                message: [
-                  form.message,
-                  form.pincode ? `Pin Code: ${form.pincode}` : "",
-                  form.enquire_type ? `Enquire Type: ${form.enquire_type}` : "",
-                ].filter(Boolean).join("\n"),
-              });
-              setSubmitting(false);
-              if (!ok) {
-                setSubmitError(true);
-                return;
-              }
-              if (pendingDownload.current) {
-                const { url, filename } = pendingDownload.current;
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                pendingDownload.current = null;
-              }
-              handleClose();
-            }}
-          >
-            {/* Row 1: Name + Phone */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {[
-                { key: "name",  type: "text", placeholder: "Name *",  required: true },
-                { key: "phone", type: "tel",  placeholder: "Phone *", required: true },
-              ].map((f) => (
-                <input key={f.key} type={f.type} placeholder={f.placeholder} required={f.required}
-                  value={(form as Record<string,string>)[f.key]}
-                  onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
-                  className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200"
-                  style={{ background: "#F7F7F9", border: "1.5px solid transparent", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
-                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #f39ba2"; e.currentTarget.style.background = "#fff"; }}
-                  onBlur={(e) => { e.currentTarget.style.border = "1.5px solid transparent"; e.currentTarget.style.background = "#F7F7F9"; }}
-                />
-              ))}
-            </div>
-            {/* Row 2: Email + Pin Code */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {[
-                { key: "email",   type: "email", placeholder: "Email *",    required: true },
-                { key: "pincode", type: "text",  placeholder: "Pin Code *", required: true },
-              ].map((f) => (
-                <input key={f.key} type={f.type} placeholder={f.placeholder} required={f.required}
-                  value={(form as Record<string,string>)[f.key]}
-                  onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
-                  className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200"
-                  style={{ background: "#F7F7F9", border: "1.5px solid transparent", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
-                  onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #f39ba2"; e.currentTarget.style.background = "#fff"; }}
-                  onBlur={(e) => { e.currentTarget.style.border = "1.5px solid transparent"; e.currentTarget.style.background = "#F7F7F9"; }}
-                />
-              ))}
-            </div>
-            {/* Enquire Type */}
-            <select
-              required
-              value={form.enquire_type}
-              onChange={(e) => setForm({ ...form, enquire_type: e.target.value })}
-              className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200 appearance-none"
-              style={{ background: "#F7F7F9", border: "1.5px solid transparent", color: form.enquire_type ? "var(--text-primary)" : "#9B9BB0", fontFamily: "var(--font-jakarta)" }}
-              onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #f39ba2"; e.currentTarget.style.background = "#fff"; }}
-              onBlur={(e) => { e.currentTarget.style.border = "1.5px solid transparent"; e.currentTarget.style.background = "#F7F7F9"; }}
-            >
-              <option value="" disabled>Enquire Type *</option>
-              <option value="commercial">Commercial</option>
-              <option value="consumer">Consumer</option>
-            </select>
+          <form className="flex flex-col gap-3.5" onSubmit={onSubmit}>
+            {lineFields.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {lineFields.map((field) => (
+                  <input
+                    key={field.name}
+                    type={field.field_type}
+                    placeholder={field.required ? `${field.label} *` : field.label}
+                    required={field.required}
+                    value={values[field.name] || ""}
+                    onChange={(e) => setValue(field.name, e.target.value)}
+                    className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200"
+                    style={fieldStyle}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                  />
+                ))}
+              </div>
+            )}
 
-            {/* Message */}
-            <textarea
-              placeholder={"Enter the Product IDs You're Interested In\ne.g.,\nLM-19928\nLM-19920\nLM-19785"}
-              rows={5}
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200 resize-none"
-              style={{ background: "#F7F7F9", border: "1.5px solid transparent", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}
-              onFocus={(e) => { e.currentTarget.style.border = "1.5px solid #f39ba2"; e.currentTarget.style.background = "#fff"; }}
-              onBlur={(e) => { e.currentTarget.style.border = "1.5px solid transparent"; e.currentTarget.style.background = "#F7F7F9"; }}
-            />
+            {otherFields.map((field) => {
+              if (field.field_type === "select") {
+                return (
+                  <select
+                    key={field.name}
+                    required={field.required}
+                    value={values[field.name] || ""}
+                    onChange={(e) => setValue(field.name, e.target.value)}
+                    className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200 appearance-none"
+                    style={{ ...fieldStyle, color: values[field.name] ? "var(--text-primary)" : "#9B9BB0" }}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                  >
+                    <option value="" disabled>{field.label}{field.required ? " *" : ""}</option>
+                    {field.options.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                );
+              }
+              if (field.field_type === "textarea") {
+                return (
+                  <textarea
+                    key={field.name}
+                    placeholder={field.placeholder}
+                    rows={5}
+                    required={field.required}
+                    value={values[field.name] || ""}
+                    onChange={(e) => setValue(field.name, e.target.value)}
+                    className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200 resize-none"
+                    style={fieldStyle}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                  />
+                );
+              }
+              return null;
+            })}
 
-            {submitError && (
+            {recaptcha.version === "v2" && (
+              <RecaptchaCheckbox siteKey={recaptcha.siteKey} onVerify={recaptcha.onVerify} />
+            )}
+
+            {error && (
               <p className="text-center text-[12px]" style={{ color: "#d64545", fontFamily: "var(--font-jakarta)" }}>
                 Something went wrong sending your inquiry. Please try again.
               </p>
             )}
 
             <Button type="submit" variant="primary" fullWidth disabled={submitting}>
-              {submitting ? "Submitting…" : "Submit Inquiry"}
+              {submitting ? "Submitting…" : submitLabel}
             </Button>
             <p className="text-center text-[11px] mt-1" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
               We typically respond within 24 hours.

@@ -15,8 +15,8 @@ export const metadata = {
   title: "Home - Apple | Sanish Laminates",
 };
 
-export default function HomeApple() {
-  const applicationTiles = getRandomGalleryTiles(5);
+export default async function HomeApple() {
+  const applicationTiles = await getRandomGalleryTiles(5);
 
   return (
     <main className="bg-[var(--bg-primary)]">

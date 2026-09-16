@@ -19,7 +19,14 @@ export type HomeBlockType =
   | "blog_teaser"
   | "rich_text"
   | "image_text"
-  | "cta_banner";
+  | "cta_banner"
+  | "testimonials"
+  | "gallery"
+  | "team"
+  | "pricing"
+  | "stats"
+  | "logos_strip"
+  | "video_embed";
 
 export interface HeroSlideContent {
   image?: string;

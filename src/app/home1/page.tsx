@@ -17,8 +17,8 @@ export const metadata = {
   description: "Classic homepage experience for Sanish Laminates — premium decorative surfaces and architectural laminates.",
 };
 
-export default function Home1() {
-  const applicationTiles = getRandomGalleryTiles(5);
+export default async function Home1() {
+  const applicationTiles = await getRandomGalleryTiles(5);
 
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>

@@ -8,14 +8,15 @@ import CatalogueDownloadCard from "@/components/CatalogueDownloadCard";
 import { getGalleryCatalogues, getGalleryImage, getGalleryDescription } from "@/lib/gallery";
 
 export async function generateStaticParams() {
-  return getGalleryCatalogues().flatMap((c) =>
+  const catalogues = await getGalleryCatalogues();
+  return catalogues.flatMap((c) =>
     c.images.map((img) => ({ catalogue: c.slug, id: img.id }))
   );
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ catalogue: string; id: string }> }) {
   const { catalogue: catalogueSlug, id } = await params;
-  const found = getGalleryImage(catalogueSlug, id);
+  const found = await getGalleryImage(catalogueSlug, id);
   if (!found) return {};
   return {
     title: `${found.catalogue.name} — Laminate #${id} | Sanish Laminates`,
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ catalogue
 
 export default async function GalleryDetailPage({ params }: { params: Promise<{ catalogue: string; id: string }> }) {
   const { catalogue: catalogueSlug, id } = await params;
-  const found = getGalleryImage(catalogueSlug, id);
+  const found = await getGalleryImage(catalogueSlug, id);
   if (!found) notFound();
   const { catalogue, image } = found;
 

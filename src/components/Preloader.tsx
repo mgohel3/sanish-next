@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 const isDev = process.env.NODE_ENV === "development";
 
 export default function Preloader() {
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(!isDev);
 
   useEffect(() => {
@@ -15,6 +17,9 @@ export default function Preloader() {
     }, 1800);
     return () => clearTimeout(timer);
   }, []);
+
+  // Skip entirely inside the CMS's embedded live-preview iframe.
+  if (pathname?.startsWith("/cms-preview")) return null;
 
   // Brand monogram colours — matches the 2×2 dot grid exactly
   const dots = [

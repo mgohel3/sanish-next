@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Search, SlidersHorizontal, X } from "lucide-react";
-import { collections, finishes, colors, COLOR_SWATCH, type Product } from "@/lib/products";
+import { Search, SlidersHorizontal, X, ListFilter } from "lucide-react";
+import { collections as FALLBACK_COLLECTIONS, finishes, colors, COLOR_SWATCH, type Product } from "@/lib/products";
 import PageHero from "@/components/PageHero";
-import { productHref } from "@/lib/catalog";
+import { productHref, type CategoryOption, type CollectionMeta } from "@/lib/catalog";
 import Button from "@/components/ui/Button";
 import IconButton from "@/components/ui/IconButton";
 
@@ -152,18 +152,40 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
   );
 }
 
+const FALLBACK_CATEGORIES = ["Laminates", "Louvers", "Thermo Laminates"];
+
 /* ── Main Client Component ───────────────────────────────── */
-export default function ProductsClient({ products }: { products: Product[] }) {
+export default function ProductsClient({
+  products,
+  categories,
+  collections,
+}: {
+  products: Product[];
+  categories: CategoryOption[];
+  collections: CollectionMeta[];
+}) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  // Only list a category/collection if at least one product currently uses it.
+  const categoryNames = categories.length ? categories.map((c) => c.name) : FALLBACK_CATEGORIES;
+  const categoryOptions = [
+    "All",
+    ...categoryNames.filter((cat) => products.some((p) => p.category === cat)),
+  ];
+
+  const collectionNames = collections.length
+    ? collections.map((c) => c.name)
+    : FALLBACK_COLLECTIONS.filter((c) => c !== "All");
+  const collectionOptions = [
+    "All",
+    ...collectionNames.filter((col) => products.some((p) => p.collection === col)),
+  ];
+
   const [activeCategory, setActiveCategory] = useState("All");
-  const [activeCollection, setActiveCollection] = useState("All");
-  const [activeFinish, setActiveFinish] = useState("All Finishes");
-  const [activeDesign, setActiveDesign] = useState<string | null>(null);
-  const [activeColor, setActiveColor] = useState("All Colours");
   const [searchQuery, setSearchQuery] = useState("");
   const [quickView, setQuickView] = useState<Product | null>(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   // ── Derive dynamic H1 and breadcrumb label from active filters ──
   const pageTitle = (() => {
@@ -186,35 +208,21 @@ export default function ProductsClient({ products }: { products: Product[] }) {
     return null;
   })();
 
-  // ── Apply URL params to filter state on mount / param change ──
-  useEffect(() => {
+  // ── Filter state is derived straight from the URL — it's the single source of truth ──
+  const { activeCollection, activeFinish, activeDesign, activeColor } = (() => {
     const colParam = searchParams.get("collection");
     const finParam = searchParams.get("finish");
     const desParam = searchParams.get("design");
     const colorParam = searchParams.get("color");
 
-    // Collection and Finish are independent — both can be active at once
-    if (colParam) {
-      const colName = COLLECTION_SLUG_MAP[colParam];
-      setActiveCollection(colName && colName !== "All" ? colName : "All");
-    } else {
-      setActiveCollection("All");
-    }
+    const collection = colParam ? (COLLECTION_SLUG_MAP[colParam] && COLLECTION_SLUG_MAP[colParam] !== "All" ? COLLECTION_SLUG_MAP[colParam] : "All") : "All";
+    const design = desParam ?? null;
+    // Collection and Finish are independent — both can be active at once; Design overrides Finish
+    const finish = design ? "All Finishes" : finParam ? (FINISH_SLUG_MAP[finParam] ?? "All Finishes") : "All Finishes";
+    const color = colorParam ? (COLOR_SLUG_MAP[colorParam] ?? "All Colours") : "All Colours";
 
-    if (desParam) {
-      setActiveDesign(desParam);
-      setActiveFinish("All Finishes");
-    } else {
-      setActiveDesign(null);
-      if (finParam) {
-        const finName = FINISH_SLUG_MAP[finParam];
-        setActiveFinish(finName ?? "All Finishes");
-      } else {
-        setActiveFinish("All Finishes");
-      }
-    }
-    setActiveColor(colorParam ? (COLOR_SLUG_MAP[colorParam] ?? "All Colours") : "All Colours");
-  }, [searchParams]);
+    return { activeCollection: collection, activeFinish: finish, activeDesign: design, activeColor: color };
+  })();
 
   // ── Build URL from both active filters ──
   const buildUrl = (col: string, fin: string, design: string | null, color = activeColor, base = "/products") => {
@@ -230,19 +238,16 @@ export default function ProductsClient({ products }: { products: Product[] }) {
     return q ? `${base}?${q}` : base;
   };
 
-  // ── Push URL when sidebar filter changes ──
+  // ── Push URL when sidebar filter changes — state re-derives from the new searchParams ──
   const applyCollection = useCallback((col: string) => {
-    setActiveCollection(col);
     router.replace(buildUrl(col, activeFinish, activeDesign), { scroll: false });
   }, [router, activeFinish, activeDesign, activeColor]);
 
   const applyFinish = useCallback((fin: string) => {
-    setActiveFinish(fin);
     router.replace(buildUrl(activeCollection, fin, activeDesign), { scroll: false });
   }, [router, activeCollection, activeDesign, activeColor]);
 
   const applyColor = useCallback((color: string) => {
-    setActiveColor(color);
     router.replace(buildUrl(activeCollection, activeFinish, activeDesign, color), { scroll: false });
   }, [router, activeCollection, activeFinish, activeDesign]);
 
@@ -260,30 +265,30 @@ export default function ProductsClient({ products }: { products: Product[] }) {
 
   const clearAll = () => {
     setActiveCategory("All");
-    setActiveCollection("All");
-    setActiveFinish("All Finishes");
-    setActiveDesign(null);
-    setActiveColor("All Colours");
     setSearchQuery("");
     router.replace("/products", { scroll: false });
   };
 
   const clearCollection = () => {
-    setActiveCollection("All");
     router.replace(buildUrl("All", activeFinish, activeDesign), { scroll: false });
   };
 
   const clearFinish = () => {
-    setActiveFinish("All Finishes");
     router.replace(buildUrl(activeCollection, "All Finishes", activeDesign), { scroll: false });
   };
 
   const clearColor = () => {
-    setActiveColor("All Colours");
     router.replace(buildUrl(activeCollection, activeFinish, activeDesign, "All Colours"), { scroll: false });
   };
 
   const hasFilter = activeCategory !== "All" || activeCollection !== "All" || activeFinish !== "All Finishes" || !!activeDesign || activeColor !== "All Colours";
+  const activeFilterCount = [
+    activeCategory !== "All",
+    activeCollection !== "All",
+    activeFinish !== "All Finishes",
+    !!activeDesign,
+    activeColor !== "All Colours",
+  ].filter(Boolean).length;
   const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminate catalogue.")}`;
 
   const breadcrumbItems = [
@@ -291,6 +296,134 @@ export default function ProductsClient({ products }: { products: Product[] }) {
     { label: "Products", href: "/products" },
     ...(breadcrumbLabel ? [{ label: breadcrumbLabel }] : []),
   ];
+
+  /* ── Shared filter panel (rendered in desktop sidebar + mobile/tablet drawer) ── */
+  const filterPanel = (
+    <>
+      {/* Category filter */}
+      <div>
+        <div className="flex items-center gap-2 mb-4">
+          <SlidersHorizontal className="w-3.5 h-3.5" style={{ color: "var(--text-primary)" }} />
+          <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Product Type</h3>
+        </div>
+        <ul className="space-y-0.5">
+          {categoryOptions.map((cat) => (
+            <li key={cat}>
+              <button onClick={() => setActiveCategory(cat)} className="w-full text-left px-4 py-2.5 rounded-xl text-[13px] transition-all duration-200"
+                style={{
+                  backgroundColor: activeCategory === cat ? "#85addc" : "transparent",
+                  color: activeCategory === cat ? "white" : "#6B6B80",
+                  fontWeight: activeCategory === cat ? 600 : 400,
+                  fontFamily: "var(--font-jakarta)",
+                }}>
+                {cat}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 mb-4">
+          <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Collections</h3>
+        </div>
+        <ul className="space-y-0.5">
+          {collectionOptions.map((c) => (
+            <li key={c}>
+              <button onClick={() => applyCollection(c)} className="w-full text-left px-4 py-2.5 rounded-xl text-[13px] transition-all duration-200"
+                style={{
+                  backgroundColor: activeCollection === c ? "rgba(133,173,220,0.12)" : "transparent",
+                  color: activeCollection === c ? "#85addc" : "#6B6B80",
+                  fontWeight: activeCollection === c ? 600 : 400,
+                  fontFamily: "var(--font-jakarta)",
+                }}>
+                {c}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Finish</h3>
+        <ul className="space-y-0.5">
+          {finishes.map((f) => (
+            <li key={f}>
+              <button onClick={() => applyFinish(f)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
+                style={{
+                  backgroundColor: activeFinish === f ? "rgba(133,173,220,0.12)" : "transparent",
+                  color: activeFinish === f ? "#85addc" : "#6B6B80",
+                  fontWeight: activeFinish === f ? 600 : 400,
+                  fontFamily: "var(--font-jakarta)",
+                }}>
+                {f}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Colour</h3>
+          {activeColor !== "All Colours" && (
+            <button onClick={() => applyColor("All Colours")} className="text-[11px] hover:underline"
+              style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>
+              Clear
+            </button>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-2.5">
+          {colors.map((color) => {
+            const isActive = activeColor === color;
+            return (
+              <button
+                key={color}
+                onClick={() => applyColor(color)}
+                title={color}
+                aria-label={color}
+                aria-pressed={isActive}
+                className="rounded-full transition-transform duration-200 hover:scale-110"
+                style={{
+                  width: 26,
+                  height: 26,
+                  background: COLOR_SWATCH[color] ?? "#ccc",
+                  border: color === "White" ? "1px solid rgba(30,30,46,0.15)" : "1px solid rgba(30,30,46,0.08)",
+                  boxShadow: isActive ? "0 0 0 2px white, 0 0 0 4px #85addc" : "none",
+                }}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Active filter chips */}
+      {(activeCollection !== "All" || activeFinish !== "All Finishes" || activeDesign || activeColor !== "All Colours") && (
+        <div className="space-y-2">
+          <div className="text-[10px] uppercase tracking-[0.12em] font-semibold" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Active filters</div>
+          {activeCollection !== "All" && (
+            <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
+              <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{activeCollection}</span>
+              <button onClick={clearCollection} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
+            </div>
+          )}
+          {activeFinish !== "All Finishes" && (
+            <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
+              <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{activeFinish}</span>
+              <button onClick={clearFinish} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
+            </div>
+          )}
+          {activeDesign && (
+            <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
+              <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{DESIGN_TITLE_MAP[activeDesign!] ?? activeDesign}</span>
+              <button onClick={clearAll} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
+            </div>
+          )}
+          <button onClick={clearAll} className="text-[11px] w-full text-left hover:underline mt-1" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Clear all ×</button>
+        </div>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -321,147 +454,29 @@ export default function ProductsClient({ products }: { products: Product[] }) {
       <section className="home-section--compact">
         <div className="site-container flex flex-col lg:flex-row gap-12">
 
-          {/* Sidebar */}
-          <aside className="w-full lg:w-[220px] flex-shrink-0">
-            <div className="lg:sticky lg:top-[110px] space-y-8">
-
-              {/* Category filter */}
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <SlidersHorizontal className="w-3.5 h-3.5" style={{ color: "var(--text-primary)" }} />
-                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Product Type</h3>
-                </div>
-                <ul className="space-y-0.5">
-                  {(["All", "Laminates", "Louvers", "Thermo Laminates"] as const).map((cat) => (
-                    <li key={cat}>
-                      <button onClick={() => setActiveCategory(cat)} className="w-full text-left px-4 py-2.5 rounded-xl text-[13px] transition-all duration-200"
-                        style={{
-                          backgroundColor: activeCategory === cat ? "#85addc" : "transparent",
-                          color: activeCategory === cat ? "white" : "#6B6B80",
-                          fontWeight: activeCategory === cat ? 600 : 400,
-                          fontFamily: "var(--font-jakarta)",
-                        }}>
-                        {cat}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Collections</h3>
-                </div>
-                <ul className="space-y-0.5">
-                  {collections.map((c) => (
-                    <li key={c}>
-                      <button onClick={() => applyCollection(c)} className="w-full text-left px-4 py-2.5 rounded-xl text-[13px] transition-all duration-200"
-                        style={{
-                          backgroundColor: activeCollection === c ? "rgba(133,173,220,0.12)" : "transparent",
-                          color: activeCollection === c ? "#85addc" : "#6B6B80",
-                          fontWeight: activeCollection === c ? 600 : 400,
-                          fontFamily: "var(--font-jakarta)",
-                        }}>
-                        {c}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Finish</h3>
-                <ul className="space-y-0.5">
-                  {finishes.map((f) => (
-                    <li key={f}>
-                      <button onClick={() => applyFinish(f)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
-                        style={{
-                          backgroundColor: activeFinish === f ? "rgba(133,173,220,0.12)" : "transparent",
-                          color: activeFinish === f ? "#85addc" : "#6B6B80",
-                          fontWeight: activeFinish === f ? 600 : 400,
-                          fontFamily: "var(--font-jakarta)",
-                        }}>
-                        {f}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Colour</h3>
-                  {activeColor !== "All Colours" && (
-                    <button onClick={() => applyColor("All Colours")} className="text-[11px] hover:underline"
-                      style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>
-                      Clear
-                    </button>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2.5">
-                  {colors.map((color) => {
-                    const isActive = activeColor === color;
-                    return (
-                      <button
-                        key={color}
-                        onClick={() => applyColor(color)}
-                        title={color}
-                        aria-label={color}
-                        aria-pressed={isActive}
-                        className="rounded-full transition-transform duration-200 hover:scale-110"
-                        style={{
-                          width: 26,
-                          height: 26,
-                          background: COLOR_SWATCH[color] ?? "#ccc",
-                          border: color === "White" ? "1px solid rgba(30,30,46,0.15)" : "1px solid rgba(30,30,46,0.08)",
-                          boxShadow: isActive ? "0 0 0 2px white, 0 0 0 4px #85addc" : "none",
-                        }}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Active filter chips */}
-              {(activeCollection !== "All" || activeFinish !== "All Finishes" || activeDesign || activeColor !== "All Colours") && (
-                <div className="space-y-2">
-                  <div className="text-[10px] uppercase tracking-[0.12em] font-semibold" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Active filters</div>
-                  {activeCollection !== "All" && (
-                    <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
-                      <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{activeCollection}</span>
-                      <button onClick={clearCollection} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
-                    </div>
-                  )}
-                  {activeFinish !== "All Finishes" && (
-                    <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
-                      <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{activeFinish}</span>
-                      <button onClick={clearFinish} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
-                    </div>
-                  )}
-                  {activeDesign && (
-                    <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
-                      <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{DESIGN_TITLE_MAP[activeDesign!] ?? activeDesign}</span>
-                      <button onClick={clearAll} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
-                    </div>
-                  )}
-                  <button onClick={clearAll} className="text-[11px] w-full text-left hover:underline mt-1" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Clear all ×</button>
-                </div>
-              )}
-
+          {/* Sidebar — desktop/laptop only */}
+          <aside className="hidden lg:block w-full lg:w-[220px] flex-shrink-0">
+            <div data-lenis-prevent className="lg:sticky lg:top-[110px] lg:max-h-[calc(100vh-130px)] lg:overflow-y-auto hide-scrollbar space-y-8">
+              {filterPanel}
             </div>
           </aside>
 
           {/* Grid */}
           <div className="flex-1">
-            <div className="mb-7 text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+            {/* Mobile / tablet result count */}
+            <div className="mb-5 lg:hidden text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+              <span className="font-semibold" style={{ color: "var(--text-primary)" }}>{filtered.length}</span> of {products.length} surfaces
+            </div>
+
+            <div className="hidden lg:block mb-7 text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
               Showing <span className="font-semibold" style={{ color: "var(--text-primary)" }}>{filtered.length}</span> of {products.length} surfaces
             </div>
 
             {filtered.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                 {filtered.map((product) => (
                   <div key={product.id} className="group block">
-                    <div className="relative aspect-[4/5] mb-4 overflow-hidden rounded-2xl bg-[#f3f4f6]">
+                    <div className="relative aspect-[4/5] mb-2.5 lg:mb-4 overflow-hidden rounded-2xl bg-[#f3f4f6]">
                       <Link href={productHref(product)} className="absolute inset-0 block w-full h-full z-0">
                         <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       </Link>
@@ -499,11 +514,11 @@ export default function ProductsClient({ products }: { products: Product[] }) {
                       </div>
                     </div>
                     <Link href={productHref(product)} className="block">
-                      <h3 className="text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors" style={{ color: "var(--text-primary)" }}>
+                      <h3 className="text-[14px] sm:text-[15px] lg:text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors truncate" style={{ color: "var(--text-primary)" }}>
                         {product.name}
                       </h3>
                     </Link>
-                    <p className="text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{product.finish} · {product.thickness}</p>
+                    <p className="text-[11px] sm:text-[12px] lg:text-[12.5px] truncate" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{product.finish} · {product.thickness}</p>
                   </div>
                 ))}
               </div>
@@ -518,6 +533,51 @@ export default function ProductsClient({ products }: { products: Product[] }) {
           </div>
         </div>
       </section>
+
+      {/* ── Mobile / tablet floating filter button — stays reachable while scrolling ── */}
+      <button
+        onClick={() => setFiltersOpen(true)}
+        aria-label="Open filters"
+        className={`lg:hidden fixed bottom-6 left-5 z-[150] flex items-center gap-1.5 pl-4 pr-3.5 py-3 rounded-full text-[12.5px] font-semibold text-white shadow-[0_8px_22px_rgba(133,173,220,0.45)] transition-transform duration-300 ${filtersOpen ? "scale-0" : "scale-100"}`}
+        style={{ background: "#85addc", fontFamily: "var(--font-jakarta)" }}
+      >
+        <ListFilter className="w-3.5 h-3.5" />
+        Filters
+        {activeFilterCount > 0 && (
+          <span className="flex items-center justify-center rounded-full text-[10px] font-bold" style={{ width: 17, height: 17, background: "white", color: "#85addc" }}>
+            {activeFilterCount}
+          </span>
+        )}
+      </button>
+
+      {/* ── Mobile / tablet filter drawer ── */}
+      <div
+        className={`lg:hidden fixed inset-0 z-[500] transition-all duration-300 ${filtersOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        style={{ backgroundColor: "rgba(30,30,46,0.35)", backdropFilter: "blur(6px)" }}
+        onClick={() => setFiltersOpen(false)}
+      />
+      <div
+        data-lenis-prevent
+        className={`lg:hidden fixed top-0 right-0 h-screen w-[min(340px,86vw)] z-[501] p-6 pt-16 overflow-y-auto transition-transform duration-500 ${filtersOpen ? "translate-x-0" : "translate-x-full"}`}
+        style={{ backgroundColor: "white", borderTopLeftRadius: "24px", borderBottomLeftRadius: "24px" }}
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="font-serif" style={{ fontSize: "20px", color: "var(--text-primary)" }}>Filters</h3>
+          <IconButton size="sm" aria-label="Close filters" onClick={() => setFiltersOpen(false)}>
+            <X className="w-4 h-4" />
+          </IconButton>
+        </div>
+        <div className="space-y-8">{filterPanel}</div>
+        <Button
+          type="button"
+          variant="primary"
+          size="sm"
+          onClick={() => setFiltersOpen(false)}
+          className="w-full justify-center mt-8 sticky bottom-0"
+        >
+          Show {filtered.length} results
+        </Button>
+      </div>
 
       {quickView && <QuickViewModal product={quickView} onClose={() => setQuickView(null)} />}
     </>

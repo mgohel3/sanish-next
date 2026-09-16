@@ -157,11 +157,20 @@ export default async function BlogIndexPage({ searchParams }: Props) {
                   </div>
 
                   <h2
-                    className="font-bold text-[18px] leading-[1.35] mb-4 transition-colors duration-300 group-hover:text-[#fabf7d]"
+                    className="font-bold text-[18px] leading-[1.35] mb-3 transition-colors duration-300 group-hover:text-[#fabf7d]"
                     style={{ color: "#1E1E2E" }}
                   >
                     {post.title}
                   </h2>
+
+                  {post.excerpt && (
+                    <p
+                      className="text-[13px] leading-[1.6] mb-4 line-clamp-3"
+                      style={{ color: "#6B6B80" }}
+                    >
+                      {post.excerpt}
+                    </p>
+                  )}
 
                   <span
                     className="mt-auto inline-flex items-center gap-2 text-[12px] font-semibold transition-colors duration-300 group-hover:text-[#fabf7d]"

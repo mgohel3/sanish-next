@@ -13,6 +13,10 @@ type PageHeroProps = {
   /** Set when `image` isn't the ~3.4:1 aspect the default crop is tuned for
    *  (see globals.css .page-hero__image) — fills the band width-first instead. */
   imageFill?: boolean;
+  /** Hide the title/description overlay and show only the breadcrumb,
+   *  bottom-aligned — used on the blog single post page, where the title
+   *  and description live in the article content instead. */
+  breadcrumbOnly?: boolean;
 };
 
 export default function PageHero({
@@ -22,6 +26,7 @@ export default function PageHero({
   breadcrumb,
   rightSlot,
   imageFill,
+  breadcrumbOnly,
 }: PageHeroProps) {
   return (
     <section className="page-hero">
@@ -46,13 +51,15 @@ export default function PageHero({
             ))}
           </div>
         )}
-        <div className={rightSlot ? "flex flex-col md:flex-row md:items-end md:justify-between gap-8" : undefined}>
-          <div>
-            <h1>{title}</h1>
-            {description && <p>{description}</p>}
+        {!breadcrumbOnly && (
+          <div className={rightSlot ? "flex flex-col md:flex-row md:items-end md:justify-between gap-8" : undefined}>
+            <div>
+              <h1>{title}</h1>
+              {description && <p>{description}</p>}
+            </div>
+            {rightSlot && <div className="w-full md:w-[320px] flex-shrink-0">{rightSlot}</div>}
           </div>
-          {rightSlot && <div className="w-full md:w-[320px] flex-shrink-0">{rightSlot}</div>}
-        </div>
+        )}
       </div>
     </section>
   );

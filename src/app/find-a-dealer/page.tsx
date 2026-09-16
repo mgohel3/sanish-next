@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
+import PageBlocks from "@/components/PageBlockRenderer";
+import { getSitePage } from "@/lib/pages";
 
 export const metadata = {
   title: "Find a Sanish Laminate Dealer | Dealer Network India",
@@ -8,10 +10,22 @@ export const metadata = {
     "Locate authorised Sanish Laminate dealers across India. Contact us for dealer enquiries and distribution partnerships.",
 };
 
-export default function FindADealerPage() {
+export default async function FindADealerPage() {
+  const page = await getSitePage("find-a-dealer");
+
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }} className="min-h-screen">
       <Header />
+      {page && page.sections.length > 0 ? <PageBlocks sections={page.sections} /> : <StaticFindADealer />}
+      <Footer />
+    </main>
+  );
+}
+
+/** Original hard-coded layout — shown when the CMS page has no sections yet. */
+function StaticFindADealer() {
+  return (
+    <>
       <PageHero
         eyebrow="Dealer Network"
         title="Find a Dealer"
@@ -19,7 +33,6 @@ export default function FindADealerPage() {
         description="Connect with an authorised Sanish dealer for samples, product guidance and availability."
       />
 
-      {/* Page body */}
       <section className="home-section">
         <div className="site-container-narrow">
           <p className="text-[17px] leading-[1.75] text-[var(--text-secondary)] mb-8" style={{ fontFamily: "var(--font-jakarta)", maxWidth: "520px" }}>
@@ -42,8 +55,6 @@ export default function FindADealerPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </>
   );
 }

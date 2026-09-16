@@ -41,3 +41,7 @@ dev-server.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+dev-run.log
+dev-server2.log
+frontend-restart.log
+frontend-run.log

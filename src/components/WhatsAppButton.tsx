@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useSiteSettings } from "@/components/SiteSettingsProvider";
 
 export default function WhatsAppButton() {
+  const pathname = usePathname();
   const settings = useSiteSettings();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -19,6 +21,8 @@ export default function WhatsAppButton() {
     `transition-all duration-300 ${delay} ${
       isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
     }`;
+
+  if (pathname?.startsWith("/cms-preview")) return null;
 
   return (
     <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[9000] flex flex-col items-center gap-3">

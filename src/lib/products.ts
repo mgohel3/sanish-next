@@ -8,18 +8,34 @@ export type Product = {
   id: number;
   slug: string;
   name: string;
+  sku?: string;
   collection: string;
   finish: string;
   thickness: string;
   dimensions: string;
   surface: string;
+  productType?: string;
+  surfaceCategory?: string;
   application: string;
+  techSpecs?: Record<string, string>;
+  showSurface?: boolean;
+  showProductType?: boolean;
+  showFinish?: boolean;
+  showSurfaceCategory?: boolean;
+  showThickness?: boolean;
+  showDimensions?: boolean;
+  showApplication?: boolean;
+  showDesignType?: boolean;
   badge?: "New" | "Bestseller" | "Limited";
   accentColor: string;
   shortDescription: string;
   description: string;
   features: string[];
   images: string[];
+  /** The single "applied in a room" shot, shown below the title — not part of the swatch gallery. */
+  applicationImage?: string;
+  /** Labeled texture-finish reference swatches (e.g. Fluted, Glossy) shown near the title. */
+  textureVariants?: { label: string; image: string }[];
   relatedSlugs: string[];
   category: ProductCategory;
   designType: DesignType;

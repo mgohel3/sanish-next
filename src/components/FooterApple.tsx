@@ -43,6 +43,7 @@ const COMPANY = [
   { label: "Rewards",        href: "/rewards" },
   { label: "Contact Us",     href: "/contact-us" },
   { label: "Blog",           href: "/blog" },
+  { label: "FAQs",           href: "/faq" },
 ];
 
 export default function FooterApple() {
