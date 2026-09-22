@@ -9,6 +9,7 @@ import PageHero from "@/components/PageHero";
 import { productHref, fetchCollections, findCollectionPdfUrl, collectionSlugForName, type CollectionMeta } from "@/lib/catalog";
 import { openCataloguePdfPopup } from "@/lib/cataloguePdf";
 import Button from "@/components/ui/Button";
+import Pagination from "@/components/ui/Pagination";
 
 /* ── URL slug → display name mappings ── */
 const COLLECTION_SLUG_MAP: Record<string, string> = {
@@ -144,10 +145,17 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
   const [quickView, setQuickView] = useState<Product | null>(null);
   const [cmsCollections, setCmsCollections] = useState<CollectionMeta[]>([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 30;
 
   useEffect(() => {
     fetchCollections().then(setCmsCollections);
   }, []);
+
+  // Reset to page 1 whenever the active filters or search change.
+  useEffect(() => {
+    setPage(1);
+  }, [searchParams, searchQuery]);
 
   /* ── Base products pre-filtered by category ── */
   const baseProducts = category
@@ -232,6 +240,17 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
     const matchSearch = !q || p.name.toLowerCase().includes(q) || p.finish.toLowerCase().includes(q) || p.collection.toLowerCase().includes(q) || p.designType.toLowerCase().includes(q) || p.color.toLowerCase().includes(q);
     return matchCol && matchFin && matchDesign && matchColor && matchSearch;
   });
+
+  /* ── Pagination — 30 per page, numbered ── */
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const goToPage = (p: number) => {
+    setPage(p);
+    if (typeof window !== "undefined") {
+      document.getElementById("product-grid-top")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   const clearAll = () => {
     setSearchQuery("");
@@ -435,10 +454,16 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
           </aside>
 
           {/* Product grid */}
-          <div className="flex-1">
+          <div className="flex-1" id="product-grid-top">
             <div className="mb-5 lg:mb-7 flex flex-wrap items-center justify-between gap-3">
               <div className="text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
-                Showing <span className="font-semibold" style={{ color: "var(--text-primary)" }}>{filtered.length}</span> of {baseProducts.length} surfaces
+                {filtered.length > 0 ? (
+                  <>
+                    Showing <span className="font-semibold" style={{ color: "var(--text-primary)" }}>{(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, filtered.length)}</span> of {filtered.length} surfaces
+                  </>
+                ) : (
+                  <>Showing <span className="font-semibold" style={{ color: "var(--text-primary)" }}>0</span> of {baseProducts.length} surfaces</>
+                )}
               </div>
               {activeCollection !== "All" && (
                 <Button type="button" variant="ghost" size="sm" onClick={downloadActiveCollectionPdf}>
@@ -454,7 +479,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
 
             {filtered.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                {filtered.map((product) => (
+                {paginated.map((product) => (
                   <div key={product.id} className="group block">
                     <div className="relative aspect-[4/5] mb-2.5 lg:mb-4 overflow-hidden rounded-2xl bg-[#f3f4f6]">
                       <Link href={productHref(product)} className="absolute inset-0 block w-full h-full z-0">
@@ -516,6 +541,8 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                 </button>
               </div>
             )}
+
+            <Pagination page={currentPage} totalPages={totalPages} onChange={goToPage} />
           </div>
         </div>
       </section>
