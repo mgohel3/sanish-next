@@ -165,19 +165,24 @@ function mapApiProduct(raw: ApiProduct): Product {
 }
 
 /* ── fetchers ────────────────────────────────────────────── */
-export async function fetchProducts(categorySlug?: string): Promise<Product[]> {
+export async function fetchProducts(categorySlug?: string, collectionSlug?: string): Promise<Product[]> {
   try {
-    const qs = categorySlug ? `?category=${encodeURIComponent(categorySlug)}` : "";
+    const params = new URLSearchParams();
+    if (categorySlug) params.set("category", categorySlug);
+    if (collectionSlug) params.set("collection", collectionSlug);
+    const qs = params.toString() ? `?${params.toString()}` : "";
     const res = await fetch(`${API_BASE}/products/${qs}`, { next: { revalidate: REVALIDATE } });
     if (!res.ok) throw new Error(String(res.status));
     const data = (await res.json()) as ApiProduct[];
     if (!Array.isArray(data) || data.length === 0) throw new Error("empty");
     return data.map(mapApiProduct);
   } catch {
-    if (!categorySlug) return FALLBACK_PRODUCTS;
+    if (!categorySlug && !collectionSlug) return FALLBACK_PRODUCTS;
     // fall back to filtering the bundled set by display name
     return FALLBACK_PRODUCTS.filter(
-      (p) => p.category.toLowerCase().replace(/\s+/g, "-") === categorySlug,
+      (p) =>
+        (!categorySlug || p.category.toLowerCase().replace(/\s+/g, "-") === categorySlug) &&
+        (!collectionSlug || toSlug(p.collection || "") === collectionSlug),
     );
   }
 }

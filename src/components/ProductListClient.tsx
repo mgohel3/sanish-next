@@ -89,11 +89,11 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
           <p className="text-[13.5px] leading-relaxed mb-6" style={{ color: "#5A5A6A", fontFamily: "var(--font-jakarta)" }}>{product.shortDescription}</p>
           <div className="rounded-xl overflow-hidden mb-6" style={{ border: "1px solid rgba(30,30,46,0.08)" }}>
             {[
-              { label: "Finish",     value: product.finish },
-              { label: "Thickness",  value: product.thickness },
-              { label: "Size",       value: product.dimensions },
-              { label: "Design",     value: product.designType },
-            ].map((row, i) => (
+              { label: "Finish",     value: product.finish,      show: true },
+              { label: "Thickness",  value: product.thickness,   show: product.showThickness },
+              { label: "Size",       value: product.dimensions,  show: product.showDimensions },
+              { label: "Design",     value: product.designType,  show: true },
+            ].filter((row) => row.show !== false && row.value).map((row, i) => (
               <div key={row.label} className="flex items-center justify-between px-4 py-3 border-t first:border-t-0"
                 style={{ borderColor: "rgba(30,30,46,0.07)", backgroundColor: i % 2 === 0 ? "white" : "#FAFAF9" }}>
                 <span className="text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{row.label}</span>
@@ -502,7 +502,9 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                         {product.name}
                       </h3>
                     </Link>
-                    <p className="text-[11px] sm:text-[12px] lg:text-[12.5px] truncate" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{product.finish} · {product.thickness}</p>
+                    <p className="text-[11px] sm:text-[12px] lg:text-[12.5px] truncate" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                      {product.finish}{product.showThickness !== false && product.thickness ? ` · ${product.thickness}` : ""}
+                    </p>
                   </div>
                 ))}
               </div>

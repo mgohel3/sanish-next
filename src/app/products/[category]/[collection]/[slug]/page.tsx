@@ -5,6 +5,7 @@ import {
   fetchProducts,
   productHref,
   collectionHref,
+  collectionSlugForName,
   toSlug,
 } from "@/lib/catalog";
 import { notFound, redirect } from "next/navigation";
@@ -39,10 +40,18 @@ export default async function ProductPage({ params }: Props) {
     redirect(canonical);
   }
 
-  // Related = other products in the same category
-  const categorySlug = toSlug(product.category);
-  const sameCategory = await fetchProducts(categorySlug);
-  let related = sameCategory.filter((p) => p.slug !== product.slug).slice(0, 3);
+  // Related = other products from the same range/collection (e.g. Thre3, S'Shades),
+  // falling back to the wider category, then to any explicitly linked products.
+  const categorySlug   = toSlug(product.category);
+  const collectionSlug = product.collection ? collectionSlugForName(product.collection) : null;
+  const sameCollection = collectionSlug
+    ? await fetchProducts(categorySlug, collectionSlug)
+    : [];
+  let related = sameCollection.filter((p) => p.slug !== product.slug).slice(0, 3);
+  if (related.length === 0) {
+    const sameCategory = await fetchProducts(categorySlug);
+    related = sameCategory.filter((p) => p.slug !== product.slug).slice(0, 3);
+  }
   if (related.length === 0) {
     related = await fetchRelatedProducts(product.relatedSlugs).then((r) => r.slice(0, 3));
   }
