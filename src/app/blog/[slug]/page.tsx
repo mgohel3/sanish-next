@@ -10,9 +10,12 @@ import BlogFaqAccordion from "@/components/blog/BlogFaqAccordion";
 import {
   fetchBlogPosts,
   fetchBlogPostBySlug,
+  fetchBlogPostPreview,
   formatBlogDate,
   pickRelatedPosts,
 } from "@/lib/blog";
+import { getCmsBaseUrl } from "@/lib/cityPages";
+import CmsPreviewBanner from "@/components/CmsPreviewBanner";
 
 export const revalidate = 300;
 export const dynamicParams = true;
@@ -25,7 +28,7 @@ export async function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
 }
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ preview?: string }> };
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -44,9 +47,12 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const post = await fetchBlogPostBySlug(slug);
+  const { preview } = await searchParams;
+  const post = preview
+    ? await fetchBlogPostPreview(slug, preview)
+    : await fetchBlogPostBySlug(slug);
   if (!post) notFound();
 
   const withSidebar = post.layout === "sidebar";
@@ -134,6 +140,9 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
+      {preview && (
+        <CmsPreviewBanner status={post.status} editHref={`${getCmsBaseUrl()}/cms/blog/${post.id}/`} />
+      )}
       <Header />
       <PageHero
         eyebrow={post.categories[0]?.name || "Editorial"}

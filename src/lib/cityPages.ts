@@ -55,6 +55,8 @@ export interface CityPageResolved {
 export interface CityPageData {
   id: number;
   slug: string;
+  /** Only populated by preview fetches — the public API only ever returns published pages. */
+  status?: string;
   resolved_data: CityPageResolved;
   schema_json: Record<string, unknown>;
 }
@@ -72,6 +74,23 @@ export async function getCityPage(slug: string): Promise<CityPageData | null> {
     const res = await fetch(`${apiUrl}/city-pages/${slug}/`, {
       next: { revalidate: 300 },
     });
+    if (!res.ok) return null;
+    return (await res.json()) as CityPageData;
+  } catch {
+    return null;
+  }
+}
+
+/** CMS "Preview" — same shape as getCityPage but hits the preview-only
+ * endpoint (any status, not just published), gated by a signed token minted
+ * by the CMS. A bad/expired token reads as "not found". */
+export async function getCityPagePreview(slug: string, token: string): Promise<CityPageData | null> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+  try {
+    const res = await fetch(
+      `${apiUrl}/city-pages/preview/${slug}/?token=${encodeURIComponent(token)}`,
+      { cache: "no-store" },
+    );
     if (!res.ok) return null;
     return (await res.json()) as CityPageData;
   } catch {

@@ -37,6 +37,8 @@ export type Product = {
   /** Labeled texture-finish reference swatches (e.g. Fluted, Glossy) shown near the title. */
   textureVariants?: { label: string; image: string }[];
   relatedSlugs: string[];
+  /** Only populated by preview fetches — the public API only ever returns published products. */
+  status?: string;
   category: ProductCategory;
   designType: DesignType;
   color: ProductColor;

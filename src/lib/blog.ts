@@ -57,6 +57,8 @@ export interface BlogPostSummary {
   imageAlt: string;
   categories: BlogCategory[];
   date: string; // ISO — published_at ?? created
+  /** Only populated by preview fetches — the public API only ever returns published posts. */
+  status?: string;
 }
 
 export interface BlogFaq {
@@ -129,6 +131,7 @@ function mapSummary(raw: ApiPostList): BlogPostSummary {
     imageAlt: raw.featured_image?.alt_text || raw.title,
     categories: raw.categories || [],
     date: raw.published_at || raw.created,
+    status: raw.status,
   };
 }
 
@@ -173,6 +176,22 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null
       next: { revalidate: REVALIDATE },
     });
     if (!res.ok) throw new Error(String(res.status));
+    return mapDetail((await res.json()) as ApiPostDetail);
+  } catch {
+    return null;
+  }
+}
+
+/** CMS "Preview" — same shape as fetchBlogPostBySlug but hits the preview-only
+ * endpoint (any status, not just published), gated by a signed token minted
+ * by the CMS. A bad/expired token reads as "not found". */
+export async function fetchBlogPostPreview(slug: string, token: string): Promise<BlogPost | null> {
+  try {
+    const res = await fetch(
+      `${API_BASE}/blog/preview/${encodeURIComponent(slug)}/?token=${encodeURIComponent(token)}`,
+      { cache: "no-store" },
+    );
+    if (!res.ok) return null;
     return mapDetail((await res.json()) as ApiPostDetail);
   } catch {
     return null;

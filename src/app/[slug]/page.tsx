@@ -5,7 +5,8 @@ import PageBlocks from "@/components/PageBlockRenderer";
 import CityPageView from "@/components/CityPageView";
 import CityPageEditBar from "@/components/CityPageEditBar";
 import { getSitePage } from "@/lib/pages";
-import { getCityPage, getCityPageList, getCmsBaseUrl } from "@/lib/cityPages";
+import { getCityPage, getCityPagePreview, getCityPageList, getCmsBaseUrl } from "@/lib/cityPages";
+import CmsPreviewBanner from "@/components/CmsPreviewBanner";
 
 /**
  * Renders any page created from `/cms/pages/create/` at its own URL with no
@@ -20,7 +21,7 @@ import { getCityPage, getCityPageList, getCmsBaseUrl } from "@/lib/cityPages";
  */
 export const dynamicParams = true;
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ preview?: string }> };
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -52,8 +53,26 @@ export async function generateMetadata({ params }: Props) {
   return {};
 }
 
-export default async function DynamicSitePage({ params }: Props) {
+export default async function DynamicSitePage({ params, searchParams }: Props) {
   const { slug } = await params;
+  const { preview } = await searchParams;
+
+  // A preview token is only ever minted for a CityPage (SitePage has no
+  // preview flow) — check it first so a preview link can't be shadowed by a
+  // published SitePage that happens to share the same slug.
+  if (preview) {
+    const cityPage = await getCityPagePreview(slug, preview);
+    if (!cityPage) notFound();
+    const siblingCities = await getCityPageList();
+    return (
+      <main style={{ backgroundColor: "var(--bg-primary)" }}>
+        <CmsPreviewBanner status={cityPage.status} editHref={`${getCmsBaseUrl()}/cms/city-pages/${cityPage.id}/`} />
+        <Header />
+        <CityPageView page={cityPage} siblingCities={siblingCities} />
+        <Footer />
+      </main>
+    );
+  }
 
   const page = await getSitePage(slug);
   if (page) {

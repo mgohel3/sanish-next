@@ -124,6 +124,7 @@ type ApiProduct = {
   application_image?: string;
   texture_variants?: { label: string; image: string }[];
   related_slugs?: string[];
+  status?: string;
 };
 
 function mapApiProduct(raw: ApiProduct): Product {
@@ -158,6 +159,7 @@ function mapApiProduct(raw: ApiProduct): Product {
     applicationImage: raw.application_image || "",
     textureVariants: raw.texture_variants || [],
     relatedSlugs: raw.related_slugs || [],
+    status: raw.status,
     category: (raw.category_name || "Laminates") as ProductCategory,
     designType: (raw.design_type || "Solid") as DesignType,
     color: (raw.color || "White") as ProductColor,
@@ -194,6 +196,23 @@ export async function fetchProductBySlug(slug: string): Promise<Product | undefi
     return mapApiProduct((await res.json()) as ApiProduct);
   } catch {
     return FALLBACK_PRODUCTS.find((p) => p.slug === slug);
+  }
+}
+
+/** CMS "Preview" — same shape as fetchProductBySlug but hits the preview-only
+ * endpoint (any status, not just published), gated by a signed token minted
+ * by the CMS. Never falls back to bundled demo data: a bad/expired token
+ * should read as "not found", not silently show placeholder content. */
+export async function fetchProductPreview(slug: string, token: string): Promise<Product | undefined> {
+  try {
+    const res = await fetch(
+      `${API_BASE}/products/preview/${slug}/?token=${encodeURIComponent(token)}`,
+      { cache: "no-store" },
+    );
+    if (!res.ok) return undefined;
+    return mapApiProduct((await res.json()) as ApiProduct);
+  } catch {
+    return undefined;
   }
 }
 

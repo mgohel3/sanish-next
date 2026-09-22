@@ -1,6 +1,7 @@
 import { products } from "@/lib/products";
 import {
   fetchProductBySlug,
+  fetchProductPreview,
   fetchRelatedProducts,
   fetchProducts,
   productHref,
@@ -8,6 +9,7 @@ import {
   collectionSlugForName,
   toSlug,
 } from "@/lib/catalog";
+import { getCmsBaseUrl } from "@/lib/cityPages";
 import { notFound, redirect } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -15,6 +17,7 @@ import Link from "next/link";
 import ProductGallery from "./ProductGallery";
 import TextureSwatches from "./TextureSwatches";
 import InquireButton from "@/components/InquireButton";
+import CmsPreviewBanner from "@/components/CmsPreviewBanner";
 
 /* ── Page ────────────────────────────────────────────────── */
 export function generateStaticParams() {
@@ -27,17 +30,26 @@ export function generateStaticParams() {
 
 type Props = {
   params: Promise<{ category: string; collection: string; slug: string }>;
+  searchParams: Promise<{ preview?: string }>;
 };
 
-export default async function ProductPage({ params }: Props) {
+export default async function ProductPage({ params, searchParams }: Props) {
   const { category, collection, slug } = await params;
-  const product = await fetchProductBySlug(slug);
+  const { preview } = await searchParams;
+
+  const product = preview
+    ? await fetchProductPreview(slug, preview)
+    : await fetchProductBySlug(slug);
   if (!product) notFound();
 
   // Canonicalise the URL — keep /products/<category>/<collection>/<slug> honest.
-  const canonical = productHref(product);
-  if (`/products/${category}/${collection}/${slug}` !== canonical) {
-    redirect(canonical);
+  // Skipped in preview mode: a draft's category/collection may not match its
+  // eventual published URL yet, and redirect() would drop ?preview= anyway.
+  if (!preview) {
+    const canonical = productHref(product);
+    if (`/products/${category}/${collection}/${slug}` !== canonical) {
+      redirect(canonical);
+    }
   }
 
   // Related = other products from the same range/collection (e.g. Thre3, S'Shades),
@@ -109,6 +121,9 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: "var(--bg-primary)" }}>
+      {preview && (
+        <CmsPreviewBanner status={product.status} editHref={`${getCmsBaseUrl()}/cms/products/${product.id}/`} />
+      )}
       <Header />
 
       {/* ── Breadcrumb ─────────────────────────────────── */}
