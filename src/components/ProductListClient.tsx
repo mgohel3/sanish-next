@@ -523,13 +523,10 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                       </div>
                     </div>
                     <Link href={productHref(product)} className="block">
-                      <h3 className="text-[14px] sm:text-[15px] lg:text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors truncate" style={{ color: "var(--text-primary)" }}>
+                      <h3 className="text-[14px] sm:text-[15px] lg:text-[18px] font-bold group-hover:text-[#f39ba2] transition-colors truncate" style={{ color: "var(--text-primary)" }}>
                         {product.name}
                       </h3>
                     </Link>
-                    <p className="text-[11px] sm:text-[12px] lg:text-[12.5px] truncate" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
-                      {product.finish}{product.showThickness !== false && product.thickness ? ` · ${product.thickness}` : ""}
-                    </p>
                   </div>
                 ))}
               </div>

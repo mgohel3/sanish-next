@@ -377,13 +377,10 @@ export default function ProductsClient({ products }: { products: Product[] }) {
                       </div>
                     </div>
                     <Link href={productHref(product)} className="block">
-                      <h3 className="text-[18px] font-bold mb-1 group-hover:text-[#f39ba2] transition-colors" style={{ color: "var(--text-primary)" }}>
+                      <h3 className="text-[18px] font-bold group-hover:text-[#f39ba2] transition-colors" style={{ color: "var(--text-primary)" }}>
                         {product.name}
                       </h3>
                     </Link>
-                    <p className="text-[12.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
-                      {product.finish}{product.showThickness !== false && product.thickness ? ` · ${product.thickness}` : ""}
-                    </p>
                   </div>
                 ))}
               </div>
