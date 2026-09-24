@@ -262,7 +262,7 @@ export default function Header() {
             <Button
               variant="primary"
               className="hidden lg:flex"
-              href="/collection"
+              href={settings.header.cta_url}
             >
               {settings.header.cta_label}
             </Button>

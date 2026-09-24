@@ -23,8 +23,29 @@ export const dynamicParams = true;
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ preview?: string }> };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params, searchParams }: Props) {
   const { slug } = await params;
+  const { preview } = await searchParams;
+
+  // Same reasoning as the page body below: a preview token only ever targets
+  // a CityPage, and a draft page has no metadata at all from the public
+  // fetch (getCityPage only sees published pages) — without this, previewing
+  // a draft city page showed the site's generic fallback title/description
+  // instead of the page's own, which is exactly the kind of "doesn't look
+  // right" a preview is supposed to catch before publishing.
+  if (preview) {
+    const cityPage = await getCityPagePreview(slug, preview);
+    if (cityPage) {
+      const { seo, h1_title } = cityPage.resolved_data;
+      return {
+        title: seo.title || h1_title,
+        description: seo.meta_description,
+        keywords: seo.meta_keywords || undefined,
+        // Never a canonical tag on a preview — it isn't the real URL yet.
+      };
+    }
+    return {};
+  }
 
   const page = await getSitePage(slug);
   if (page) {

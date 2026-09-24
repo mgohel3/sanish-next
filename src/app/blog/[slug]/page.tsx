@@ -30,9 +30,16 @@ export async function generateStaticParams() {
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ preview?: string }> };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params, searchParams }: Props) {
   const { slug } = await params;
-  const post = await fetchBlogPostBySlug(slug);
+  const { preview } = await searchParams;
+
+  // A draft post has no metadata via the public fetch below (published-only),
+  // so without this a preview of a draft showed the site's generic fallback
+  // title instead of the post's own — same gap fixed for City Pages.
+  const post = preview
+    ? await fetchBlogPostPreview(slug, preview)
+    : await fetchBlogPostBySlug(slug);
   if (!post) return {};
   return {
     title: `${post.seoTitle || post.title} | Sanish Laminates`,

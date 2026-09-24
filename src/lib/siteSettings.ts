@@ -92,7 +92,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   header: {
     topbar_badge: "Premium Surface Manufacturing",
     cta_label: "Download Catalogue",
-    cta_url: "#",
+    cta_url: "/collection",
   },
   footer: {
     description:

@@ -1,34 +1,19 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { HeadingLinkContent } from "@/lib/homepage";
+import type { BlogPostSummary } from "@/lib/blog";
+import { formatBlogDate } from "@/lib/blog";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const posts = [
-  {
-    date: "Oct 15, 2026", category: "Design Trends",
-    title: "The Rise of Tactile Surfaces in Modern Commercial Spaces",
-    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=600",
-    accent: "#fabf7d",
-  },
-  {
-    date: "Sep 28, 2026", category: "Architecture",
-    title: "Integrating High Gloss Finishes in Minimalist Interiors",
-    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=600",
-    accent: "#fabf7d",
-  },
-  {
-    date: "Sep 12, 2026", category: "Sustainability",
-    title: "How Eco-Friendly Laminates Are Changing Green Building",
-    image: "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=600",
-    accent: "#fabf7d",
-  },
-];
+const ACCENT = "#fabf7d";
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=600";
 
-export default function Blog({ content = {} }: { content?: HeadingLinkContent }) {
+export default function Blog({ content = {}, posts = [] }: { content?: HeadingLinkContent; posts?: BlogPostSummary[] }) {
   const heading = content.heading || "Editorial";
   const ctaLabel = content.cta_label || "View All Articles →";
   const ctaUrl = content.cta_url || "/blog";
@@ -46,6 +31,10 @@ export default function Blog({ content = {} }: { content?: HeadingLinkContent })
     return () => ctx.revert();
   }, []);
 
+  // No real posts published yet — nothing honest to show, so skip the
+  // section entirely rather than fall back to placeholder/demo content.
+  if (posts.length === 0) return null;
+
   return (
     <section ref={sectionRef} className="home-section relative" style={{ backgroundColor: "#FAFAFA" }}>
       <div className="site-container">
@@ -56,14 +45,14 @@ export default function Blog({ content = {} }: { content?: HeadingLinkContent })
               {heading}
             </h2>
           </div>
-          <a href={ctaUrl} className="btn-pill btn-pill-ghost flex-shrink-0" style={{ textTransform: "none" }}>
+          <Link href={ctaUrl} className="btn-pill btn-pill-ghost flex-shrink-0" style={{ textTransform: "none" }}>
             {ctaLabel}
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {posts.map((post, i) => (
-            <div key={i} className="blog-card group cursor-pointer flex flex-col h-full">
+          {posts.map((post) => (
+            <Link key={post.id} href={`/blog/${post.slug}`} className="blog-card group cursor-pointer flex flex-col h-full">
               {/* Rounded image */}
               <div className="relative mb-6 overflow-hidden img-premium-wrap"
                 style={{ height: "clamp(220px, 28vh, 300px)", borderRadius: "20px", boxShadow: "0 16px 40px rgba(30,30,46,0.07)",
@@ -71,36 +60,38 @@ export default function Blog({ content = {} }: { content?: HeadingLinkContent })
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 24px 56px rgba(30,30,46,0.12)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 16px 40px rgba(30,30,46,0.07)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
               >
-                <img src={post.image} alt={post.title} className="img-premium w-full h-full object-cover" />
+                <img src={post.image || FALLBACK_IMAGE} alt={post.imageAlt || post.title} className="img-premium w-full h-full object-cover" />
                 {/* Category pill overlay */}
-                <div className="absolute top-4 left-4 px-3 py-1.5 text-white text-[9px] uppercase tracking-[0.16em] font-semibold"
-                  style={{ backgroundColor: post.accent, borderRadius: "999px" }}>
-                  {post.category}
-                </div>
+                {post.categories[0] && (
+                  <div className="absolute top-4 left-4 px-3 py-1.5 text-white text-[9px] uppercase tracking-[0.16em] font-semibold"
+                    style={{ backgroundColor: ACCENT, borderRadius: "999px" }}>
+                    {post.categories[0].name}
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center gap-3 text-[10.5px] uppercase tracking-wider mb-3" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
-                <span className="w-1 h-1 rounded-full" style={{ backgroundColor: post.accent }} />
-                <span>{post.date}</span>
+                <span className="w-1 h-1 rounded-full" style={{ backgroundColor: ACCENT }} />
+                <span>{formatBlogDate(post.date)}</span>
               </div>
 
               <h3 className="font-bold text-[17px] leading-[1.35] mb-4 flex-1 transition-colors duration-300"
                 style={{ color: "#1E1E2E" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = post.accent; }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = ACCENT; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#1E1E2E"; }}>
                 {post.title}
               </h3>
 
               <div className="mt-auto flex items-center gap-2 text-[12px] font-semibold transition-colors duration-300"
                 style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = post.accent; }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = ACCENT; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#6B6B80"; }}>
                 Read Article
                 <svg className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M7 17L17 7M17 7H7M17 7v10" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

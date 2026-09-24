@@ -23,12 +23,14 @@ import VideoEmbedBlock from "@/components/sections/blocks/VideoEmbedBlock";
 import Footer from "@/components/Footer";
 import { getRandomGalleryTiles } from "@/lib/gallery";
 import { getHomeSections, type HomeSectionData } from "@/lib/homepage";
+import { fetchBlogPosts } from "@/lib/blog";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default async function Home() {
   const applicationTiles = await getRandomGalleryTiles(5);
   const sections = await getHomeSections();
+  const blogPosts = (await fetchBlogPosts()).slice(0, 3);
 
   // Registry: CMS block_type → rendered section. Unknown types are skipped.
   const registry: Record<string, (c: any) => React.ReactNode> = {
@@ -40,7 +42,7 @@ export default async function Home() {
     applications: (c) => <Applications tiles={applicationTiles} content={c} />,
     rewards: (c) => <RewardsHighlight content={c} />,
     cta: (c) => <CTA content={c} />,
-    blog_teaser: (c) => <Blog content={c} />,
+    blog_teaser: (c) => <Blog content={c} posts={blogPosts} />,
     rich_text: (c) => <RichTextBlock content={c} />,
     image_text: (c) => <ImageTextBlock content={c} />,
     cta_banner: (c) => <CtaBannerBlock content={c} />,
