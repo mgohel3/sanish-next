@@ -23,7 +23,7 @@ const COLLECTIONS = [
     category: "Laminates",
     path: "/laminates",
     accent: "#ac8cc0",
-    image: "/assets/img/material/threecollection.jpg",
+    image: "/assets/img/material/threeCollection.jpg",
     thickness: "1.0mm",
     pdf: "three.pdf",
     desc: "Designed to captivate with timeless designs and captivating textures. Thre3 combines impeccable craftsmanship with a curated palette to elevate the aesthetics of any room — from residential bedrooms to premium commercial spaces.",

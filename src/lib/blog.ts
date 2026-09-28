@@ -77,6 +77,7 @@ export interface BlogPost extends BlogPostSummary {
   seoTitle: string;
   metaDescription: string;
   metaKeywords: string;
+  canonicalUrl: string;
   updated: string;
   faqs: BlogFaq[];
   autoFaqSchema: boolean;
@@ -109,6 +110,7 @@ interface ApiPostDetail extends ApiPostList {
   seo_title: string;
   meta_description: string;
   meta_keywords: string;
+  canonical_url?: string;
   updated: string;
   faqs?: { question: string; answer: string }[];
   auto_faq_schema?: boolean;
@@ -150,6 +152,7 @@ function mapDetail(raw: ApiPostDetail): BlogPost {
     seoTitle: raw.seo_title || "",
     metaDescription: raw.meta_description || "",
     metaKeywords: raw.meta_keywords || "",
+    canonicalUrl: raw.canonical_url || "",
     updated: raw.updated,
     faqs: raw.faqs || [],
     autoFaqSchema: raw.auto_faq_schema || false,

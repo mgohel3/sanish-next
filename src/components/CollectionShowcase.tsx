@@ -25,7 +25,7 @@ const COLLECTIONS = [
     category: "Laminates",
     path: "/laminates",
     accent: "#ac8cc0",
-    image: "/assets/img/material/threecollection.jpg",
+    image: "/assets/img/material/threeCollection.jpg",
     thickness: "1.0mm",
     pdf: "three.pdf",
     desc: "Timeless designs and captivating textures with impeccable craftsmanship — elevating aesthetics from residential bedrooms to premium commercial spaces.",

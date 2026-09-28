@@ -45,6 +45,8 @@ export async function generateMetadata({ params, searchParams }: Props) {
     title: `${post.seoTitle || post.title} | Sanish Laminates`,
     description: post.metaDescription || post.excerpt || undefined,
     keywords: post.metaKeywords || undefined,
+    // Never a canonical tag on a preview — it isn't the real URL yet.
+    alternates: !preview && post.canonicalUrl ? { canonical: post.canonicalUrl } : undefined,
     openGraph: {
       title: post.seoTitle || post.title,
       description: post.metaDescription || post.excerpt || undefined,
