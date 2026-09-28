@@ -13,6 +13,11 @@ type PageHeroProps = {
   /** Set when `image` isn't the ~3.4:1 aspect the default crop is tuned for
    *  (see globals.css .page-hero__image) — fills the band width-first instead. */
   imageFill?: boolean;
+  /** Set when the source image must never be cropped, on any viewport —
+   *  letterboxes instead of cover-cropping (see globals.css
+   *  .page-hero__image--no-crop). Opt-in only, so every other page's hero
+   *  keeps its existing cover-crop behaviour unchanged. */
+  noCrop?: boolean;
   /** Hide the title/description overlay and show only the breadcrumb,
    *  bottom-aligned — used on the blog single post page, where the title
    *  and description live in the article content instead. */
@@ -26,14 +31,21 @@ export default function PageHero({
   breadcrumb,
   rightSlot,
   imageFill,
+  noCrop,
   breadcrumbOnly,
 }: PageHeroProps) {
+  const imageClass = [
+    "page-hero__image",
+    imageFill ? "page-hero__image--fill" : "",
+    noCrop ? "page-hero__image--no-crop" : "",
+  ].filter(Boolean).join(" ");
+
   return (
     <section className="page-hero">
       <img
         src={image}
         alt=""
-        className={imageFill ? "page-hero__image page-hero__image--fill" : "page-hero__image"}
+        className={imageClass}
       />
       <div className="page-hero__overlay" />
       <div className="page-hero__content">

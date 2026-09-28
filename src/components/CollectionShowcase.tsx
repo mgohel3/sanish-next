@@ -161,6 +161,12 @@ export default function CollectionShowcase() {
                       </svg>
                       Download Catalogue
                     </Button>
+                    <Button href={col.slug === "thermo" ? col.path : `${col.path}?collection=${col.slug}`} variant="ghost">
+                      View Products
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </Button>
                   </div>
                 </div>
               </div>

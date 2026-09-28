@@ -21,6 +21,7 @@ export default function CollectionPage() {
         title="Surface Design, Elevated"
         image="/assets/img/collections-banner.jpg"
         description="Five distinct collections crafted for architects, designers and discerning homeowners who believe every surface tells a story."
+        noCrop
       />
 
       {/* ── Intro stats ── */}

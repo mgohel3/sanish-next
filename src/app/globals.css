@@ -554,6 +554,18 @@ textarea:focus-visible {
   transform: none;
 }
 
+/* Client requirement: some banner photos must never be cropped, on any
+   viewport. The default cover-crop above matches a ~3.4:1 source almost
+   exactly, but the hero band's height clamp maxes out at 560px while its
+   width keeps growing with the viewport — past ~1900px wide the band
+   becomes wider than the source photo's own aspect ratio, so cover crops
+   the top/bottom to compensate. `contain` never crops (letterboxes into
+   the hero's own dark backdrop instead); opt-in only via `noCrop` so every
+   other page's hero keeps its existing edge-to-edge cover-crop. */
+.page-hero__image--no-crop {
+  object-fit: contain;
+}
+
 .page-hero__content {
   position: relative;
   z-index: 1;
