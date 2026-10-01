@@ -20,8 +20,13 @@ const DEFAULT_SE = {
 };
 
 export default function SpecialEdition({ content = {} }: { content?: SpecialEditionContent }) {
-  const heading = content.heading || DEFAULT_SE.heading;
-  const body = content.body || DEFAULT_SE.body;
+  // Nullish (not ||) for pure display text: an admin explicitly clearing a
+  // field to blank in the CMS must actually render blank, not silently keep
+  // showing this hardcoded default forever. The default still applies when
+  // the field was never set at all (undefined) — e.g. a brand-new block, or
+  // the whole `content` object failing to load.
+  const heading = content.heading ?? DEFAULT_SE.heading;
+  const body = content.body ?? DEFAULT_SE.body;
   const tags =
     content.tags && content.tags.length > 0
       ? content.tags.map((t) => t.label || "").filter(Boolean)
@@ -29,9 +34,22 @@ export default function SpecialEdition({ content = {} }: { content?: SpecialEdit
   const ctaLabel = content.cta_label || DEFAULT_SE.cta_label;
   const ctaUrl = content.cta_url || DEFAULT_SE.cta_url;
   const image = content.image || DEFAULT_SE.image;
-  const imageKicker = content.image_kicker || DEFAULT_SE.image_kicker;
-  const imageTitle = content.image_title || DEFAULT_SE.image_title;
+  const imageKicker = content.image_kicker ?? DEFAULT_SE.image_kicker;
+  const imageTitle = content.image_title ?? DEFAULT_SE.image_title;
   const headingLines = heading.split("\n");
+
+  // Optional "Text Style" override from the dashboard (blank/default = this
+  // whole object is empty, so every style below stays undefined and nothing
+  // visually changes from how this block has always looked).
+  const textColor = content.text_color || undefined;
+  const headingFontFamily =
+    content.heading_font === "serif" ? "var(--font-vogue)" :
+    content.heading_font === "sans"  ? "var(--font-heebo)" :
+    undefined;
+  const headingStyle = (textColor || headingFontFamily)
+    ? { color: textColor, fontFamily: headingFontFamily }
+    : undefined;
+
   const sectionRef = useRef<HTMLElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +70,7 @@ export default function SpecialEdition({ content = {} }: { content?: SpecialEdit
 
           {/* Left — Content */}
           <div className="lg:order-2">
-            <h2 className="home-heading mb-6">
+            <h2 className="home-heading mb-6" style={headingStyle}>
               {headingLines.map((line, i) => (
                 <Fragment key={i}>
                   {i > 0 && <br />}
@@ -88,10 +106,12 @@ export default function SpecialEdition({ content = {} }: { content?: SpecialEdit
             {/* Bottom gradient label */}
             <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,8,18,0.55) 0%, transparent 55%)" }} />
             <div className="absolute bottom-0 left-0 right-0 p-8">
-              <div className="text-[10px] uppercase tracking-[0.18em] text-white/60 mb-1" style={{ fontFamily: "var(--font-jakarta)" }}>
+              <div className="text-[10px] uppercase tracking-[0.18em] text-white/60 mb-1"
+                style={{ fontFamily: headingFontFamily || "var(--font-jakarta)" }}>
                 {imageKicker}
               </div>
-              <div className="text-white text-[20px] font-bold" style={{ fontFamily: "var(--font-jakarta)" }}>
+              <div className="text-white text-[20px] font-bold"
+                style={{ color: textColor, fontFamily: headingFontFamily || "var(--font-jakarta)" }}>
                 {imageTitle}
               </div>
             </div>

@@ -73,6 +73,10 @@ export interface SpecialEditionContent {
   image?: string;
   image_kicker?: string;
   image_title?: string;
+  /** Optional per-block override (dashboard's "Text Style" fields) for the
+   *  heading and image caption text — blank means use the theme default. */
+  text_color?: string;
+  heading_font?: "sans" | "serif" | "";
 }
 
 export interface WhyUsCard {

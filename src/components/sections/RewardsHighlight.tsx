@@ -17,8 +17,10 @@ const DEFAULT_REWARDS = {
 };
 
 export default function RewardsHighlight({ content = {} }: { content?: RewardsContent }) {
-  const heading = content.heading || DEFAULT_REWARDS.heading;
-  const body = content.body || DEFAULT_REWARDS.body;
+  // Nullish (not ||): an admin explicitly clearing this field in the CMS
+  // must render blank, not silently keep the hardcoded default forever.
+  const heading = content.heading ?? DEFAULT_REWARDS.heading;
+  const body = content.body ?? DEFAULT_REWARDS.body;
   const ctaLabel = content.cta_label || DEFAULT_REWARDS.cta_label;
   const ctaUrl = content.cta_url || DEFAULT_REWARDS.cta_url;
   const perks =

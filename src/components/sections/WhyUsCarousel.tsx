@@ -35,7 +35,9 @@ const DEFAULT_CARDS = [
 ];
 
 export default function WhyUsCarousel({ content = {} }: { content?: WhyUsContent }) {
-  const heading = content.heading || DEFAULT_HEADING;
+  // Nullish (not ||): an admin explicitly clearing this field in the CMS
+  // must render blank, not silently keep the hardcoded default forever.
+  const heading = content.heading ?? DEFAULT_HEADING;
   const CARDS =
     content.cards && content.cards.length > 0
       ? content.cards.map((c) => ({ title: c.title || "", desc: c.desc || "", icon: c.icon || "" }))
