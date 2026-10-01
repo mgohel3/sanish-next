@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import type { SpecialEditionContent } from "@/lib/homepage";
+import { resolveTextStyle } from "@/lib/textStyle";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,15 +41,16 @@ export default function SpecialEdition({ content = {} }: { content?: SpecialEdit
 
   // Optional "Text Style" override from the dashboard (blank/default = this
   // whole object is empty, so every style below stays undefined and nothing
-  // visually changes from how this block has always looked).
+  // visually changes from how this block has always looked). The main
+  // heading gets colour + font + size; the smaller image kicker/caption
+  // only get colour + font (no size control there — matches the original,
+  // narrower scope those two had before size existed).
+  const headingStyle = resolveTextStyle(content);
   const textColor = content.text_color || undefined;
   const headingFontFamily =
     content.heading_font === "serif" ? "var(--font-vogue)" :
     content.heading_font === "sans"  ? "var(--font-heebo)" :
     undefined;
-  const headingStyle = (textColor || headingFontFamily)
-    ? { color: textColor, fontFamily: headingFontFamily }
-    : undefined;
 
   const sectionRef = useRef<HTMLElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);

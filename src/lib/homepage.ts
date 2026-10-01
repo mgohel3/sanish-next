@@ -77,6 +77,7 @@ export interface SpecialEditionContent {
    *  heading and image caption text — blank means use the theme default. */
   text_color?: string;
   heading_font?: "sans" | "serif" | "";
+  heading_size?: "sm" | "lg" | "xl" | "";
 }
 
 export interface WhyUsCard {

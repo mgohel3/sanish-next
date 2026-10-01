@@ -1,3 +1,5 @@
+import { resolveTextStyle } from "@/lib/textStyle";
+
 export interface TeamMember {
   photo?: string;
   name?: string;
@@ -9,6 +11,11 @@ export interface TeamContent {
   sub?: string;
   columns?: "2" | "3" | "4";
   members?: TeamMember[];
+  /** Optional per-block override (dashboard's "Text Style" fields) for the
+   *  heading — blank means use the theme default. */
+  text_color?: string;
+  heading_font?: "sans" | "serif" | "";
+  heading_size?: "sm" | "lg" | "xl" | "";
 }
 
 const GRID_COLS: Record<string, string> = {
@@ -20,6 +27,7 @@ const GRID_COLS: Record<string, string> = {
 /** Heading over a grid of team member photo + name + role + bio. CMS-managed, addable to any page. */
 export default function TeamBlock({ content = {} }: { content?: TeamContent }) {
   const { heading, sub, columns = "3", members = [] } = content;
+  const headingStyle = resolveTextStyle(content);
 
   if (members.length === 0) return null;
 
@@ -29,7 +37,7 @@ export default function TeamBlock({ content = {} }: { content?: TeamContent }) {
         {(heading || sub) && (
           <div className="text-center mb-14">
             {heading && (
-              <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]">{heading}</h2>
+              <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]" style={headingStyle}>{heading}</h2>
             )}
             {sub && (
               <p className="text-[15px] text-[var(--text-secondary)] mt-3 max-w-xl mx-auto leading-[1.7]">{sub}</p>
