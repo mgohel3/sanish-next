@@ -56,7 +56,7 @@ export default function CarpenterTestimonials({ testimonials }: { testimonials: 
 
   return (
     <section
-      className="home-section--compact relative overflow-hidden bg-[var(--bg-primary)]"
+      className="home-section--compact relative overflow-hidden bg-[var(--bg-secondary)] border-y border-[var(--color-border-subtle)]"
       onMouseEnter={() => { paused.current = true; }}
       onMouseLeave={() => { paused.current = false; }}
     >
