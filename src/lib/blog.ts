@@ -92,6 +92,7 @@ interface ApiPostList {
   slug: string;
   excerpt?: string;
   image: string | null;
+  image_alt?: string;
   featured_image: ApiImage;
   categories: BlogCategory[];
   status: string;
@@ -130,7 +131,7 @@ function mapSummary(raw: ApiPostList): BlogPostSummary {
     slug: raw.slug,
     excerpt: raw.excerpt || "",
     image: imgUrl(raw),
-    imageAlt: raw.featured_image?.alt_text || raw.title,
+    imageAlt: raw.image_alt || raw.featured_image?.alt_text || raw.title,
     categories: raw.categories || [],
     date: raw.published_at || raw.created,
     status: raw.status,
