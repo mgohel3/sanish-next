@@ -271,7 +271,7 @@ export default async function RewardsPage() {
       <CarpenterTestimonials testimonials={testimonials} />
 
       {/* ── FAQ ── */}
-      <section className="home-section--compact bg-[var(--bg-secondary)] border-t border-[var(--color-border-subtle)]">
+      <section className="home-section--compact bg-[var(--bg-primary)] border-t border-[var(--color-border-subtle)]">
         <div className="site-container-narrow">
           <div className="text-center mb-12">
             <h2 className="font-serif text-[clamp(28px,3.5vw,42px)] text-[var(--text-primary)]">
