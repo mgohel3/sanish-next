@@ -4,6 +4,9 @@ import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import Link from "next/link";
 import StoreBadges from "@/components/ui/StoreBadges";
+import BrandMonogram from "@/components/BrandMonogram";
+import CarpenterTestimonials from "@/components/sections/CarpenterTestimonials";
+import { fetchCarpenterTestimonials } from "@/lib/testimonials";
 
 export const metadata = {
   title: "Rewards | Sanish Laminates",
@@ -114,7 +117,8 @@ const FAQS = [
   },
 ];
 
-export default function RewardsPage() {
+export default async function RewardsPage() {
+  const testimonials = await fetchCarpenterTestimonials();
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
       <Header />
@@ -158,12 +162,10 @@ export default function RewardsPage() {
                 <div className="absolute bottom-[-40px] left-[-40px] w-[200px] h-[200px] rounded-full pointer-events-none"
                   style={{ background: "radial-gradient(circle, rgba(133,173,220,0.20) 0%, transparent 70%)" }} />
 
-                {/* Monogram */}
-                <div className="grid grid-cols-2 mb-8" style={{ gap: "4px", width: "fit-content" }}>
-                  {["#fabf7d","#ac8cc0","#f39ba2","#85addc"].map((c) => (
-                    <span key={c} className="block rounded-full" style={{ width: 14, height: 14, backgroundColor: c }} />
-                  ))}
-                </div>
+                {/* Monogram — was a hand-duplicated dot grid with the colours
+                    in the wrong order (swapped vs. the real brand mark used
+                    in the header/footer); now the shared component. */}
+                <BrandMonogram size={14} className="mb-8" />
 
                 <div className="text-white/50 text-[11px] uppercase tracking-[0.2em] font-semibold mb-3" style={{ fontFamily: "var(--font-jakarta)" }}>
                   Sanish Rewards
@@ -264,6 +266,9 @@ export default function RewardsPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Carpenter Testimonials (CMS-managed — Dashboard > Testimonials) ── */}
+      <CarpenterTestimonials testimonials={testimonials} />
 
       {/* ── FAQ ── */}
       <section className="home-section--compact bg-[var(--bg-secondary)] border-t border-[var(--color-border-subtle)]">
