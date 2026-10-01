@@ -62,26 +62,12 @@ export default function CarpenterTestimonials({ testimonials }: { testimonials: 
     >
       <div className="site-container">
 
-        {/* Header */}
-        <div className="home-heading-row">
-          <div>
-            <h2 className="home-heading">What Carpenters Say</h2>
-          </div>
-
-          {testimonials.length > visibleCards && (
-            <div className="flex items-center gap-3">
-              <IconButton onClick={prev} aria-label="Previous">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </IconButton>
-              <IconButton onClick={next} aria-label="Next">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </IconButton>
-            </div>
-          )}
+        {/* Header — centered, same size as the "What You Get" heading above
+            this section, matching that section's own treatment exactly. */}
+        <div className="text-center mb-14">
+          <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]">
+            What Carpenters Say
+          </h2>
         </div>
 
         {/* Slider viewport */}
@@ -128,24 +114,39 @@ export default function CarpenterTestimonials({ testimonials }: { testimonials: 
           </div>
         </div>
 
-        {/* Dots */}
+        {/* Dots + arrows — grouped together below the carousel now that the
+            heading above is centered (arrows no longer sit beside it). */}
         {testimonials.length > visibleCards && (
-          <div className="flex items-center justify-center gap-2 mt-8">
-            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-              <button key={i} onClick={() => setActiveIndex(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                style={{
-                  width: i === activeIndex ? "28px" : "8px",
-                  height: "8px",
-                  borderRadius: "999px",
-                  border: "none",
-                  padding: 0,
-                  cursor: "pointer",
-                  backgroundColor: i === activeIndex ? "var(--accent-blue)" : "rgba(30,30,46,0.15)",
-                  transition: "width 350ms ease, background-color 300ms ease",
-                }}
-              />
-            ))}
+          <div className="flex items-center justify-center gap-5 mt-8">
+            <IconButton onClick={prev} aria-label="Previous">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </IconButton>
+
+            <div className="flex items-center gap-2">
+              {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+                <button key={i} onClick={() => setActiveIndex(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  style={{
+                    width: i === activeIndex ? "28px" : "8px",
+                    height: "8px",
+                    borderRadius: "999px",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                    backgroundColor: i === activeIndex ? "var(--accent-blue)" : "rgba(30,30,46,0.15)",
+                    transition: "width 350ms ease, background-color 300ms ease",
+                  }}
+                />
+              ))}
+            </div>
+
+            <IconButton onClick={next} aria-label="Next">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </IconButton>
           </div>
         )}
 
