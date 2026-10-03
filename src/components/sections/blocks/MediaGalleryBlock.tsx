@@ -45,6 +45,15 @@ function parseVideo(url?: string): VideoSource | null {
   return { kind: "file", src: v };
 }
 
+/** Where the card links if JavaScript is off / opened in a new tab: the photo or the video itself. */
+function entryHref(e: { image: string; video: VideoSource | null }): string {
+  const v = e.video;
+  if (v?.kind === "youtube") return `https://www.youtube.com/watch?v=${v.id}`;
+  if (v?.kind === "vimeo") return `https://vimeo.com/${v.id}`;
+  if (v?.kind === "file") return v.src;
+  return e.image;
+}
+
 interface Entry {
   image: string;
   video: VideoSource | null;
@@ -197,12 +206,14 @@ export default function MediaGalleryBlock({ content = {} }: { content?: MediaGal
                 const isVideo = !!e.video;
                 const label = e.caption || e.category || (isVideo ? "video" : "photo");
                 return (
-                  <button
+                  // An <a>, not a <button>: globals.css forces every button to a pill
+                  // (border-radius: 999px !important), which would turn these tiles into ovals.
+                  <a
                     key={idx}
-                    type="button"
-                    onClick={() => openAt(idx)}
+                    href={entryHref(e)}
+                    onClick={(ev) => { ev.preventDefault(); openAt(idx); }}
                     aria-label={`${isVideo ? "Play video" : "View photo"}: ${label}`}
-                    className="group relative block w-full overflow-hidden rounded-[20px] text-left bg-[#24262b]"
+                    className="group relative block w-full overflow-hidden rounded-[20px] bg-[#24262b]"
                     style={{ aspectRatio: "4 / 3" }}
                   >
                     <Thumb entry={e} />
@@ -229,7 +240,7 @@ export default function MediaGalleryBlock({ content = {} }: { content?: MediaGal
                         )}
                       </div>
                     )}
-                  </button>
+                  </a>
                 );
               })}
             </div>
