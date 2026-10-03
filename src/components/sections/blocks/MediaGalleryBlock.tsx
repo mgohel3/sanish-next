@@ -255,7 +255,8 @@ export default function MediaGalleryBlock({ content = {} }: { content?: MediaGal
           role="dialog"
           aria-modal="true"
           aria-label={current.caption || current.category || "Media viewer"}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 sm:p-10"
+          // Above the sticky header (z-index 9999) but below the site popups (99998+).
+          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/90 p-4 sm:p-10"
           onClick={close}
         >
           <button
