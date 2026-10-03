@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import FieldStyles from "@/components/FieldStyles";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -22,7 +23,17 @@ export default function BlockBackground({
   const bgColor: string = content?.bg_color || "";
   const bgImage: string = content?.bg_image || "";
 
-  if (!bgColor && !bgImage) return <>{children}</>;
+  const hasFieldStyles = !!content?.field_styles && Object.keys(content.field_styles).length > 0;
+
+  if (!bgColor && !bgImage) {
+    if (!hasFieldStyles) return <>{children}</>;
+    return (
+      <div style={{ display: "contents" }}>
+        {children}
+        <FieldStyles content={content as Record<string, any>} />
+      </div>
+    );
+  }
 
   const wrapperStyle: CSSProperties = bgImage
     ? { backgroundImage: `url(${bgImage})`, backgroundSize: "cover", backgroundPosition: "center" }
@@ -38,7 +49,7 @@ export default function BlockBackground({
       {bgImage && bgColor && (
         <div className="absolute inset-0 pointer-events-none" style={{ backgroundColor: bgColor, opacity }} />
       )}
-      <div className="relative z-10 [&>section]:!bg-transparent [&>section]:!bg-none">{children}</div>
+      <div className="relative z-10 [&>section]:!bg-transparent [&>section]:!bg-none">{children}{hasFieldStyles && <FieldStyles content={content as Record<string, any>} />}</div>
     </div>
   );
 }
