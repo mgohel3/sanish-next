@@ -10,6 +10,7 @@ import CtaBannerBlock from "@/components/sections/blocks/CtaBannerBlock";
 import ContactDetailsBlock from "@/components/sections/blocks/ContactDetailsBlock";
 import TestimonialsBlock from "@/components/sections/blocks/TestimonialsBlock";
 import GalleryBlock from "@/components/sections/blocks/GalleryBlock";
+import MediaGalleryBlock from "@/components/sections/blocks/MediaGalleryBlock";
 import TeamBlock from "@/components/sections/blocks/TeamBlock";
 import PricingBlock from "@/components/sections/blocks/PricingBlock";
 import StatsBlock from "@/components/sections/blocks/StatsBlock";
@@ -45,6 +46,7 @@ export const PAGE_BLOCK_REGISTRY: Record<string, (content: any) => React.ReactNo
   cta_banner: (c) => <CtaBannerBlock content={c} />,
   testimonials: (c) => <TestimonialsBlock content={c} />,
   gallery: (c) => <GalleryBlock content={c} />,
+  media_gallery: (c) => <MediaGalleryBlock content={c} />,
   team: (c) => <TeamBlock content={c} />,
   pricing: (c) => <PricingBlock content={c} />,
   stats: (c) => <StatsBlock content={c} />,
