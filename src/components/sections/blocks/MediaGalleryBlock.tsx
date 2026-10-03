@@ -15,6 +15,7 @@ export interface MediaGalleryContent {
   heading?: string;
   sub?: string;
   columns?: "2" | "3" | "4";
+  album_order?: string;
   items?: MediaItem[];
   /** Optional dashboard "Text Style" overrides for the heading (see lib/textStyle.ts). */
   text_color?: string;
@@ -88,8 +89,11 @@ export default function MediaGalleryBlock({ content = {} }: { content?: MediaGal
   const categories = useMemo(() => {
     const seen: string[] = [];
     for (const e of entries) if (e.category && !seen.includes(e.category)) seen.push(e.category);
-    return seen;
-  }, [entries]);
+    // editor-defined tab order (album_order = names joined with "|"); unknown names keep first-seen order
+    const order = String(content?.album_order || "").split("|").map((x) => x.trim()).filter(Boolean);
+    if (!order.length) return seen;
+    return [...order.filter((n) => seen.includes(n)), ...seen.filter((n) => !order.includes(n))];
+  }, [entries, content?.album_order]);
 
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [page, setPage] = useState(1);

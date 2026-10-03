@@ -14,6 +14,16 @@ type FieldStyle = {
 };
 
 const SCALE: Record<string, number> = { sm: 0.85, lg: 1.2, xl: 1.5 };
+
+const loadedFonts = new Set<string>();
+function loadGoogleFont(name: string) {
+  if (typeof document === "undefined" || loadedFonts.has(name)) return;
+  loadedFonts.add(name);
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name).replace(/%20/g, "+")}:ital,wght@0,400;0,700;1,400&display=swap`;
+  document.head.appendChild(link);
+}
 const norm = (s: string) => s.replace(/\s+/g, " ").trim();
 const PROPS = ["color", "font-family", "font-size", "font-weight", "font-style", "text-align"] as const;
 
@@ -77,10 +87,15 @@ export default function FieldStyles({ content }: { content: Record<string, any> 
         if (st.color) setProp(el, "color", st.color);
         if (st.font === "serif") setProp(el, "font-family", "var(--font-vogue)");
         else if (st.font === "sans") setProp(el, "font-family", "var(--font-heebo)");
+        else if (st.font) { loadGoogleFont(st.font); setProp(el, "font-family", `'${st.font}', serif`); }
         if (st.bold) setProp(el, "font-weight", "700");
         if (st.italic) setProp(el, "font-style", "italic");
         if (st.align) setProp(el, "text-align", st.align);
-        if (st.size && SCALE[st.size]) {
+        if (st.size && /^\d+$/.test(st.size)) {
+          // exact px on desktop, fluid down to ~60% on small screens
+          const px = parseInt(st.size, 10);
+          setProp(el, "font-size", `clamp(${Math.max(12, Math.round(px * 0.6))}px, ${((px / 1280) * 100).toFixed(2)}vw + 0.4rem, ${px}px)`);
+        } else if (st.size && SCALE[st.size]) {
           const base = parseFloat(getComputedStyle(el).fontSize);
           if (base) setProp(el, "font-size", `${(base * SCALE[st.size]).toFixed(2)}px`);
         }
@@ -90,7 +105,7 @@ export default function FieldStyles({ content }: { content: Record<string, any> 
 
     let t: ReturnType<typeof setTimeout>;
     const onResize = () => { clearTimeout(t); t = setTimeout(apply, 150); };
-    const hasSize = targets.some(({ st }) => st.size);
+    const hasSize = targets.some(({ st }) => st.size && SCALE[st.size]);
     if (hasSize) window.addEventListener("resize", onResize);
     return () => {
       clearTimeout(t);
