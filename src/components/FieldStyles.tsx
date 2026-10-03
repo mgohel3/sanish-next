@@ -10,6 +10,7 @@ type FieldStyle = {
   size?: string;
   bold?: boolean;
   italic?: boolean;
+  underline?: boolean;
   align?: string;
 };
 
@@ -25,7 +26,7 @@ function loadGoogleFont(name: string) {
   document.head.appendChild(link);
 }
 const norm = (s: string) => s.replace(/\s+/g, " ").trim();
-const PROPS = ["color", "font-family", "font-size", "font-weight", "font-style", "text-align"] as const;
+const PROPS = ["color", "font-family", "font-size", "font-weight", "font-style", "text-align", "text-decoration-line"] as const;
 
 /**
  * Applies the per-field text styles an editor set with the dashboard's field
@@ -90,6 +91,7 @@ export default function FieldStyles({ content }: { content: Record<string, any> 
         else if (st.font) { loadGoogleFont(st.font); setProp(el, "font-family", `'${st.font}', serif`); }
         if (st.bold) setProp(el, "font-weight", "700");
         if (st.italic) setProp(el, "font-style", "italic");
+        if (st.underline) setProp(el, "text-decoration-line", "underline");
         if (st.align) setProp(el, "text-align", st.align);
         if (st.size && /^\d+$/.test(st.size)) {
           // exact px on desktop, fluid down to ~60% on small screens
