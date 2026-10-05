@@ -14,7 +14,15 @@ const AVATAR_COLORS = ["#85addc", "#ac8cc0", "#f39ba2", "#fabf7d"];
  * arrows, dots, 3-up desktop / 1-up mobile) so it matches the carousel
  * pattern already used elsewhere on the site.
  */
-export default function CarpenterTestimonials({ testimonials }: { testimonials: CarpenterTestimonial[] }) {
+export default function CarpenterTestimonials({
+  testimonials,
+  heading,
+  sub,
+}: {
+  testimonials: CarpenterTestimonial[];
+  heading?: string;
+  sub?: string;
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
   const paused = useRef(false);
@@ -66,8 +74,11 @@ export default function CarpenterTestimonials({ testimonials }: { testimonials: 
             this section, matching that section's own treatment exactly. */}
         <div className="text-center mb-14">
           <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]">
-            What Carpenters Say
+            {heading ?? "What Carpenters Say"}
           </h2>
+          {sub && (
+            <p className="mt-4 text-[15px] text-[var(--text-secondary)] max-w-[560px] mx-auto leading-[1.7]">{sub}</p>
+          )}
         </div>
 
         {/* Slider viewport */}

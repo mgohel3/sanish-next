@@ -23,7 +23,14 @@ export type PageBlockType =
   | "pricing"
   | "stats"
   | "logos_strip"
-  | "video_embed";
+  | "video_embed"
+  | "media_gallery"
+  | "rewards_intro"
+  | "steps_cards"
+  | "icon_benefits"
+  | "client_testimonials"
+  | "faq_cards"
+  | "app_cta";
 
 export interface PageHeroContent {
   eyebrow?: string;

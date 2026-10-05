@@ -16,6 +16,9 @@ import PricingBlock from "@/components/sections/blocks/PricingBlock";
 import StatsBlock from "@/components/sections/blocks/StatsBlock";
 import LogosStripBlock from "@/components/sections/blocks/LogosStripBlock";
 import VideoEmbedBlock from "@/components/sections/blocks/VideoEmbedBlock";
+import ClientTestimonialsBlock from "@/components/sections/blocks/ClientTestimonialsBlock";
+import { RewardsIntroBlock, StepsCardsBlock, IconBenefitsBlock, FaqCardsBlock, AppCtaBlock } from "@/components/sections/blocks/RewardsBlocks";
+import { fetchCarpenterTestimonials } from "@/lib/testimonials";
 import type { PageSectionData } from "@/lib/pages";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -52,10 +55,19 @@ export const PAGE_BLOCK_REGISTRY: Record<string, (content: any) => React.ReactNo
   stats: (c) => <StatsBlock content={c} />,
   logos_strip: (c) => <LogosStripBlock content={c} />,
   video_embed: (c) => <VideoEmbedBlock content={c} />,
+  rewards_intro: (c) => <RewardsIntroBlock content={c} />,
+  steps_cards: (c) => <StepsCardsBlock content={c} />,
+  icon_benefits: (c) => <IconBenefitsBlock content={c} />,
+  client_testimonials: (c) => <ClientTestimonialsBlock content={c} />,
+  faq_cards: (c) => <FaqCardsBlock content={c} />,
+  app_cta: (c) => <AppCtaBlock content={c} />,
 };
 
 /** Renders a CMS page's ordered sections. Unknown block types are skipped. */
-export default function PageBlocks({ sections }: { sections: PageSectionData[] }) {
+export default async function PageBlocks({ sections }: { sections: PageSectionData[] }) {
+  const testimonials = sections.some((s) => s.block_type === "client_testimonials")
+    ? await fetchCarpenterTestimonials()
+    : undefined;
   return (
     <>
       {sections.map((s, i) => {
@@ -63,7 +75,7 @@ export default function PageBlocks({ sections }: { sections: PageSectionData[] }
         if (!render) return null;
         return (
           <Fragment key={`${s.block_type}-${i}`}>
-            <BlockBackground content={s.content}>{render(s.content)}</BlockBackground>
+            <BlockBackground content={s.content}>{render(s.block_type === "client_testimonials" ? { ...s.content, __testimonials: testimonials } : s.content)}</BlockBackground>
           </Fragment>
         );
       })}

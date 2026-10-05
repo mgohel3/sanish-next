@@ -7,6 +7,8 @@ import StoreBadges from "@/components/ui/StoreBadges";
 import BrandMonogram from "@/components/BrandMonogram";
 import CarpenterTestimonials from "@/components/sections/CarpenterTestimonials";
 import { fetchCarpenterTestimonials } from "@/lib/testimonials";
+import PageBlocks from "@/components/PageBlockRenderer";
+import { getSitePage } from "@/lib/pages";
 
 export const metadata = {
   title: "Rewards | Sanish Laminates",
@@ -117,7 +119,8 @@ const FAQS = [
   },
 ];
 
-export default async function RewardsPage() {
+/** Original hard-coded layout — shown only when the CMS Rewards page has no blocks (or the API is down). */
+async function StaticRewards() {
   const testimonials = await fetchCarpenterTestimonials();
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
@@ -342,4 +345,18 @@ export default async function RewardsPage() {
       <Footer />
     </main>
   );
+}
+
+export default async function RewardsPage() {
+  const page = await getSitePage("rewards");
+  if (page && page.sections.length > 0) {
+    return (
+      <main style={{ backgroundColor: "var(--bg-primary)" }}>
+        <Header />
+        <PageBlocks sections={page.sections} />
+        <Footer />
+      </main>
+    );
+  }
+  return <StaticRewards />;
 }
