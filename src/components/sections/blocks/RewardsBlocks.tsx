@@ -3,6 +3,7 @@
 // that used to be hard-coded in src/app/rewards/page.tsx — so the page looks
 // exactly the same, but every word, number, colour and card is now editable from
 // Dashboard > Pages > Rewards.
+import { Fragment } from "react";
 import StoreBadges from "@/components/ui/StoreBadges";
 import BrandMonogram from "@/components/BrandMonogram";
 import { REWARD_ICONS } from "@/components/sections/blocks/rewardIcons";
@@ -55,10 +56,10 @@ export function RewardsIntroBlock({ content = {} }: C) {
               {card_title && (
                 <div className="text-white text-[32px] font-bold leading-tight mb-6" style={{ fontFamily: "var(--font-jakarta)" }}>
                   {titleLines.map((l, i) => (
-                    <span key={i}>
+                    <Fragment key={i}>
                       {i > 0 && <br />}
                       {l}
-                    </span>
+                    </Fragment>
                   ))}
                 </div>
               )}

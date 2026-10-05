@@ -47,3 +47,21 @@ export async function fetchCarpenterTestimonials(): Promise<CarpenterTestimonial
     return [];
   }
 }
+
+/** CMS-managed — Dashboard > Testimonials. Active entries of one category (name or slug), in position order. */
+export async function fetchTestimonialsByCategory(category: string): Promise<CarpenterTestimonial[]> {
+  try {
+    const res = await fetch(`${API_BASE}/testimonials/?category=${encodeURIComponent(category)}`, { next: { revalidate: 300 } });
+    if (!res.ok) return [];
+    const rows: ApiCarpenterTestimonial[] = await res.json();
+    return rows.map((r) => ({
+      id: r.id,
+      name: r.name,
+      role: r.role || "",
+      quote: r.quote,
+      photo: absolutiseMedia(r.photo || null),
+    }));
+  } catch {
+    return [];
+  }
+}

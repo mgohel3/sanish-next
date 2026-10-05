@@ -18,7 +18,7 @@ import LogosStripBlock from "@/components/sections/blocks/LogosStripBlock";
 import VideoEmbedBlock from "@/components/sections/blocks/VideoEmbedBlock";
 import ClientTestimonialsBlock from "@/components/sections/blocks/ClientTestimonialsBlock";
 import { RewardsIntroBlock, StepsCardsBlock, IconBenefitsBlock, FaqCardsBlock, AppCtaBlock } from "@/components/sections/blocks/RewardsBlocks";
-import { fetchCarpenterTestimonials } from "@/lib/testimonials";
+import { fetchTestimonialsByCategory, type CarpenterTestimonial } from "@/lib/testimonials";
 import type { PageSectionData } from "@/lib/pages";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -65,9 +65,13 @@ export const PAGE_BLOCK_REGISTRY: Record<string, (content: any) => React.ReactNo
 
 /** Renders a CMS page's ordered sections. Unknown block types are skipped. */
 export default async function PageBlocks({ sections }: { sections: PageSectionData[] }) {
-  const testimonials = sections.some((s) => s.block_type === "client_testimonials")
-    ? await fetchCarpenterTestimonials()
-    : undefined;
+  // One fetch per distinct testimonial category used by the page's Client Testimonials blocks.
+  const testimonialsByCategory = new Map<string, CarpenterTestimonial[]>();
+  for (const s of sections) {
+    if (s.block_type !== "client_testimonials") continue;
+    const cat = String((s.content as Record<string, any>)?.category ?? "");
+    if (!testimonialsByCategory.has(cat)) testimonialsByCategory.set(cat, await fetchTestimonialsByCategory(cat));
+  }
   return (
     <>
       {sections.map((s, i) => {
@@ -75,7 +79,7 @@ export default async function PageBlocks({ sections }: { sections: PageSectionDa
         if (!render) return null;
         return (
           <Fragment key={`${s.block_type}-${i}`}>
-            <BlockBackground content={s.content}>{render(s.block_type === "client_testimonials" ? { ...s.content, __testimonials: testimonials } : s.content)}</BlockBackground>
+            <BlockBackground content={s.content}>{render(s.block_type === "client_testimonials" ? { ...s.content, __testimonials: testimonialsByCategory.get(String((s.content as Record<string, any>)?.category ?? "")) } : s.content)}</BlockBackground>
           </Fragment>
         );
       })}
