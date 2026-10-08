@@ -34,7 +34,9 @@ const onBlur = (e: FocusEvent<HTMLElement>) => { e.currentTarget.style.border = 
 
 export default function Popup() {
   const pathname = usePathname();
-  const isPreview = pathname?.startsWith("/cms-preview");
+  // No auto-popup in the CMS live preview, nor on the new Applications photo pages (client brief: remove the
+  // auto inquiry popup from the gallery pages). The manual "Enquire" buttons still open it on click.
+  const isPreview = pathname?.startsWith("/cms-preview") || pathname?.startsWith("/applications-new");
   const [render, setRender] = useState(false);
   const [show, setShow] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
