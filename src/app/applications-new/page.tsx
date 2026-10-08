@@ -1,14 +1,16 @@
-import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import ApplicationsCollage from "@/components/ApplicationsCollage";
+import SpaceFilterBar from "@/components/SpaceFilterBar";
+import CollagePager from "@/components/CollagePager";
 import { getPhotos, getSpaces, interleaveByCatalogue } from "@/lib/photos";
 
 // NEW Applications layout (review copy of /applications-previous, built to the client's brief):
 //   • no catalogue cards / catalogue filter — opens straight into one mixed collage of every photo
 //   • a row of SPACE filters under the heading; the chosen one lives in the URL (?space=bedroom) so a
 //     filtered view can be shared; one photo can sit under several spaces
+//   • 40 photos a page with numbered pagination (?page=2)
 //   • each photo opens a detail page (SKU, catalogue, tags, Enquire)
 // Not linked anywhere and not indexed; the live /applications page and every existing route are untouched.
 export const metadata = {
@@ -16,20 +18,29 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
+const PAGE_SIZE = 40;
+
 export default async function ApplicationsNewPage({
   searchParams,
 }: {
-  searchParams: Promise<{ space?: string | string[] }>;
+  searchParams: Promise<{ space?: string | string[]; page?: string | string[] }>;
 }) {
   const sp = await searchParams;
-  const requested = Array.isArray(sp.space) ? sp.space[0] : sp.space;
+  const first = (v?: string | string[]) => (Array.isArray(v) ? v[0] : v);
 
   const [photos, spaces] = await Promise.all([getPhotos(), getSpaces()]);
-  const active = spaces.find((s) => s.slug === requested)?.slug ?? "";
+  const active = spaces.find((s) => s.slug === first(sp.space))?.slug ?? "";
 
   const mixed = interleaveByCatalogue(photos);
-  const shown = active ? mixed.filter((p) => p.spaces.some((s) => s.slug === active)) : mixed;
+  const filtered = active ? mixed.filter((p) => p.spaces.some((s) => s.slug === active)) : mixed;
   const activeName = spaces.find((s) => s.slug === active)?.name;
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const requestedPage = parseInt(first(sp.page) ?? "1", 10);
+  const page = Number.isFinite(requestedPage) ? Math.min(Math.max(requestedPage, 1), totalPages) : 1;
+  const shown = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const from = filtered.length ? (page - 1) * PAGE_SIZE + 1 : 0;
+  const to = (page - 1) * PAGE_SIZE + shown.length;
 
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
@@ -42,65 +53,32 @@ export default async function ApplicationsNewPage({
         description="See Sanish surfaces in kitchens, workplaces, retail environments and modern homes."
       />
 
-      {/* ── Space filters ── */}
+      {/* ── Space filters (one scrollable line, "All" pinned) ── */}
       <div className="py-8 bg-white border-b border-[var(--color-border-subtle)]">
         <div className="site-container">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
-            <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[var(--text-secondary)]">
-              Browse by space
-            </p>
-            <div className="flex flex-wrap gap-2" role="navigation" aria-label="Filter photos by space">
-              {[{ slug: "", name: "All" }, ...spaces].map((s) => {
-                const isActive = active === s.slug;
-                return (
-                  <Link
-                    key={s.slug || "all"}
-                    href={s.slug ? `/applications-new?space=${s.slug}` : "/applications-new"}
-                    scroll={false}
-                    prefetch={false}
-                    aria-current={isActive ? "true" : undefined}
-                    className="text-[12px] font-semibold px-5 py-2.5 transition-all duration-200"
-                    style={{
-                      fontFamily: "var(--font-jakarta)",
-                      borderRadius: "999px",
-                      border: `1.5px solid ${isActive ? "var(--accent-purple)" : "rgba(30,30,46,0.12)"}`,
-                      backgroundColor: isActive ? "var(--accent-purple)" : "transparent",
-                      color: isActive ? "white" : "var(--text-secondary)",
-                    }}
-                  >
-                    {s.name}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
+          <SpaceFilterBar spaces={spaces} active={active} />
         </div>
       </div>
 
       {/* ── Mixed collage ── */}
-      <section className="home-section--compact bg-[var(--bg-primary)]">
+      <section id="collage-top" className="home-section--compact bg-[var(--bg-primary)] scroll-mt-24">
         <div className="site-container">
           <p className="text-[12px] text-[var(--text-secondary)] mb-6" style={{ fontFamily: "var(--font-jakarta)" }}>
-            {shown.length} photo{shown.length === 1 ? "" : "s"}
+            {filtered.length === 0
+              ? "0 photos"
+              : `Showing ${from}–${to} of ${filtered.length} photo${filtered.length === 1 ? "" : "s"}`}
             {activeName ? ` in ${activeName}` : ""}
           </p>
 
           {shown.length === 0 ? (
             <div className="py-20 text-center text-[var(--text-secondary)]" style={{ fontFamily: "var(--font-jakarta)" }}>
-              {active ? (
-                <>
-                  No photos tagged {activeName} yet.{" "}
-                  <Link href="/applications-new" className="underline">
-                    See all photos
-                  </Link>
-                </>
-              ) : (
-                "Photos will appear here soon."
-              )}
+              {active ? `No photos tagged ${activeName} yet.` : "Photos will appear here soon."}
             </div>
           ) : (
-            <ApplicationsCollage key={active || "all"} photos={shown} />
+            <ApplicationsCollage photos={shown} />
           )}
+
+          <CollagePager page={page} totalPages={totalPages} space={active} />
         </div>
       </section>
 

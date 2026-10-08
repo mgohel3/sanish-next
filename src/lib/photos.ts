@@ -25,14 +25,14 @@ export interface Photo {
   src: string;
   sku: string;
   filename: string;
-  catalogue: { slug: string; name: string };
+  catalogue: { slug: string; name: string; thumbnail: string };
   spaces: PhotoSpace[];
   width: number | null;
   height: number | null;
 }
 
 function normalise(p: Photo): Photo {
-  return { ...p, src: absolutiseMedia(p.src) };
+  return { ...p, src: absolutiseMedia(p.src), catalogue: { ...p.catalogue, thumbnail: absolutiseMedia(p.catalogue.thumbnail || "") } };
 }
 
 export async function getPhotos(): Promise<Photo[]> {
