@@ -13,6 +13,9 @@ type PageHeroProps = {
   /** Set when `image` isn't the ~3.4:1 aspect the default crop is tuned for
    *  (see globals.css .page-hero__image) — fills the band width-first instead. */
   imageFill?: boolean;
+  /** Centre the image in the part of the band that is visible below the fixed header (instead of the whole band,
+   *  whose top ~83px sits under the header) — for banners with a subject that must not look pushed up. */
+  belowHeader?: boolean;
   /** Set when the source image must never be cropped, on any viewport —
    *  letterboxes instead of cover-cropping (see globals.css
    *  .page-hero__image--no-crop). Opt-in only, so every other page's hero
@@ -31,6 +34,7 @@ export default function PageHero({
   breadcrumb,
   rightSlot,
   imageFill,
+  belowHeader,
   noCrop,
   breadcrumbOnly,
 }: PageHeroProps) {
@@ -38,6 +42,7 @@ export default function PageHero({
     "page-hero__image",
     imageFill ? "page-hero__image--fill" : "",
     noCrop ? "page-hero__image--no-crop" : "",
+    belowHeader ? "page-hero__image--below-header" : "",
   ].filter(Boolean).join(" ");
 
   return (

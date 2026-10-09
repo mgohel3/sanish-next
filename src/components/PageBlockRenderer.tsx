@@ -38,6 +38,7 @@ export const PAGE_BLOCK_REGISTRY: Record<string, (content: any) => React.ReactNo
       description={c.description}
       image={c.image}
       imageFill={c.image_fill}
+      belowHeader={c.image_below_header}
     />
   ),
   content_section: (c) => <ContentSectionBlock content={c} />,

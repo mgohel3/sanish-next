@@ -566,6 +566,15 @@ textarea:focus-visible {
   object-fit: contain;
 }
 
+/* Opt-in (CMS: page_hero > "Centre image in the visible banner"): the fixed header (~83px) covers the top of the hero band,
+   so a subject centred in the whole band looks pushed up. Fit the image into the part that is actually visible instead. */
+@media (min-width: 768px) {
+  .page-hero__image--below-header {
+    top: 83px;
+    height: calc(100% - 83px);
+  }
+}
+
 .page-hero__content {
   position: relative;
   z-index: 1;
