@@ -26,6 +26,7 @@ export default function CarpenterTestimonials({
   const [activeIndex, setActiveIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
   const paused = useRef(false);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const maxIndex = Math.max(testimonials.length - visibleCards, 0);
 
   useEffect(() => {
@@ -51,6 +52,15 @@ export default function CarpenterTestimonials({
     }, 3800);
     return () => clearInterval(id);
   }, [maxIndex, testimonials.length, visibleCards]);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setLightbox(null); };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prevOverflow; };
+  }, [lightbox]);
 
   if (testimonials.length === 0) return null;
 
@@ -96,9 +106,14 @@ export default function CarpenterTestimonials({
                 className="shrink-0 p-8 bg-white border border-[var(--color-border-subtle)] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(30,30,46,0.06)] transition-all duration-300 flex flex-col"
                 style={{ width: cardWidth, borderRadius: "24px" }}>
                 {t.proof ? (
-                  <div className="mb-5 h-[220px] rounded-[14px] bg-[var(--bg-secondary)] border border-[var(--color-border-subtle)] overflow-hidden flex items-center justify-center">
-                    <img src={t.proof} alt={`Payment proof — ${t.name}`} loading="lazy" className="max-h-full max-w-full object-contain" />
-                  </div>
+                  <a
+                    href={t.proof}
+                    onClick={(e) => { e.preventDefault(); setLightbox({ src: t.proof as string, alt: `Payment proof — ${t.name}` }); }}
+                    aria-label={`View payment proof from ${t.name}`}
+                    className="mb-5 block h-[220px] rounded-[14px] bg-[var(--bg-secondary)] border border-[var(--color-border-subtle)] overflow-hidden cursor-zoom-in"
+                  >
+                    <img src={t.proof} alt={`Payment proof — ${t.name}`} loading="lazy" className="w-full h-full object-cover object-top" />
+                  </a>
                 ) : (
                   <svg className="w-7 h-7 mb-5" viewBox="0 0 24 24" fill="var(--accent-blue)" opacity="0.25">
                     <path d="M9.333 6C6.4 6 4 8.4 4 11.333c0 2.934 2.4 5.334 5.333 5.334.267 0 .534-.027.8-.054C9.333 18.027 7.733 19 5.6 19v2c3.6 0 6.667-2.667 6.667-6.4V11.33C12.267 8.4 10.933 6 9.333 6zm10.667 0c-2.933 0-5.333 2.4-5.333 5.333 0 2.934 2.4 5.334 5.333 5.334.267 0 .534-.027.8-.054C20 18.027 18.4 19 16.267 19v2c3.6 0 6.666-2.667 6.666-6.4V11.33C22.933 8.4 21.6 6 20 6z" />
@@ -168,6 +183,32 @@ export default function CarpenterTestimonials({
         )}
 
       </div>
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/80 p-4 sm:p-8 cursor-zoom-out"
+          onClick={() => setLightbox(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightbox.alt}
+        >
+          <img
+            src={lightbox.src}
+            alt={lightbox.alt}
+            className="max-h-[92vh] max-w-[92vw] rounded-[12px] object-contain shadow-2xl bg-white"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            type="button"
+            onClick={() => setLightbox(null)}
+            aria-label="Close"
+            className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center bg-white text-[var(--text-primary)] shadow-lg"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+      )}
     </section>
   );
 }
