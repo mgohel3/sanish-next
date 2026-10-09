@@ -95,9 +95,15 @@ export default function CarpenterTestimonials({
               <div key={t.id}
                 className="shrink-0 p-8 bg-white border border-[var(--color-border-subtle)] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(30,30,46,0.06)] transition-all duration-300 flex flex-col"
                 style={{ width: cardWidth, borderRadius: "24px" }}>
-                <svg className="w-7 h-7 mb-5" viewBox="0 0 24 24" fill="var(--accent-blue)" opacity="0.25">
-                  <path d="M9.333 6C6.4 6 4 8.4 4 11.333c0 2.934 2.4 5.334 5.333 5.334.267 0 .534-.027.8-.054C9.333 18.027 7.733 19 5.6 19v2c3.6 0 6.667-2.667 6.667-6.4V11.33C12.267 8.4 10.933 6 9.333 6zm10.667 0c-2.933 0-5.333 2.4-5.333 5.333 0 2.934 2.4 5.334 5.333 5.334.267 0 .534-.027.8-.054C20 18.027 18.4 19 16.267 19v2c3.6 0 6.666-2.667 6.666-6.4V11.33C22.933 8.4 21.6 6 20 6z" />
-                </svg>
+                {t.proof ? (
+                  <div className="mb-5 h-[220px] rounded-[14px] bg-[var(--bg-secondary)] border border-[var(--color-border-subtle)] overflow-hidden flex items-center justify-center">
+                    <img src={t.proof} alt={`Payment proof — ${t.name}`} loading="lazy" className="max-h-full max-w-full object-contain" />
+                  </div>
+                ) : (
+                  <svg className="w-7 h-7 mb-5" viewBox="0 0 24 24" fill="var(--accent-blue)" opacity="0.25">
+                    <path d="M9.333 6C6.4 6 4 8.4 4 11.333c0 2.934 2.4 5.334 5.333 5.334.267 0 .534-.027.8-.054C9.333 18.027 7.733 19 5.6 19v2c3.6 0 6.667-2.667 6.667-6.4V11.33C12.267 8.4 10.933 6 9.333 6zm10.667 0c-2.933 0-5.333 2.4-5.333 5.333 0 2.934 2.4 5.334 5.333 5.334.267 0 .534-.027.8-.054C20 18.027 18.4 19 16.267 19v2c3.6 0 6.666-2.667 6.666-6.4V11.33C22.933 8.4 21.6 6 20 6z" />
+                  </svg>
+                )}
                 <p className="text-[14.5px] text-[var(--text-secondary)] leading-[1.75] mb-6 flex-1"
                   style={{ fontFamily: "var(--font-jakarta)" }}>
                   &ldquo;{t.quote}&rdquo;

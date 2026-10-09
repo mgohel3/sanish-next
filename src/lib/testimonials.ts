@@ -20,6 +20,8 @@ export interface CarpenterTestimonial {
   role: string;
   quote: string;
   photo: string | null;
+  /** Optional payment-proof screenshot, shown on the card in place of the quote icon. */
+  proof: string | null;
 }
 
 interface ApiCarpenterTestimonial {
@@ -28,12 +30,13 @@ interface ApiCarpenterTestimonial {
   role?: string;
   quote: string;
   photo?: string | null;
+  proof?: string | null;
 }
 
 /** CMS-managed — Dashboard > Testimonials. Active entries only, in position order. */
 export async function fetchCarpenterTestimonials(): Promise<CarpenterTestimonial[]> {
   try {
-    const res = await fetch(`${API_BASE}/testimonials/carpenters/`, { next: { revalidate: 300 } });
+    const res = await fetch(`${API_BASE}/testimonials/carpenters/`, { next: { revalidate: 10 } });
     if (!res.ok) return [];
     const rows: ApiCarpenterTestimonial[] = await res.json();
     return rows.map((r) => ({
@@ -42,6 +45,7 @@ export async function fetchCarpenterTestimonials(): Promise<CarpenterTestimonial
       role: r.role || "",
       quote: r.quote,
       photo: absolutiseMedia(r.photo || null),
+      proof: absolutiseMedia(r.proof || null),
     }));
   } catch {
     return [];
@@ -51,7 +55,7 @@ export async function fetchCarpenterTestimonials(): Promise<CarpenterTestimonial
 /** CMS-managed — Dashboard > Testimonials. Active entries of one category (name or slug), in position order. */
 export async function fetchTestimonialsByCategory(category: string): Promise<CarpenterTestimonial[]> {
   try {
-    const res = await fetch(`${API_BASE}/testimonials/?category=${encodeURIComponent(category)}`, { next: { revalidate: 300 } });
+    const res = await fetch(`${API_BASE}/testimonials/?category=${encodeURIComponent(category)}`, { next: { revalidate: 10 } });
     if (!res.ok) return [];
     const rows: ApiCarpenterTestimonial[] = await res.json();
     return rows.map((r) => ({
@@ -60,6 +64,7 @@ export async function fetchTestimonialsByCategory(category: string): Promise<Car
       role: r.role || "",
       quote: r.quote,
       photo: absolutiseMedia(r.photo || null),
+      proof: absolutiseMedia(r.proof || null),
     }));
   } catch {
     return [];
