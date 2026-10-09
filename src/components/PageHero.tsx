@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 
 type Crumb = { label: string; href?: string };
 
@@ -71,7 +71,12 @@ export default function PageHero({
         {!breadcrumbOnly && (
           <div className={rightSlot ? "flex flex-col md:flex-row md:items-end md:justify-between gap-8" : undefined}>
             <div>
-              <h1>{title}</h1>
+              {/* A "|" (or a real newline) in the title starts a new line — e.g. "Earn Rewards on | Every Installation". */}
+              <h1>
+                {title.split(/\s*\|\s*|\n/).map((line, i) => (
+                  <Fragment key={i}>{i > 0 && <br />}{line}</Fragment>
+                ))}
+              </h1>
               {description && <p>{description}</p>}
             </div>
             {rightSlot && <div className="w-full md:w-[320px] flex-shrink-0">{rightSlot}</div>}
