@@ -129,7 +129,7 @@ async function StaticRewards() {
       <PageHero
         eyebrow="Carpenter Rewards"
         title="Earn Rewards on Every Installation"
-        image="/assets/img/rewards-banner.jpg"
+        image="/assets/img/rewards-banner-v2.jpg"
         description="The Sanish Rewards programme is built for professional carpenters. Install more, earn more — and redeem rewards that matter to you."
       />
 
