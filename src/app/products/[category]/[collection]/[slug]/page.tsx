@@ -85,7 +85,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
   const standardSpecs = [
     { label: "Design / Surface",  value: product.surface,     show: product.showSurface },
     { label: "Product Type",      value: productType,         show: product.showProductType },
-    { label: "Finish / Texture",  value: product.finish,      show: product.showFinish },
+    { label: "Finish / Texture",  value: product.texture ? (product.finish ? `${product.texture} (${product.finish})` : product.texture) : product.finish, show: product.showFinish },
     { label: "Surface Category",  value: surfaceCat,          show: product.showSurfaceCategory },
     { label: "Thickness",         value: product.thickness,   show: product.showThickness },
     { label: "Standard Size",     value: product.dimensions,  show: product.showDimensions },

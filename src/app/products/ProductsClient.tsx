@@ -4,7 +4,8 @@ import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X, ListFilter } from "lucide-react";
-import { collections as FALLBACK_COLLECTIONS, finishes, colors, COLOR_SWATCH, type Product } from "@/lib/products";
+import { collections as FALLBACK_COLLECTIONS, colors, COLOR_SWATCH, type Product } from "@/lib/products";
+import { useFilterOptions, slugify, unionList, matchSlug } from "@/lib/filterOptions";
 import PageHero from "@/components/PageHero";
 import { productHref, type CategoryOption, type CollectionMeta } from "@/lib/catalog";
 import Button from "@/components/ui/Button";
@@ -30,26 +31,6 @@ const COLLECTION_TITLE_MAP: Record<string, string> = {
   perspective: "Sanish Perspective Collection",
 };
 
-const FINISH_SLUG_MAP: Record<string, string> = {
-  matt: "Matte",
-  glossy: "High Gloss",
-  "ultra-matte": "Ultra Matte",
-  satin: "Satin",
-  suede: "Suede",
-  textured: "Textured",
-  metallic: "Metallic",
-};
-
-const FINISH_TITLE_MAP: Record<string, string> = {
-  matt: "Matt Finish Laminates",
-  glossy: "Glossy Finish Laminates",
-  "ultra-matte": "Ultra Matte Laminates",
-  satin: "Satin Finish Laminates",
-  suede: "Suede Finish Laminates",
-  textured: "Textured Laminates",
-  metallic: "Metallic Laminates",
-};
-
 const COLOR_SLUG_MAP: Record<string, string> = {
   white: "White",
   beige: "Beige",
@@ -65,21 +46,6 @@ const COLOR_SLUG_MAP: Record<string, string> = {
   purple: "Purple",
   red: "Red",
   yellow: "Yellow",
-};
-
-// Design type → which finishes to match
-const DESIGN_FINISH_MAP: Record<string, string[]> = {
-  wood: ["Textured"],
-  stone: ["Suede"],
-  fabric: ["Satin"],
-  solid: ["High Gloss", "Ultra Matte", "Matte"],
-};
-
-const DESIGN_TITLE_MAP: Record<string, string> = {
-  wood: "Wood Design Laminates",
-  stone: "Stone Design Laminates",
-  fabric: "Fabric Design Laminates",
-  solid: "Solid Colour Laminates",
 };
 
 /* ── Quick View Modal ────────────────────────────────────── */
@@ -123,7 +89,7 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
           <p className="text-[13.5px] leading-relaxed mb-6" style={{ color: "#5A5A6A", fontFamily: "var(--font-jakarta)" }}>{product.shortDescription}</p>
           <div className="rounded-xl overflow-hidden mb-6" style={{ border: "1px solid rgba(30,30,46,0.08)" }}>
             {[
-              { label: "Finish",    value: product.finish,     show: true },
+              { label: "Finish",    value: product.texture || product.finish,     show: true },
               { label: "Thickness", value: product.thickness,  show: product.showThickness },
               { label: "Size",      value: product.dimensions, show: product.showDimensions },
             ].filter((row) => row.show !== false && row.value).map((row, i) => (
@@ -171,6 +137,9 @@ export default function ProductsClient({
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const opts = useFilterOptions();
+  const allFinishes = unionList(opts.texture, opts.thermo_texture);
+  const allDesigns = unionList(opts.design_type, opts.thermo_design_type);
 
   // Only list a category/collection if at least one product currently uses it.
   const categoryNames = categories.length ? categories.map((c) => c.name) : FALLBACK_CATEGORIES;
@@ -205,8 +174,10 @@ export default function ProductsClient({
     const finParam = searchParams.get("finish");
     const desParam = searchParams.get("design");
     if (colParam && COLLECTION_TITLE_MAP[colParam]) return COLLECTION_TITLE_MAP[colParam];
-    if (finParam && FINISH_TITLE_MAP[finParam]) return FINISH_TITLE_MAP[finParam];
-    if (desParam && DESIGN_TITLE_MAP[desParam]) return DESIGN_TITLE_MAP[desParam];
+    const finLabel = matchSlug(finParam, allFinishes);
+    const desLabel = matchSlug(desParam, allDesigns);
+    if (finLabel) return `${finLabel} Finish Laminates`;
+    if (desLabel) return `${desLabel} Design Laminates`;
     return "Our Products";
   })();
 
@@ -215,8 +186,10 @@ export default function ProductsClient({
     const finParam = searchParams.get("finish");
     const desParam = searchParams.get("design");
     if (colParam && COLLECTION_TITLE_MAP[colParam]) return COLLECTION_TITLE_MAP[colParam].replace(" Collection", "").replace(" Series", "");
-    if (finParam && FINISH_TITLE_MAP[finParam]) return FINISH_TITLE_MAP[finParam].replace(" Laminates", "");
-    if (desParam && DESIGN_TITLE_MAP[desParam]) return DESIGN_TITLE_MAP[desParam].replace(" Laminates", "");
+    const finLabel = matchSlug(finParam, allFinishes);
+    const desLabel = matchSlug(desParam, allDesigns);
+    if (finLabel) return `${finLabel} Finish`;
+    if (desLabel) return `${desLabel} Design`;
     return null;
   })();
 
@@ -229,8 +202,8 @@ export default function ProductsClient({
 
     const collection = colParam ? (COLLECTION_SLUG_MAP[colParam] && COLLECTION_SLUG_MAP[colParam] !== "All" ? COLLECTION_SLUG_MAP[colParam] : "All") : "All";
     const design = desParam ?? null;
-    // Collection and Finish are independent — both can be active at once; Design overrides Finish
-    const finish = design ? "All Finishes" : finParam ? (FINISH_SLUG_MAP[finParam] ?? "All Finishes") : "All Finishes";
+    // Collection, Finish and Design are independent — any combination can be active at once
+    const finish = matchSlug(finParam, allFinishes) ?? "All Finishes";
     const color = colorParam ? (COLOR_SLUG_MAP[colorParam] ?? "All Colours") : "All Colours";
 
     return { activeCollection: collection, activeFinish: finish, activeDesign: design, activeColor: color };
@@ -240,7 +213,7 @@ export default function ProductsClient({
   const buildUrl = (col: string, fin: string, design: string | null, color = activeColor, base = "/products") => {
     const params = new URLSearchParams();
     const colSlug = Object.entries(COLLECTION_SLUG_MAP).find(([, v]) => v === col)?.[0];
-    const finSlug = Object.entries(FINISH_SLUG_MAP).find(([, v]) => v === fin)?.[0];
+    const finSlug = fin !== "All Finishes" ? slugify(fin) : undefined;
     const colorSlug = Object.entries(COLOR_SLUG_MAP).find(([, v]) => v === color)?.[0];
     if (design) params.set("design", design);
     if (col !== "All" && colSlug) params.set("collection", colSlug);
@@ -267,11 +240,11 @@ export default function ProductsClient({
   const filtered = products.filter((p) => {
     const matchCat = activeCategory === "All" || p.category === activeCategory;
     const matchCol = activeCollection === "All" || p.collection === activeCollection;
-    const matchFin = activeFinish === "All Finishes" || p.finish === activeFinish;
-    const matchDesign = !activeDesign || (DESIGN_FINISH_MAP[activeDesign] ?? []).includes(p.finish);
+    const matchFin = activeFinish === "All Finishes" || (p.texture ?? "").toLowerCase() === activeFinish.toLowerCase();
+    const matchDesign = !activeDesign || slugify(p.designType) === slugify(matchSlug(activeDesign, allDesigns) ?? activeDesign);
     const matchColor = activeColor === "All Colours" || p.color === activeColor;
     const q = searchQuery.toLowerCase();
-    const matchSearch = !q || p.name.toLowerCase().includes(q) || p.finish.toLowerCase().includes(q) || p.collection.toLowerCase().includes(q) || p.color.toLowerCase().includes(q);
+    const matchSearch = !q || p.name.toLowerCase().includes(q) || p.finish.toLowerCase().includes(q) || (p.texture ?? "").toLowerCase().includes(q) || p.collection.toLowerCase().includes(q) || p.color.toLowerCase().includes(q);
     return matchCat && matchCol && matchFin && matchDesign && matchColor && matchSearch;
   });
 
@@ -370,7 +343,7 @@ export default function ProductsClient({
       <div>
         <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Finish</h3>
         <ul className="space-y-0.5">
-          {finishes.map((f) => (
+          {["All Finishes", ...(activeCategory === "Thermo Laminates" ? opts.thermo_texture : activeCategory === "All" ? allFinishes : opts.texture)].map((f) => (
             <li key={f}>
               <button onClick={() => applyFinish(f)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
                 style={{
@@ -438,7 +411,7 @@ export default function ProductsClient({
           )}
           {activeDesign && (
             <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
-              <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{DESIGN_TITLE_MAP[activeDesign!] ?? activeDesign}</span>
+              <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{matchSlug(activeDesign, allDesigns) ?? activeDesign}</span>
               <button onClick={clearAll} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
             </div>
           )}

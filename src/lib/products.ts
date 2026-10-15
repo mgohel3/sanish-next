@@ -1,5 +1,5 @@
 export type ProductCategory = "Laminates" | "Louvers" | "Thermo Laminates";
-export type DesignType = "Wood" | "Stone" | "Fabric" | "Solid" | "Metallic";
+export type DesignType = string; // CMS-managed list (Wood, Marble, Solid Colour, Stone, …)
 export type ProductColor =
   | "White" | "Beige" | "Black" | "Blue" | "Brown" | "Green" | "Grey"
   | "Metallic" | "Multicolor" | "Orange" | "Pink" | "Purple" | "Red" | "Yellow";
@@ -11,6 +11,8 @@ export type Product = {
   sku?: string;
   collection: string;
   finish: string;
+  /** Texture group the Finish filter matches on (Gloss, Matte, Flute …); `finish` is the finish CODE. */
+  texture?: string;
   thickness: string;
   dimensions: string;
   surface: string;

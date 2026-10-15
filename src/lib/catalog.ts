@@ -100,6 +100,7 @@ type ApiProduct = {
   short_description?: string;
   description?: string;
   finish?: string;
+  texture?: string;
   thickness?: string;
   dimensions?: string;
   surface?: string;
@@ -135,6 +136,7 @@ function mapApiProduct(raw: ApiProduct): Product {
     sku: raw.sku || "",
     collection: raw.collection_name || "",
     finish: raw.finish || "",
+    texture: raw.texture || "",
     thickness: raw.thickness || "",
     dimensions: raw.dimensions || "",
     surface: raw.surface || "",
@@ -161,7 +163,7 @@ function mapApiProduct(raw: ApiProduct): Product {
     relatedSlugs: raw.related_slugs || [],
     status: raw.status,
     category: (raw.category_name || "Laminates") as ProductCategory,
-    designType: (raw.design_type || "Solid") as DesignType,
+    designType: raw.design_type || "",
     color: (raw.color || "White") as ProductColor,
   };
 }

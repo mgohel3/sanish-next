@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X, ListFilter } from "lucide-react";
-import { collections, finishes, designTypes, colors, COLOR_SWATCH, type Product, type ProductCategory } from "@/lib/products";
+import { collections, colors, COLOR_SWATCH, type Product, type ProductCategory } from "@/lib/products";
+import { useFilterOptions, slugify, unionList, matchSlug } from "@/lib/filterOptions";
 import PageHero from "@/components/PageHero";
 import { productHref, fetchCollections, findCollectionPdfUrl, collectionSlugForName, type CollectionMeta } from "@/lib/catalog";
 import { openCataloguePdfPopup } from "@/lib/cataloguePdf";
@@ -19,16 +20,6 @@ const COLLECTION_SLUG_MAP: Record<string, string> = {
   "08mm":        "Perspective V4",
   fluted:        "Fluted",
   perspective:   "All",
-};
-
-const FINISH_SLUG_MAP: Record<string, string> = {
-  matt:          "Matte",
-  glossy:        "High Gloss",
-  "ultra-matte": "Ultra Matte",
-  satin:         "Satin",
-  suede:         "Suede",
-  textured:      "Textured",
-  metallic:      "Metallic",
 };
 
 const COLOR_SLUG_MAP: Record<string, string> = {
@@ -90,7 +81,7 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
           <p className="text-[13.5px] leading-relaxed mb-6" style={{ color: "#5A5A6A", fontFamily: "var(--font-jakarta)" }}>{product.shortDescription}</p>
           <div className="rounded-xl overflow-hidden mb-6" style={{ border: "1px solid rgba(30,30,46,0.08)" }}>
             {[
-              { label: "Finish",     value: product.finish,      show: true },
+              { label: "Finish",     value: product.texture || product.finish, show: true },
               { label: "Thickness",  value: product.thickness,   show: product.showThickness },
               { label: "Size",       value: product.dimensions,  show: product.showDimensions },
               { label: "Design",     value: product.designType,  show: true },
@@ -140,6 +131,10 @@ interface Props {
 export default function ProductListClient({ category, basePath, categoryLabel, heroEyebrow, heroImage, heroDescription, products }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const opts = useFilterOptions();
+  // Thermo has its own Finish/Design lists; every other category uses the laminate ones; the all-products view shows both.
+  const finishList = category === "Thermo Laminates" ? opts.thermo_texture : category ? opts.texture : unionList(opts.texture, opts.thermo_texture);
+  const designList = category === "Thermo Laminates" ? opts.thermo_design_type : category ? opts.design_type : unionList(opts.design_type, opts.thermo_design_type);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [quickView, setQuickView] = useState<Product | null>(null);
@@ -169,7 +164,8 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
     const desParam = searchParams.get("design");
     if (colParam && COLLECTION_SLUG_MAP[colParam] && COLLECTION_SLUG_MAP[colParam] !== "All")
       return `${COLLECTION_SLUG_MAP[colParam]} ${categoryLabel}`;
-    if (finParam && FINISH_SLUG_MAP[finParam]) return `${FINISH_SLUG_MAP[finParam]} ${categoryLabel}`;
+    const finLabel = matchSlug(finParam, finishList);
+    if (finLabel) return `${finLabel} ${categoryLabel}`;
     if (desParam) return `${desParam} Design ${categoryLabel}`;
     return `${categoryLabel}.`;
   })();
@@ -180,7 +176,8 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
     const desParam = searchParams.get("design");
     if (colParam && COLLECTION_SLUG_MAP[colParam] && COLLECTION_SLUG_MAP[colParam] !== "All")
       return COLLECTION_SLUG_MAP[colParam];
-    if (finParam && FINISH_SLUG_MAP[finParam]) return FINISH_SLUG_MAP[finParam];
+    const finLabel = matchSlug(finParam, finishList);
+    if (finLabel) return finLabel;
     if (desParam) return `${desParam} Design`;
     return null;
   })();
@@ -194,7 +191,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
 
     const collection = colParam && COLLECTION_SLUG_MAP[colParam] !== "All" ? (COLLECTION_SLUG_MAP[colParam] ?? "All") : "All";
     const design = desParam ? desParam : null;
-    const finish = finParam ? (FINISH_SLUG_MAP[finParam] ?? "All Finishes") : "All Finishes";
+    const finish = matchSlug(finParam, finishList) ?? "All Finishes";
     const color = colorParam ? (COLOR_SLUG_MAP[colorParam] ?? "All Colours") : "All Colours";
 
     return { activeCollection: collection, activeFinish: finish, activeDesign: design, activeColor: color };
@@ -204,9 +201,9 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
   const buildUrl = (col: string, fin: string, design: string | null, color = activeColor) => {
     const params = new URLSearchParams();
     const colSlug = Object.entries(COLLECTION_SLUG_MAP).find(([, v]) => v === col)?.[0];
-    const finSlug = Object.entries(FINISH_SLUG_MAP).find(([, v]) => v === fin)?.[0];
+    const finSlug = fin !== "All Finishes" ? slugify(fin) : undefined;
     const colorSlug = Object.entries(COLOR_SLUG_MAP).find(([, v]) => v === color)?.[0];
-    if (design) params.set("design", design.toLowerCase());
+    if (design) params.set("design", slugify(design));
     if (col !== "All" && colSlug) params.set("collection", colSlug);
     if (fin !== "All Finishes" && finSlug) params.set("finish", finSlug);
     if (color !== "All Colours" && colorSlug) params.set("color", colorSlug);
@@ -233,11 +230,11 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
   /* ── Filter products ── */
   const filtered = baseProducts.filter((p) => {
     const matchCol = activeCollection === "All" || p.collection === activeCollection;
-    const matchFin = activeFinish === "All Finishes" || p.finish === activeFinish;
-    const matchDesign = !activeDesign || p.designType.toLowerCase() === activeDesign.toLowerCase();
+    const matchFin = activeFinish === "All Finishes" || (p.texture ?? "").toLowerCase() === activeFinish.toLowerCase();
+    const matchDesign = !activeDesign || slugify(p.designType) === slugify(matchSlug(activeDesign, designList) ?? activeDesign);
     const matchColor = activeColor === "All Colours" || p.color === activeColor;
     const q = searchQuery.toLowerCase();
-    const matchSearch = !q || p.name.toLowerCase().includes(q) || p.finish.toLowerCase().includes(q) || p.collection.toLowerCase().includes(q) || p.designType.toLowerCase().includes(q) || p.color.toLowerCase().includes(q);
+    const matchSearch = !q || p.name.toLowerCase().includes(q) || p.finish.toLowerCase().includes(q) || (p.texture ?? "").toLowerCase().includes(q) || p.collection.toLowerCase().includes(q) || p.designType.toLowerCase().includes(q) || p.color.toLowerCase().includes(q);
     return matchCol && matchFin && matchDesign && matchColor && matchSearch;
   });
 
@@ -312,9 +309,9 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
       <div>
         <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Design Type</h3>
         <ul className="space-y-0.5">
-          {(["All Designs", ...designTypes] as string[]).map((d) => {
+          {(["All Designs", ...designList] as string[]).map((d) => {
             const isAll = d === "All Designs";
-            const isActive = isAll ? !activeDesign : activeDesign?.toLowerCase() === d.toLowerCase();
+            const isActive = isAll ? !activeDesign : !!activeDesign && slugify(matchSlug(activeDesign, designList) ?? activeDesign) === slugify(d);
             return (
               <li key={d}>
                 <button
@@ -338,7 +335,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
       <div>
         <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Finish</h3>
         <ul className="space-y-0.5">
-          {finishes.map((f) => (
+          {["All Finishes", ...finishList].map((f) => (
             <li key={f}>
               <button onClick={() => applyFinish(f)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
                 style={{
