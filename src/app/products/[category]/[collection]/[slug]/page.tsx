@@ -100,7 +100,11 @@ export default async function ProductPage({ params, searchParams }: Props) {
   // and the collection shown elsewhere on the page — so those labels are
   // always redundant here regardless of exact value formatting.
   const REDUNDANT_TECH_SPEC_LABELS = new Set(["thickness", "sheet size", "surface", "range"]);
-  const standardValues = new Set(standardSpecs.map((row) => row.value.trim().toLowerCase()));
+  // The Finish / Texture row reads "Wooden (PW)", so the bare code and the bare texture must also count as already shown —
+  // otherwise the imported custom attribute "Finish -> PW" would repeat it.
+  const standardValues = new Set(
+    [...standardSpecs.map((row) => row.value), product.finish, product.texture].map((v) => (v || "").trim().toLowerCase()).filter(Boolean),
+  );
   const customSpecs = Object.entries(product.techSpecs || {})
     .filter(([label, value]) =>
       value && value.trim() !== "" &&
