@@ -236,6 +236,12 @@ export default function ProductsClient({
     router.replace(buildUrl(activeCollection, activeFinish, activeDesign, color), { scroll: false });
   }, [router, activeCollection, activeFinish, activeDesign]);
 
+  // Only offer Finish values that at least one product of the chosen product type has (Thermo -> Thermo's, Laminates -> laminates', All -> all).
+  const scoped = activeCategory === "All" ? products : products.filter((p) => p.category === activeCategory);
+  const finishPool = activeCategory === "Thermo Laminates" ? opts.thermo_texture : activeCategory === "All" ? allFinishes : opts.texture;
+  const urlFinish = matchSlug(searchParams.get("finish"), allFinishes);
+  const finishShown = finishPool.filter((f) => f === urlFinish || scoped.some((p) => (p.texture ?? "").toLowerCase() === f.toLowerCase()));
+
   // ── Product filtering logic ──
   const filtered = products.filter((p) => {
     const matchCat = activeCategory === "All" || p.category === activeCategory;
@@ -343,7 +349,7 @@ export default function ProductsClient({
       <div>
         <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Finish</h3>
         <ul className="space-y-0.5">
-          {["All Finishes", ...(activeCategory === "Thermo Laminates" ? opts.thermo_texture : activeCategory === "All" ? allFinishes : opts.texture)].map((f) => (
+          {["All Finishes", ...finishShown].map((f) => (
             <li key={f}>
               <button onClick={() => applyFinish(f)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
                 style={{

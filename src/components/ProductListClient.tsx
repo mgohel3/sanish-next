@@ -157,6 +157,13 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
     ? products.filter((p) => p.category === category)
     : products;
 
+  /* ── Only offer Finish / Design values that at least one product in THIS view has (Thermo -> Thermo's, Laminates -> laminates', all -> all).
+     The CMS lists stay the master order; a value appears automatically once a product uses it. The one chosen in the URL always stays visible. ── */
+  const urlFinish = matchSlug(searchParams.get("finish"), finishList);
+  const urlDesign = matchSlug(searchParams.get("design"), designList);
+  const finishShown = finishList.filter((f) => f === urlFinish || baseProducts.some((p) => (p.texture ?? "").toLowerCase() === f.toLowerCase()));
+  const designShown = designList.filter((d) => d === urlDesign || baseProducts.some((p) => slugify(p.designType) === slugify(d)));
+
   /* ── Dynamic page title from active filters ── */
   const pageTitle = (() => {
     const colParam = searchParams.get("collection");
@@ -309,7 +316,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
       <div>
         <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Design Type</h3>
         <ul className="space-y-0.5">
-          {(["All Designs", ...designList] as string[]).map((d) => {
+          {(["All Designs", ...designShown] as string[]).map((d) => {
             const isAll = d === "All Designs";
             const isActive = isAll ? !activeDesign : !!activeDesign && slugify(matchSlug(activeDesign, designList) ?? activeDesign) === slugify(d);
             return (
@@ -335,7 +342,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
       <div>
         <h3 className="font-semibold text-[13px] mb-4" style={{ color: "var(--text-primary)" }}>Finish</h3>
         <ul className="space-y-0.5">
-          {["All Finishes", ...finishList].map((f) => (
+          {["All Finishes", ...finishShown].map((f) => (
             <li key={f}>
               <button onClick={() => applyFinish(f)} className="w-full text-left px-4 py-2 rounded-xl text-[13px] transition-all duration-200"
                 style={{
