@@ -5,7 +5,6 @@
 // Dashboard > Pages > Rewards.
 import { Fragment } from "react";
 import StoreBadges from "@/components/ui/StoreBadges";
-import BrandMonogram from "@/components/BrandMonogram";
 import { REWARD_ICONS } from "@/components/sections/blocks/rewardIcons";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -46,7 +45,7 @@ export function RewardsIntroBlock({ content = {} }: C) {
               <div className="absolute bottom-[-40px] left-[-40px] w-[200px] h-[200px] rounded-full pointer-events-none"
                 style={{ background: "radial-gradient(circle, rgba(133,173,220,0.20) 0%, transparent 70%)" }} />
 
-              <BrandMonogram size={14} className="mb-8" />
+              <img src="/assets/img/logo/black-logo-on-dark.svg" alt="Sanish Laminate" className="mb-8 h-[44px] w-auto" />
 
               {card_eyebrow && (
                 <div className="text-white/50 text-[11px] uppercase tracking-[0.2em] font-semibold mb-3" style={{ fontFamily: "var(--font-jakarta)" }}>
