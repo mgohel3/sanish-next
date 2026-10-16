@@ -117,9 +117,9 @@ export default function CollectionShowcase() {
                 aria-pressed={on}
                 className="px-4 py-2 text-[12.5px] font-semibold border transition-all duration-200 whitespace-nowrap"
                 style={{
-                  backgroundColor: on ? c.accent : "white",
+                  backgroundColor: on ? "var(--accent-blue)" : "white", // same colour as every primary button on the site
                   color: on ? "white" : "#6B6B80",
-                  borderColor: on ? c.accent : "rgba(30,30,46,0.12)",
+                  borderColor: on ? "var(--accent-blue)" : "rgba(30,30,46,0.12)",
                   fontFamily: "var(--font-jakarta)",
                 }}
               >
