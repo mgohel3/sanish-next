@@ -21,12 +21,12 @@ export default function Preloader() {
   // Skip entirely inside the CMS's embedded live-preview iframe.
   if (pathname?.startsWith("/cms-preview")) return null;
 
-  // Brand monogram colours — matches the 2×2 dot grid exactly
+  // Brand monogram — same 2×2 order as <BrandMonogram> and the header/footer logo (blue, purple / pink, apricot)
   const dots = [
-    { color: "#fabf7d", delay: 0 },    // top-left  — apricot
+    { color: "#85addc", delay: 0 },    // top-left  — blue
     { color: "#ac8cc0", delay: 0.12 }, // top-right — purple
     { color: "#f39ba2", delay: 0.24 }, // bottom-left — pink
-    { color: "#85addc", delay: 0.36 }, // bottom-right — blue
+    { color: "#fabf7d", delay: 0.36 }, // bottom-right — apricot
   ];
 
   return (
