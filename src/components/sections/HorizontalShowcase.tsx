@@ -8,13 +8,12 @@ const ACCENT = "#fabf7d";
 const DEFAULT_COLLECTIONS = [
   { name: "S'Shades", sub: "Premium Finishes", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Shades Collection.jpg", accent: ACCENT },
   { name: "Thre3", sub: "Exclusive Designs", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Thre3 Collection.jpg", accent: ACCENT },
-  { name: "Perspective V4", sub: "Durable Series", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/Our Collections_0.8mm Collection.jpg", accent: ACCENT },
-  { name: "Thermo", sub: "Weather Resistant", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/thermocollection.jpg", accent: ACCENT },
-  // TODO: temporary placeholder — swap for a real Louvers collection card/image once one exists.
-  { name: "Cool Colour", sub: "Modern Shades", category: "Louvers", image: "/assets/img/material/15-08-2026/Our Collections_Cool Colour Collection.jpg", accent: ACCENT },
+  { name: "Cool Colour", sub: "Modern Shades", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Cool Colour Collection.jpg", accent: ACCENT },
+  { name: "Perspective V4", sub: "Durable Series", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_0.8mm Collection.jpg", accent: ACCENT },
+  { name: "Thermo Laminates", sub: "Weather Resistant", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/thermocollection.jpg", accent: ACCENT },
 ];
 
-// Louvers filter tab hidden for now — re-enable once a real Louvers collection exists.
+// Filter tabs; each card's category must match one of these exactly. Both lists are editable in the CMS (Home page > Collections Showcase).
 const DEFAULT_FILTERS = ["Laminates", "Thermo Laminates"];
 
 const AUTOPLAY_DELAY = 4000;
@@ -47,12 +46,8 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
     return DEFAULT_FILTERS;
   }, [content.filters]);
 
-  // A clone of the first card is appended after the last one so autoplay can
-  // keep scrolling forward past the end instead of snapping backward; once the
-  // clone is reached we jump the scroll position back to the real first card
-  // with no animation, invisibly, since the clone looks identical.
-  const displayItems = useMemo(() => [...collections, collections[0]], [collections]);
-  const CLONE_IDX = collections.length;
+  // Every collection appears exactly once — autoplay wraps back to the first card instead of cloning it.
+  const displayItems = collections;
 
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
@@ -102,33 +97,16 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
     goTo(next.i);
   };
 
-  /* ── Autoplay — always steps forward, including past the last real card
-     onto its clone, so the loop reads as continuous motion instead of a
-     backward snap to card 1. ── */
+  /* ── Autoplay — steps forward through the real cards and, after the last one, scrolls back to the first. ── */
   useEffect(() => {
+    if (collections.length < 2) return;
     const id = setTimeout(() => {
-      const next = activeIdx + 1;
+      const next = activeIdx + 1 >= collections.length ? 0 : activeIdx + 1;
       setActiveIdx(next);
       scrollToCard(next);
     }, AUTOPLAY_DELAY);
     return () => clearTimeout(id);
-  }, [activeIdx, scrollToCard]);
-
-  /* ── Once the clone card is reached, silently snap back to the real
-     first card after the scroll animation finishes — same pixels on
-     screen, so the reset is invisible. ── */
-  useEffect(() => {
-    if (activeIdx !== CLONE_IDX) return;
-    const id = setTimeout(() => {
-      const track = trackRef.current;
-      const firstCard = track?.children[0] as HTMLElement | undefined;
-      if (track && firstCard) {
-        track.scrollLeft = firstCard.offsetLeft - track.offsetLeft;
-      }
-      setActiveIdx(0);
-    }, SCROLL_DURATION);
-    return () => clearTimeout(id);
-  }, [activeIdx]);
+  }, [activeIdx, collections.length, scrollToCard]);
 
   /* ── Click-and-drag scrolling (desktop) — touch swipe already works
      natively on the overflow-x:auto track, no extra code needed there. ── */
@@ -152,7 +130,7 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
 
   const handleCardClick = (i: number) => {
     if (dragRef.current.moved) return; // this was a drag, not a click
-    goTo(i === CLONE_IDX ? 0 : i);
+    goTo(i);
   };
 
   return (
