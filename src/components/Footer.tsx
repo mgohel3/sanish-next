@@ -29,12 +29,11 @@ const ICON_LINKEDIN = (
 );
 
 const COLLECTIONS = [
-  { label: "S'Shades Premium",   href: "/collection" },
-  { label: "Thre3",              href: "/collection" },
-  { label: "Cool Colour",        href: "/collection" },
-  { label: "Perspective V4",     href: "/collection" },
-  { label: "Thermo Laminates",   href: "/collection" },
-  { label: "Sanish Perspective", href: "/collection" },
+  { label: "S'Shades Premium",     href: "/laminates?collection=sshades" },
+  { label: "Thre3",                href: "/laminates?collection=thre3" },
+  { label: "Cool Colour",          href: "/laminates?collection=cool-colour" },
+  { label: "Perspective V4",       href: "/laminates?collection=08mm" },
+  { label: "Thermo Laminates",     href: "/asa-sheets" },
   { label: "View All Collections", href: "/collection" },
 ];
 

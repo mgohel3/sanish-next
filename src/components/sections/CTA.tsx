@@ -13,7 +13,7 @@ const DEFAULT_CTA = {
   body: "Contact our design consultants to explore the complete Sanish Laminates collection and discuss your bespoke requirements.",
   bg_image: "/assets/img/cta-bg.jpg",
   primary_label: "View Catalogue",
-  primary_url: "#",
+  primary_url: "/collection",
   secondary_label: "Contact Sales Team",
   secondary_url: "mailto:info@sanishlaminate.com",
 };
