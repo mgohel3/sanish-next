@@ -60,11 +60,6 @@ export default function CollectionPage() {
       {/* ── Collection Tiles ── */}
       <section className="home-section--compact bg-[var(--bg-secondary)]">
         <div className="site-container">
-          <div className="section-header">
-            <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)]">
-              Our Collections
-            </h2>
-          </div>
           <CollectionShowcase />
         </div>
       </section>

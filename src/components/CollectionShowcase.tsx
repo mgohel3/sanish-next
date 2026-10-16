@@ -101,28 +101,33 @@ export default function CollectionShowcase() {
 
   return (
     <div className="flex flex-col">
-      {/* Filter — pick a collection to show only its card */}
-      <div className="flex flex-wrap gap-2.5 mt-6" role="group" aria-label="Filter collections">
-        {[{ slug: "all", name: "All Collections", accent: "#85addc" }, ...COLLECTIONS].map((c) => {
-          const on = active === c.slug;
-          return (
-            <button
-              key={c.slug}
-              type="button"
-              onClick={() => select(c.slug)}
-              aria-pressed={on}
-              className="px-5 py-2.5 text-[13px] font-semibold border transition-all duration-200"
-              style={{
-                backgroundColor: on ? c.accent : "white",
-                color: on ? "white" : "#6B6B80",
-                borderColor: on ? c.accent : "rgba(30,30,46,0.12)",
-                fontFamily: "var(--font-jakarta)",
-              }}
-            >
-              {c.name}
-            </button>
-          );
-        })}
+      {/* Title and filter share one row — pick a collection to show only its card */}
+      <div className="section-header flex flex-col lg:flex-row lg:items-center lg:justify-between gap-x-8 gap-y-5" style={{ marginBottom: 8 }}>
+        <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)] shrink-0" style={{ marginTop: 0 }}>
+          Our Collections
+        </h2>
+        <div className="flex flex-wrap gap-2 lg:justify-end" role="group" aria-label="Filter collections">
+          {[{ slug: "all", name: "All Collections", accent: "#85addc" }, ...COLLECTIONS].map((c) => {
+            const on = active === c.slug;
+            return (
+              <button
+                key={c.slug}
+                type="button"
+                onClick={() => select(c.slug)}
+                aria-pressed={on}
+                className="px-4 py-2 text-[12.5px] font-semibold border transition-all duration-200 whitespace-nowrap"
+                style={{
+                  backgroundColor: on ? c.accent : "white",
+                  color: on ? "white" : "#6B6B80",
+                  borderColor: on ? c.accent : "rgba(30,30,46,0.12)",
+                  fontFamily: "var(--font-jakarta)",
+                }}
+              >
+                {c.name}
+              </button>
+            );
+          })}
+        </div>
       </div>
       {visible.map((col, i) => {
         const imageOnLeft = i % 2 === 0;
