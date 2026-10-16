@@ -21,7 +21,7 @@ const FALLBACK_FIELDS: FormFieldSchema[] = [
     name: "message",
     field_type: "textarea",
     label: "Message",
-    placeholder: "Enter the Product IDs You're Interested In\ne.g.,\nLM-19928\nLM-19920\nLM-19785",
+    placeholder: "Enter the Product IDs You're Interested In\ne.g.,\n6001 UG\n3003 UG\n10005 AM", // real products: Perspective V4, Thre3, S'Shades
     required: false,
     options: [],
   },
