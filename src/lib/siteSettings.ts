@@ -67,7 +67,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   logo_light_url: "/assets/img/logo/footer-black-logo.svg",
   favicon_url: "/favicon.ico",
   phone_primary: "+91 7027 777 032",
-  phone_secondary: "+91 9876 543 210",
+  phone_secondary: "",
   email_primary: "info@sanishlaminate.com",
   email_secondary: "sales@sanishlaminate.com",
   address_line1: "SAPPHIRE WOODS (INDIA) LLP",

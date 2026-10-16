@@ -67,8 +67,7 @@ function StaticContactUs() {
                     <div>
                       <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">Phone</h4>
                       <p className="text-[15px] text-[var(--text-primary)] leading-[1.6]">
-                        <a href="tel:+917027777032" className="hover:text-[var(--accent-blue)] transition-colors">(+91) 7027 777 032</a><br />
-                        <a href="tel:+919876543210" className="hover:text-[var(--accent-blue)] transition-colors">(+91) 9876 543 210</a>
+                        <a href="tel:+917027777032" className="hover:text-[var(--accent-blue)] transition-colors">(+91) 7027 777 032</a>
                       </p>
                     </div>
                   </div>
