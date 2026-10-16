@@ -15,7 +15,7 @@ const pillStyle = (isActive: boolean) => ({
 });
 
 /**
- * "Browse by space" filter row for /applications-new. One line only: "All" stays pinned at the left while the
+ * "Browse by space" filter row for /applications. One line only: "All" stays pinned at the left while the
  * space pills scroll sideways (trackpad / mouse wheel / drag, or the arrow buttons), so no button ever jumps
  * to a new row when the selection changes. The active pill is scrolled into view on load.
  */
@@ -52,7 +52,7 @@ export default function SpaceFilterBar({ spaces, active }: { spaces: Space[]; ac
 
       <div className="flex items-center gap-2 min-w-0 flex-1">
         <Link
-          href="/applications-new"
+          href="/applications"
           prefetch={false}
           scroll={false}
           aria-current={active === "" ? "true" : undefined}
@@ -86,7 +86,7 @@ export default function SpaceFilterBar({ spaces, active }: { spaces: Space[]; ac
             return (
               <Link
                 key={s.slug}
-                href={`/applications-new?space=${s.slug}`}
+                href={`/applications?space=${s.slug}`}
                 prefetch={false}
                 scroll={false}
                 aria-current={isActive ? "true" : undefined}

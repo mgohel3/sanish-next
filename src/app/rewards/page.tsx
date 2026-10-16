@@ -4,7 +4,6 @@ import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import Link from "next/link";
 import StoreBadges from "@/components/ui/StoreBadges";
-import BrandMonogram from "@/components/BrandMonogram";
 import CarpenterTestimonials from "@/components/sections/CarpenterTestimonials";
 import { fetchCarpenterTestimonials } from "@/lib/testimonials";
 import PageBlocks from "@/components/PageBlockRenderer";
@@ -168,7 +167,7 @@ async function StaticRewards() {
                 {/* Monogram — was a hand-duplicated dot grid with the colours
                     in the wrong order (swapped vs. the real brand mark used
                     in the header/footer); now the shared component. */}
-                <BrandMonogram size={14} className="mb-8" />
+                <img src="/assets/img/logo/black-logo-on-dark.svg" alt="Sanish Laminate" className="mb-8 h-[44px] w-auto" />
 
                 <div className="text-white/50 text-[11px] uppercase tracking-[0.2em] font-semibold mb-3" style={{ fontFamily: "var(--font-jakarta)" }}>
                   Sanish Rewards

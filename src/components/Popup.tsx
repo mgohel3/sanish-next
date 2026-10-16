@@ -39,8 +39,7 @@ export default function Popup() {
   // gallery pages"). The manual "Inquire" buttons still open it on click.
   const isPreview =
     pathname?.startsWith("/cms-preview") ||
-    pathname?.startsWith("/applications-new") ||
-    pathname?.startsWith("/applications/gallery");
+    pathname?.startsWith("/applications");
   const [render, setRender] = useState(false);
   const [show, setShow] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);

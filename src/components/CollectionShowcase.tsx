@@ -79,6 +79,21 @@ function openCataloguePopup(col: (typeof COLLECTIONS)[number], cmsCollections: C
 
 export default function CollectionShowcase() {
   const [cmsCollections, setCmsCollections] = useState<CollectionMeta[]>([]);
+  const [active, setActive] = useState<string>("all");
+
+  // Deep link: /collection?collection=sshades opens already filtered.
+  useEffect(() => {
+    const c = new URLSearchParams(window.location.search).get("collection");
+    if (c && COLLECTIONS.some((x) => x.slug === c)) setActive(c);
+  }, []);
+
+  const select = (slug: string) => {
+    setActive(slug);
+    const u = new URL(window.location.href);
+    if (slug === "all") u.searchParams.delete("collection"); else u.searchParams.set("collection", slug);
+    window.history.replaceState(null, "", u.toString());
+  };
+  const visible = active === "all" ? COLLECTIONS : COLLECTIONS.filter((c) => c.slug === active);
 
   useEffect(() => {
     fetchCollections().then(setCmsCollections);
@@ -86,7 +101,30 @@ export default function CollectionShowcase() {
 
   return (
     <div className="flex flex-col">
-      {COLLECTIONS.map((col, i) => {
+      {/* Filter — pick a collection to show only its card */}
+      <div className="flex flex-wrap gap-2.5 mt-6" role="group" aria-label="Filter collections">
+        {[{ slug: "all", name: "All Collections", accent: "#85addc" }, ...COLLECTIONS].map((c) => {
+          const on = active === c.slug;
+          return (
+            <button
+              key={c.slug}
+              type="button"
+              onClick={() => select(c.slug)}
+              aria-pressed={on}
+              className="px-5 py-2.5 text-[13px] font-semibold border transition-all duration-200"
+              style={{
+                backgroundColor: on ? c.accent : "white",
+                color: on ? "white" : "#6B6B80",
+                borderColor: on ? c.accent : "rgba(30,30,46,0.12)",
+                fontFamily: "var(--font-jakarta)",
+              }}
+            >
+              {c.name}
+            </button>
+          );
+        })}
+      </div>
+      {visible.map((col, i) => {
         const imageOnLeft = i % 2 === 0;
         return (
           <div

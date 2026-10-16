@@ -3,9 +3,14 @@ import Link from "next/link";
 import type { Photo } from "@/lib/photos";
 import { photoLabel } from "@/lib/photos";
 
+// Card shapes cycle through a fixed set so the wall reads as a real masonry (tall, square and wide cards); the photo fills its
+// card (object-cover, centred). Picked from the photo id, so a photo keeps the same shape on every page and visit.
+const SHAPES = ["1 / 1", "9 / 16", "2 / 3", "4 / 5", "1 / 1", "3 / 4", "4 / 3", "9 / 16", "2 / 3", "1 / 1", "3 / 2", "4 / 5"];
+const shapeFor = (id: number) => SHAPES[(id * 5) % SHAPES.length];
+
 /**
- * Mixed photo collage for /applications-new. Photos keep their own shape (no cropping) and reserve their space
- * from the stored pixel size, so nothing jumps while images load. The page hands this one page (40) of photos.
+ * Mixed photo collage for /applications. Cards come in mixed shapes (see SHAPES) and reserve their space up front,
+ * so nothing jumps while images load. The page hands this one page (40) of photos.
  */
 export default function ApplicationsCollage({ photos }: { photos: Photo[] }) {
   return (
@@ -13,10 +18,10 @@ export default function ApplicationsCollage({ photos }: { photos: Photo[] }) {
       {photos.map((p) => (
         <Link
           key={p.id}
-          href={`/applications-new/photo/${p.id}`}
+          href={`/applications/photo/${p.id}`}
           prefetch={false}
           className="group relative block mb-4 break-inside-avoid overflow-hidden rounded-[16px] bg-[#ece9e4]"
-          style={{ aspectRatio: p.width && p.height ? `${p.width} / ${p.height}` : "1 / 1" }}
+          style={{ aspectRatio: shapeFor(p.id) }}
         >
           <img
             src={p.src}
