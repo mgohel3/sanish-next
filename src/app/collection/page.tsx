@@ -70,7 +70,7 @@ export default function CollectionPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div className="flex flex-col justify-center">
               <h2 className="font-serif text-[clamp(28px,3.6vw,46px)] leading-[1.1] text-[var(--text-primary)] mb-6">
-                Collection Inquiry
+                Collection Enquiry
               </h2>
               <p className="text-[15px] text-[var(--text-secondary)] leading-[1.85] mb-8"
                 style={{ fontFamily: "var(--font-jakarta)" }}>

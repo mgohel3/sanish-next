@@ -16,7 +16,7 @@ const FALLBACK_FIELDS: FormFieldSchema[] = [
   { name: "phone", field_type: "tel", label: "Phone", required: true, options: [] },
   { name: "email", field_type: "email", label: "Email", required: true, options: [] },
   { name: "pincode", field_type: "text", label: "Pin Code", required: true, options: [] },
-  { name: "enquire_type", field_type: "select", label: "Enquire Type", required: true, options: ["Commercial", "Consumer"] },
+  { name: "enquire_type", field_type: "select", label: "Enquiry Type", required: true, options: ["Commercial", "Consumer"] },
   {
     name: "message",
     field_type: "textarea",
@@ -33,7 +33,7 @@ const labelClass = "text-[12px] font-medium text-[var(--text-secondary)] trackin
 
 export default function ContactForm() {
   const { fields, values, setValue, submitting, submitted, error, submitLabel, successMessage, handleSubmit, recaptcha } =
-    useCmsForm("contact-us-form", FALLBACK_FIELDS, "Submit Inquiry", "Your inquiry has been received. Our team will get back to you within 24 hours.");
+    useCmsForm("contact-us-form", FALLBACK_FIELDS, "Submit Enquiry", "Your enquiry has been received. Our team will get back to you within 24 hours.");
 
   if (submitted) {
     return (

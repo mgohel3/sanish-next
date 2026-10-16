@@ -17,7 +17,7 @@ const FALLBACK_FIELDS: FormFieldSchema[] = [
   { name: "phone", field_type: "tel", label: "Phone", required: true, options: [] },
   { name: "email", field_type: "email", label: "Email", required: true, options: [] },
   { name: "pincode", field_type: "text", label: "Pin Code", required: true, options: [] },
-  { name: "enquire_type", field_type: "select", label: "Enquire Type", required: true, options: ["Commercial", "Consumer"] },
+  { name: "enquire_type", field_type: "select", label: "Enquiry Type", required: true, options: ["Commercial", "Consumer"] },
   {
     name: "message",
     field_type: "textarea",
@@ -85,7 +85,7 @@ export default function Popup() {
   };
 
   const { fields, values, setValue, submitting, error, submitLabel, handleSubmit, recaptcha } =
-    useCmsForm("inquiry-popup", FALLBACK_FIELDS, "Submit Inquiry", "Thanks — we typically respond within 24 hours.");
+    useCmsForm("inquiry-popup", FALLBACK_FIELDS, "Submit Enquiry", "Thanks — we typically respond within 24 hours.");
 
   if (!render) return null;
 

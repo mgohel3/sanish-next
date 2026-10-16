@@ -8,7 +8,7 @@ import { MapPin, Phone, Mail } from "lucide-react";
 
 export const metadata = {
   title: "Contact Us | Sanish Laminates",
-  description: "Get in touch with Sanish Laminates for inquiries, dealer network details, or any other questions.",
+  description: "Get in touch with Sanish Laminates for enquiries, dealer network details, or any other questions.",
 };
 
 export default async function ContactUsPage() {

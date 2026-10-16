@@ -17,7 +17,7 @@ const FALLBACK_FIELDS: FormFieldSchema[] = [
   { name: "phone", field_type: "tel", label: "Phone", placeholder: "+91 XXXXX XXXXX", required: true, options: [] },
   { name: "email", field_type: "email", label: "Email", placeholder: "your@email.com", required: true, options: [] },
   { name: "pincode", field_type: "text", label: "Pin Code", placeholder: "e.g. 110001", required: true, options: [] },
-  { name: "enquire_type", field_type: "select", label: "Enquire Type", required: true, options: ["Commercial", "Consumer"] },
+  { name: "enquire_type", field_type: "select", label: "Enquiry Type", required: true, options: ["Commercial", "Consumer"] },
 ];
 
 export default function Home2SampleCTA() {

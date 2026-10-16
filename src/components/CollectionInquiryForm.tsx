@@ -19,7 +19,7 @@ const PURPOSE_LABELS: Record<string, string> = {
   commercial: "Commercial Project",
   residential: "Residential Project",
   architectural: "Architectural Specification",
-  distributor: "Distributor / Dealer Inquiry",
+  distributor: "Distributor / Dealer Enquiry",
 };
 
 const PURPOSE_TO_TYPE: Record<string, InquiryType> = {
@@ -145,7 +145,7 @@ export default function CollectionInquiryForm() {
           <option value="commercial">Commercial Project</option>
           <option value="residential">Residential Project</option>
           <option value="architectural">Architectural Specification</option>
-          <option value="distributor">Distributor / Dealer Inquiry</option>
+          <option value="distributor">Distributor / Dealer Enquiry</option>
         </select>
       </div>
       <div>
@@ -168,7 +168,7 @@ export default function CollectionInquiryForm() {
       )}
 
       <Button type="submit" variant="primary" fullWidth disabled={submitting}>
-        {submitting ? "Sending…" : "Send Inquiry"}
+        {submitting ? "Sending…" : "Send Enquiry"}
       </Button>
     </form>
   );

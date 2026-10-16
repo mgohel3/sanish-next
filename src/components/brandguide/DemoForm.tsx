@@ -21,11 +21,11 @@ export default function DemoForm() {
       <select required defaultValue=""
         className="w-full rounded-2xl px-4 py-3 text-[13.5px] outline-none transition-all duration-200 appearance-none focus:border-[#f39ba2] focus:bg-white"
         style={{ background: "#F7F7F9", border: "1.5px solid transparent", color: "#9B9BB0" }}>
-        <option value="" disabled>Enquire Type *</option>
+        <option value="" disabled>Enquiry Type *</option>
         <option value="commercial">Commercial</option>
         <option value="consumer">Consumer</option>
       </select>
-      <button type="submit" className="btn-pill btn-pill-primary justify-center mt-1">Submit Inquiry</button>
+      <button type="submit" className="btn-pill btn-pill-primary justify-center mt-1">Submit Enquiry</button>
     </form>
   );
 }
