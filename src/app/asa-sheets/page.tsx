@@ -32,6 +32,7 @@ export default async function AsaSheetsPage(
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }} className="min-h-screen">
       <Header />
+      <h2 className="sr-only">Browse Thermo Laminates for outdoor and facade use</h2>
       <Suspense fallback={
         <div className="pt-[140px] pb-20 text-center text-[var(--text-secondary)]" style={{ fontFamily: "var(--font-jakarta)" }}>
           Loading Thermo Laminates…

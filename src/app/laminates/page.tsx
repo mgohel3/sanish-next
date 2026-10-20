@@ -32,6 +32,7 @@ export default async function LaminatesPage(
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }} className="min-h-screen">
       <Header />
+      <h2 className="sr-only">Browse decorative laminate designs by collection, finish and colour</h2>
       <Suspense fallback={
         <div className="pt-[140px] pb-20 text-center text-[var(--text-secondary)]" style={{ fontFamily: "var(--font-jakarta)" }}>
           Loading laminates…
