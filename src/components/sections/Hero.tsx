@@ -22,7 +22,7 @@ const allSlides = [
     tag: "Premium Craftsmanship",
     line1: "Surfaces That",
     line2: "Define Excellence",
-    sub: "From decorative laminates to Thermo Laminates and architectural panels — 25+ years of craftsmanship behind every surface.",
+    sub: "From decorative laminates to Thermo Laminates and architectural panels — 9+ years of craftsmanship behind every surface.",
     accent: "#85addc",
     bg: "#EEF3FA",
     orb1: "rgba(133,173,220,0.22)",
@@ -70,6 +70,28 @@ const allSlides = [
 
 const DEFAULT_SLIDES = allSlides.filter((s) => !s.hidden);
 
+type Slide = {
+  id: number; image: string; mobileImage?: string; tag: string; line1: string; line2: string; sub: string;
+  accent: string; bg: string; orb1: string; orb2: string;
+  imageOnly?: boolean; stacked?: boolean; ctaLabel?: string; ctaUrl?: string;
+};
+
+/* DEMO ONLY — "image on top (70%), content below (30%)" banner layout, shown as an extra last slide so the client can
+   review it. Remove this constant and its one use in `slides` below to drop it. */
+const DEMO_STACKED_SLIDE: Slide = {
+  id: 99,
+  image: "/assets/img/hero/slides/slide-2.jpg",
+  tag: "Layout Preview",
+  line1: "Image On Top,",
+  line2: "Content Below",
+  sub: "A banner layout with a large image above and a compact content strip beneath it.",
+  accent: "#ac8cc0",
+  bg: "#F4F0F8",
+  orb1: "rgba(172,140,192,0.20)",
+  orb2: "rgba(250,191,125,0.14)",
+  stacked: true,
+};
+
 const SLIDE_DURATION = 6500;
 
 export default function Hero({ content }: { content?: HeroContent }) {
@@ -85,10 +107,10 @@ export default function Hero({ content }: { content?: HeroContent }) {
 
   // CMS slides carry text + images only; the per-slide colour styling
   // (accent / bg / orbs) is reused from the built-in slide at the same index.
-  const slides = useMemo(() => {
+  const slides = useMemo<Slide[]>(() => {
     const cmsSlides = content?.slides;
-    if (!cmsSlides || cmsSlides.length === 0) return DEFAULT_SLIDES;
-    return cmsSlides.map((s, i) => {
+    if (!cmsSlides || cmsSlides.length === 0) return [...DEFAULT_SLIDES, DEMO_STACKED_SLIDE];
+    return [...cmsSlides.map((s, i) => {
       const style = DEFAULT_SLIDES[i % DEFAULT_SLIDES.length];
       return {
         id: i + 1,
@@ -106,7 +128,7 @@ export default function Hero({ content }: { content?: HeroContent }) {
         ctaLabel: s.cta_label || "Explore Collection",
         ctaUrl: s.cta_url || "/collection",
       };
-    });
+    }), DEMO_STACKED_SLIDE];
   }, [content?.slides]);
 
   const slide = slides[current] ?? slides[0];
@@ -269,7 +291,7 @@ export default function Hero({ content }: { content?: HeroContent }) {
       )}
 
       {/* ── Main layout ── */}
-      {!slide.imageOnly && (
+      {!slide.imageOnly && !slide.stacked && (
       <div className="site-container relative z-10 w-full grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-0 items-center">
 
         {/* ── LEFT: Text ── */}
@@ -363,7 +385,7 @@ export default function Hero({ content }: { content?: HeroContent }) {
 
           {/* Stats */}
           <div className="flex items-start gap-10 pt-7 border-t" style={{ borderColor: "rgba(30,30,46,0.08)" }}>
-            {[{ value: "500+", label: "Designs" }, { value: "25+", label: "Years" }, { value: "18K+", label: "Clients" }].map((s) => (
+            {[{ value: "500+", label: "Designs" }, { value: "9+", label: "Years" }, { value: "18K+", label: "Clients" }].map((s) => (
               <div key={s.label} className="h-stats">
                 <div className="font-bold text-[26px] leading-none mb-1.5" style={{ fontFamily: "var(--font-jakarta)", color: slide.accent, transition: "color 800ms ease" }}>
                   {s.value}
@@ -440,6 +462,40 @@ export default function Hero({ content }: { content?: HeroContent }) {
       </div>
       )}
 
+
+      {/* ── Stacked layout: image on top (~70%), content strip below (~30%) ── */}
+      {slide.stacked && (
+        <div className="absolute inset-0 z-10 flex flex-col" style={{ paddingTop: "clamp(84px, 9vh, 96px)", paddingBottom: "78px" }}>
+          <div className="site-container w-full flex-[7] min-h-0 pb-5">
+            <div className="relative w-full h-full overflow-hidden" style={{ borderRadius: "24px", boxShadow: "0 30px 70px rgba(30,30,46,0.12)" }}>
+              <picture>
+                {slide.mobileImage && <source media="(max-width: 1023px)" srcSet={slide.mobileImage} />}
+                <img src={slide.image} alt={slide.line1} className="w-full h-full object-cover" />
+              </picture>
+              <div className="absolute top-5 left-5 px-4 py-2 text-white text-[9.5px] uppercase tracking-[0.16em] font-semibold"
+                style={{ backgroundColor: "#fabf7d", borderRadius: "999px", fontFamily: "var(--font-jakarta)" }}>
+                {slide.tag}
+              </div>
+            </div>
+          </div>
+          <div ref={contentRef} className="site-container w-full flex-[3] min-h-0 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-12">
+            <div className="overflow-hidden">
+              <h2 className="h-line1 inline leading-[1.15] tracking-tight" style={{ fontSize: "clamp(24px, 3.2vw, 52px)", fontWeight: 500, color: "#1E1E2E" }}>{slide.line1} </h2>
+              <h2 className="h-line2 inline leading-[1.15] tracking-tight" style={{ fontSize: "clamp(24px, 3.2vw, 52px)", fontWeight: 500, color: slide.accent }}>{slide.line2}</h2>
+            </div>
+            <p className="h-sub text-[14px] leading-[1.7] max-w-[420px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)", fontWeight: 300 }}>{slide.sub}</p>
+            <div className="flex flex-wrap items-center gap-6 shrink-0">
+              <Button href={slide.ctaUrl || "/collection"} variant="primary" className="h-btn group" style={{ backgroundColor: slide.accent, boxShadow: `0 8px 28px ${slide.accent}45` }}>
+                <span>{slide.ctaLabel || "Explore Collection"}</span>
+              </Button>
+              <Link href="/about-us" className="h-btn inline-flex items-center gap-2" style={{ color: "#1E1E2E", fontFamily: "var(--font-jakarta)", fontSize: "14px", fontWeight: 500 }}>
+                <span>Our Story</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Bottom Controls ── */}
       <div className="absolute bottom-0 left-0 right-0 z-20">
         {/* Progress bar */}
@@ -491,13 +547,13 @@ export default function Hero({ content }: { content?: HeroContent }) {
       </div>
 
       {/* ── Scroll cue ── */}
-      <div className="absolute left-8 md:left-14 bottom-24 z-20 flex flex-col items-center gap-2">
+      {!slide.stacked && <div className="absolute left-8 md:left-14 bottom-24 z-20 flex flex-col items-center gap-2">
         <div className="relative w-[1px] h-14 overflow-hidden" style={{ backgroundColor: "rgba(30,30,46,0.1)" }}>
           <div className="absolute top-0 left-0 w-full h-1/2"
             style={{ backgroundColor: slide.accent, animation: "heroCue 2.2s cubic-bezier(0.4,0,0.6,1) infinite", transition: "background-color 800ms ease" }} />
         </div>
         <span className="text-[8.5px] uppercase tracking-[0.28em]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>Scroll</span>
-      </div>
+      </div>}
 
       <style>{`
         @keyframes heroCue {
