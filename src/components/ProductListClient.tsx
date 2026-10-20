@@ -136,7 +136,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
   const finishList = category === "Thermo Laminates" ? opts.thermo_texture : category ? opts.texture : unionList(opts.texture, opts.thermo_texture);
   const designList = category === "Thermo Laminates" ? opts.thermo_design_type : category ? opts.design_type : unionList(opts.design_type, opts.thermo_design_type);
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") ?? "");
   const [quickView, setQuickView] = useState<Product | null>(null);
   const [cmsCollections, setCmsCollections] = useState<CollectionMeta[]>([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -265,7 +265,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
     !!activeDesign,
     activeColor !== "All Colours",
   ].filter(Boolean).length;
-  const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminate catalogue.")}`;
+  const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminates catalogue.")}`;
 
   /* ── Catalogue PDF for the active collection, if the CMS has one attached ── */
   const activeCollectionPdfUrl = activeCollection !== "All" ? findCollectionPdfUrl(activeCollection, cmsCollections) : "";

@@ -157,7 +157,7 @@ export default function ProductsClient({
   ];
 
   const [activeCategory, setActiveCategory] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") ?? "");
   const [quickView, setQuickView] = useState<Product | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -289,7 +289,7 @@ export default function ProductsClient({
     !!activeDesign,
     activeColor !== "All Colours",
   ].filter(Boolean).length;
-  const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminate catalogue.")}`;
+  const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminates catalogue.")}`;
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },

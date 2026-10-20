@@ -18,6 +18,9 @@ import ProductGallery from "./ProductGallery";
 import TextureSwatches from "./TextureSwatches";
 import InquireButton from "@/components/InquireButton";
 import CmsPreviewBanner from "@/components/CmsPreviewBanner";
+import JsonLd from "@/components/JsonLd";
+import type { Metadata } from "next";
+import { pageMetadata, snippet, withBrand, absoluteUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 /* ── Page ────────────────────────────────────────────────── */
 export function generateStaticParams() {
@@ -32,6 +35,29 @@ type Props = {
   params: Promise<{ category: string; collection: string; slug: string }>;
   searchParams: Promise<{ preview?: string }>;
 };
+
+/** One unique title + description per product (CMS "SEO" fields win; otherwise built from the product's own data), canonical = the clean product URL. */
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const { preview } = await searchParams;
+  const product = preview ? await fetchProductPreview(slug, preview) : await fetchProductBySlug(slug);
+  if (!product) return { title: "Product not found | Sanish Laminates", robots: { index: false, follow: true } };
+
+  const path = productHref(product);
+  const range = product.collection ? ` – ${product.collection}` : "";
+  const title = product.metaTitle?.trim() || withBrand(`${product.name}${range} Decorative Laminate`);
+  const traits = [product.texture, product.designType].filter(Boolean).join(", ").toLowerCase();
+  const generated = snippet(
+    `${product.name} from the Sanish ${product.collection || product.category} collection` +
+      `${traits ? ` — a ${traits} decorative laminate` : " — a decorative laminate"}` +
+      `${product.thickness ? `, ${product.thickness}` : ""}. View the design, finishes and request a free sample.`,
+  );
+  const description = product.metaDescription?.trim() || snippet(product.shortDescription || "", 160) || generated;
+  const meta = pageMetadata({ title, description, path, image: product.images?.[0], noindex: !!preview });
+  // A preview of a draft isn't the real URL yet: no canonical.
+  if (preview) delete meta.alternates;
+  return meta;
+}
 
 export default async function ProductPage({ params, searchParams }: Props) {
   const { category, collection, slug } = await params;
@@ -123,8 +149,38 @@ export default async function ProductPage({ params, searchParams }: Props) {
   ].filter((tag) => tag.show !== false && tag.value).map((tag) => tag.value);
   const collectionListHref = collectionHref(product);
 
+  const pageUrl = absoluteUrl(productHref(product));
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    sku: product.sku || undefined,
+    url: pageUrl,
+    description: product.metaDescription?.trim() || snippet(product.shortDescription || product.description || "", 300) || undefined,
+    image: [product.images?.[0], product.applicationImage, ...(product.images || []).slice(1, 3)].filter(Boolean).slice(0, 4),
+    brand: { "@type": "Brand", name: SITE_NAME },
+    manufacturer: { "@id": `${SITE_URL}/#organization` },
+    category: product.collection ? `Decorative Laminates > ${product.collection}` : "Decorative Laminates",
+    additionalProperty: [
+      ["Collection", product.collection], ["Texture", product.texture], ["Design type", product.designType],
+      ["Finish code", product.finish], ["Thickness", product.thickness], ["Surface", product.surface],
+    ].filter(([, v]) => v).map(([name, value]) => ({ "@type": "PropertyValue", name, value })),
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { name: "Home", url: SITE_URL },
+      { name: product.category, url: absoluteUrl(collectionHref({ category: product.category })) },
+      ...(product.collection ? [{ name: product.collection, url: absoluteUrl(collectionListHref) }] : []),
+      { name: product.name, url: pageUrl },
+    ].map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, item: it.url })),
+  };
+
   return (
     <main className="min-h-screen" style={{ backgroundColor: "var(--bg-primary)" }}>
+      {!preview && <JsonLd data={productSchema} />}
+      {!preview && <JsonLd data={breadcrumbSchema} />}
       {preview && (
         <CmsPreviewBanner status={product.status} editHref={`${getCmsBaseUrl()}/cms/products/${product.id}/`} />
       )}

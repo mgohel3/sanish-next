@@ -1,4 +1,8 @@
 import { Fragment } from "react";
+import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
+import { getSiteSettings } from "@/lib/siteSettings";
+import { pageMetadata, organizationSchema, websiteSchema, MAIN_KEYWORD } from "@/lib/seo";
 import BlockBackground from "@/components/BlockBackground";
 import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
@@ -27,10 +31,17 @@ import { fetchBlogPosts } from "@/lib/blog";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+export const metadata: Metadata = pageMetadata({
+  title: "Decorative Laminates Manufacturer in India | Sanish Laminates",
+  description: "Sanish Laminates — premium decorative laminates manufacturer in India. Explore 800+ designs for kitchens, wardrobes, doors and commercial interiors.",
+  path: "/",
+});
+
 export default async function Home() {
   const applicationTiles = await getRandomGalleryTiles(5);
   const sections = await getHomeSections();
   const blogPosts = (await fetchBlogPosts()).slice(0, 3);
+  const siteSettings = await getSiteSettings();
 
   // Registry: CMS block_type → rendered section. Unknown types are skipped.
   const registry: Record<string, (c: any) => React.ReactNode> = {
@@ -58,6 +69,10 @@ export default async function Home() {
   return (
     <main className="bg-[var(--bg-primary)]">
       <Header />
+      <JsonLd data={organizationSchema(siteSettings)} />
+      <JsonLd data={websiteSchema()} />
+      {/* The page's single H1 (main keyword). The slider headlines below are H2s. */}
+      <h1 className="sr-only">{MAIN_KEYWORD}</h1>
       {sections ? (
         sections.map((s: HomeSectionData, i) => {
           const render = registry[s.block_type];

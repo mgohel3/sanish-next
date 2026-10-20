@@ -1,3 +1,6 @@
+import { pageMetadata, localBusinessSchema } from "@/lib/seo";
+import JsonLd from "@/components/JsonLd";
+import { getSiteSettings } from "@/lib/siteSettings";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
@@ -6,17 +9,20 @@ import PageBlocks from "@/components/PageBlockRenderer";
 import { getSitePage } from "@/lib/pages";
 import { MapPin, Phone, Mail } from "lucide-react";
 
-export const metadata = {
-  title: "Contact Us | Sanish Laminates",
-  description: "Get in touch with Sanish Laminates for enquiries, dealer network details, or any other questions.",
-};
+export const metadata = pageMetadata({
+  title: "Contact Sanish Laminates | Enquiries, Samples & Dealer Support",
+  description: "Contact Sanish Laminates for product enquiries, free samples, dealer network details and project support. Call +91 7027 777 032 or send us a message.",
+  path: "/contact-us",
+});
 
 export default async function ContactUsPage() {
   const page = await getSitePage("contact-us");
+  const siteSettings = await getSiteSettings();
 
   return (
     <main style={{ backgroundColor: "var(--bg-primary)" }}>
       <Header />
+      <JsonLd data={localBusinessSchema(siteSettings)} />
       {page && page.sections.length > 0 ? <PageBlocks sections={page.sections} /> : <StaticContactUs />}
       <Footer />
     </main>

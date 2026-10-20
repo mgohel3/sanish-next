@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductListClient from "@/components/ProductListClient";
+import { pageMetadata } from "@/lib/seo";
 import { fetchProducts, fetchCategoryMeta } from "@/lib/catalog";
 
-export const metadata: Metadata = {
-  title: "Louvers | Sanish Laminates — Architectural Fluted Panels",
-  description: "Discover Sanish Louvers — fluted and architectural panel surfaces that bring rhythm, depth and texture to walls, doors and room dividers.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Fluted Louvers & Architectural Panels | Sanish Laminates",
+  description: "Architectural fluted louvers and panels from Sanish Laminates — slatted surfaces for walls, ceilings and interiors.",
+  path: "/louvers",
+});
 
 const FALLBACK = {
   eyebrow: "Architectural Surfaces",
@@ -16,7 +18,12 @@ const FALLBACK = {
   description: "Fluted and architectural panel surfaces that transform ordinary walls into striking design statements.",
 };
 
-export default async function LouversPage() {
+export default async function LouversPage(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  // Reading searchParams makes this page render per request, so the H1 and the product grid are in the HTML crawlers receive
+  // (instead of only a "Loading…" shell that the browser fills in afterwards).
+  await searchParams;
   const [items, meta] = await Promise.all([
     fetchProducts("louvers"),
     fetchCategoryMeta("louvers"),

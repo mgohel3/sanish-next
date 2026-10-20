@@ -4,6 +4,10 @@ import Footer from "@/components/Footer";
 import ProductsClient from "./ProductsClient";
 import { fetchProducts } from "@/lib/catalog";
 
+export const metadata = {
+  robots: { index: false, follow: false }, // design variant / internal page - not for search engines
+};
+
 export default async function Product2Page() {
   const items = await fetchProducts();
   return (

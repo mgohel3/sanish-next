@@ -15,7 +15,7 @@ export const metadata = {
   robots: { index: false, follow: false }, // kept for reference only — /applications is now the photo collage
   title: "Laminate Applications | Interior Design Projects | Sanish",
   description:
-    "Explore Sanish Laminate applications across kitchens, wardrobes, wall panels, commercial interiors and modular furniture.",
+    "Explore Sanish Laminates applications across kitchens, wardrobes, wall panels, commercial interiors and modular furniture.",
 };
 
 export default async function ApplicationsPage() {

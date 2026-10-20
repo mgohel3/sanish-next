@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import JsonLd from "@/components/JsonLd";
+import { pageMetadata, snippet, withBrand, absoluteUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
@@ -40,19 +42,21 @@ export async function generateMetadata({ params, searchParams }: Props) {
   const post = preview
     ? await fetchBlogPostPreview(slug, preview)
     : await fetchBlogPostBySlug(slug);
-  if (!post) return {};
+  if (!post) return { title: "Post not found | Sanish Laminates", robots: { index: false, follow: true } };
+  const path = `/blog/${post.slug}`;
+  const description = snippet(post.metaDescription || post.excerpt || post.title, 160);
+  const meta = pageMetadata({
+    title: withBrand(post.seoTitle || post.title),
+    description,
+    path,
+    image: post.image || undefined,
+    type: "article",
+  });
   return {
-    title: `${post.seoTitle || post.title} | Sanish Laminates`,
-    description: post.metaDescription || post.excerpt || undefined,
+    ...meta,
     keywords: post.metaKeywords || undefined,
-    // Never a canonical tag on a preview — it isn't the real URL yet.
-    alternates: !preview && post.canonicalUrl ? { canonical: post.canonicalUrl } : undefined,
-    openGraph: {
-      title: post.seoTitle || post.title,
-      description: post.metaDescription || post.excerpt || undefined,
-      images: post.image ? [{ url: post.image }] : undefined,
-      type: "article",
-    },
+    // A canonical typed in the CMS wins; a preview of a draft isn't the real URL yet, so it gets none.
+    alternates: preview ? undefined : { canonical: post.canonicalUrl || path },
   };
 }
 
@@ -69,8 +73,22 @@ export default async function BlogPostPage({ params, searchParams }: Props) {
     ? pickRelatedPosts(await fetchBlogPosts(), post, 3)
     : [];
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: snippet(post.metaDescription || post.excerpt || post.title, 200),
+    image: post.image ? [absoluteUrl(post.image)] : undefined,
+    datePublished: post.date,
+    dateModified: post.updated || post.date,
+    mainEntityOfPage: { "@type": "WebPage", "@id": absoluteUrl(`/blog/${post.slug}`) },
+    author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+  };
+
   const body = (
     <>
+      {!preview && <JsonLd data={articleSchema} />}
       <h1 className="blog-post-title">{post.title}</h1>
       {(post.excerpt || post.metaDescription) && (
         <p className="blog-post-description">{post.excerpt || post.metaDescription}</p>

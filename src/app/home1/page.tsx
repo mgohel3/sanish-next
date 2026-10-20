@@ -13,6 +13,7 @@ import Footer from "@/components/Footer";
 import { getRandomGalleryTiles } from "@/lib/gallery";
 
 export const metadata = {
+  robots: { index: false, follow: false }, // design variant / internal page — not for search engines
   title: "Sanish Laminates | Home Classic — Premium Decorative Surfaces",
   description: "Classic homepage experience for Sanish Laminates — premium decorative surfaces and architectural laminates.",
 };

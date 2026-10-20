@@ -208,5 +208,5 @@ export async function getRandomGalleryTiles(count = 5): Promise<HomeGalleryTile[
  * change it everywhere at once.
  */
 export function getGalleryDescription(catalogueName: string, productId: string): string {
-  return `Explore ${catalogueName}, Product ${productId}, presented in a thoughtfully designed interior setting to demonstrate its colour, pattern and visual character in application. Suitable for wardrobes, cabinetry, wall panels and modular furniture. Contact the Sanish Laminate team for specifications, sample availability and pricing.`;
+  return `Explore ${catalogueName}, Product ${productId}, presented in a thoughtfully designed interior setting to demonstrate its colour, pattern and visual character in application. Suitable for wardrobes, cabinetry, wall panels and modular furniture. Contact the Sanish Laminates team for specifications, sample availability and pricing.`;
 }

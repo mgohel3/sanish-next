@@ -13,6 +13,9 @@ export type Product = {
   finish: string;
   /** Texture group the Finish filter matches on (Gloss, Matte, Flute …); `finish` is the finish CODE. */
   texture?: string;
+  /** SEO title / description typed in the CMS (Products > SEO). Blank -> generated from the product's own data. */
+  metaTitle?: string;
+  metaDescription?: string;
   thickness: string;
   dimensions: string;
   surface: string;

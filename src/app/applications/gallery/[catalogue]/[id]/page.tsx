@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import InquireButton from "@/components/InquireButton";
 import CatalogueDownloadCard from "@/components/CatalogueDownloadCard";
+import { pageMetadata } from "@/lib/seo";
 import { getGalleryCatalogues, getGalleryImage, getGalleryDescription } from "@/lib/gallery";
 
 export async function generateStaticParams() {
@@ -18,10 +19,13 @@ export async function generateMetadata({ params }: { params: Promise<{ catalogue
   const { catalogue: catalogueSlug, id } = await params;
   const found = await getGalleryImage(catalogueSlug, id);
   if (!found) return {};
-  return {
-    title: `${found.catalogue.name} — Laminate #${id} | Sanish Laminates`,
+  // Photo-gallery view of a design that already has its own product page: kept out of the index so it can't compete with it.
+  return pageMetadata({
+    title: `${found.catalogue.name} Laminate #${id} – Application Photo | Sanish Laminates`,
     description: getGalleryDescription(found.catalogue.name, id).slice(0, 155),
-  };
+    path: `/applications/gallery/${catalogueSlug}/${id}`,
+    noindex: true,
+  });
 }
 
 export default async function GalleryDetailPage({ params }: { params: Promise<{ catalogue: string; id: string }> }) {
@@ -53,7 +57,7 @@ export default async function GalleryDetailPage({ params }: { params: Promise<{ 
           </span>
 
           <h1 className="font-serif text-[var(--text-primary)] text-[clamp(32px,5vw,60px)] leading-[1.08] mb-2 max-w-3xl">
-            Laminate #{id}
+            {catalogue.name} Laminate #{id}
           </h1>
         </div>
       </section>

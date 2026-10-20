@@ -235,7 +235,7 @@ export default function ProductsClient({ products }: { products: Product[] }) {
   };
 
   const hasFilter = activeCollection !== "All" || activeFinish !== "All Finishes" || !!activeDesign;
-  const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminate catalogue.")}`;
+  const waCatalogueLink = `https://wa.me/917027777032?text=${encodeURIComponent("Hi, I'd like to request a copy of the Sanish Laminates catalogue.")}`;
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },

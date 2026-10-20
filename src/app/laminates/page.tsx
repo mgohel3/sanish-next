@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductListClient from "@/components/ProductListClient";
+import { pageMetadata } from "@/lib/seo";
 import { fetchProducts, fetchCategoryMeta } from "@/lib/catalog";
 
-export const metadata: Metadata = {
-  title: "Laminates | Sanish Laminates — Premium Decorative Surfaces",
-  description: "Explore Sanish Laminates' full range of decorative laminates — from high-gloss solids to woodgrain, stone, fabric and metallic finishes.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Decorative Laminates in India | Laminate Sheets | Sanish Laminates",
+  description: "Explore the full Sanish Laminates range of decorative laminates — solid colours, wood, marble and stone designs in gloss, matte, suede and flute finishes.",
+  path: "/laminates",
+});
 
 const FALLBACK = {
   eyebrow: "Surface Collection",
@@ -16,7 +18,12 @@ const FALLBACK = {
   description: "Premium decorative laminates crafted for contemporary interiors — high-gloss, matte, metallic, wood, stone and fabric designs.",
 };
 
-export default async function LaminatesPage() {
+export default async function LaminatesPage(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  // Reading searchParams makes this page render per request, so the H1 and the product grid are in the HTML crawlers receive
+  // (instead of only a "Loading…" shell that the browser fills in afterwards).
+  await searchParams;
   const [items, meta] = await Promise.all([
     fetchProducts("laminates"),
     fetchCategoryMeta("laminates"),

@@ -278,7 +278,7 @@ export default function Hero({ content }: { content?: HeroContent }) {
           {/* Headline — masked reveal */}
           <div className="mb-7 space-y-1">
             <div className="overflow-hidden pb-2">
-              <h1
+              <h2
                 className="h-line1 block leading-[1.18] tracking-tight whitespace-nowrap"
                 style={{
                   fontSize: "clamp(26px, 3.9vw, 68px)",
@@ -287,10 +287,10 @@ export default function Hero({ content }: { content?: HeroContent }) {
                 }}
               >
                 {slide.line1}
-              </h1>
+              </h2>
             </div>
             <div className="overflow-hidden pb-2">
-              <h1
+              <h2
                 className="h-line2 block leading-[1.18] tracking-tight whitespace-nowrap"
                 style={{
                   fontSize: "clamp(26px, 3.9vw, 68px)",
@@ -300,7 +300,7 @@ export default function Hero({ content }: { content?: HeroContent }) {
                 }}
               >
                 {slide.line2}
-              </h1>
+              </h2>
             </div>
           </div>
 

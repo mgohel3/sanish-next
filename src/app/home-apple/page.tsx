@@ -12,6 +12,7 @@ import FooterApple from "@/components/FooterApple";
 import { getRandomGalleryTiles } from "@/lib/gallery";
 
 export const metadata = {
+  robots: { index: false, follow: false }, // design variant / internal page — not for search engines
   title: "Home - Apple | Sanish Laminates",
 };
 

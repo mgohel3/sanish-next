@@ -10,6 +10,7 @@ import Home2Dealers from "@/components/sections/home2/Dealers";
 import Home2SampleCTA from "@/components/sections/home2/SampleCTA";
 
 export const metadata = {
+  robots: { index: false, follow: false }, // design variant / internal page — not for search engines
   title: "Sanish Laminates | Premium Laminates for Every Surface",
   description:
     "India's trusted laminate manufacturer — 500+ designs, ISI certified, moisture & scratch resistant. Explore decorative laminates for kitchens, wardrobes, offices & more.",

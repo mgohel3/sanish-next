@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductListClient from "@/components/ProductListClient";
+import { pageMetadata } from "@/lib/seo";
 import { fetchProducts, fetchCategoryMeta } from "@/lib/catalog";
 
-export const metadata: Metadata = {
-  title: "Thermo Laminates | Sanish Laminates — Weather-Resistant Surfaces",
-  description: "Sanish Thermo Laminates — durable surfaces engineered for outdoor and high-exposure architectural applications.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Thermo Laminates | Weather-Resistant ASA Sheets | Sanish Laminates",
+  description: "Sanish Thermo Laminates — durable, weather-resistant surfaces for outdoor and high-exposure architectural applications.",
+  path: "/asa-sheets",
+});
 
 const FALLBACK = {
   eyebrow: "Outdoor Surfaces",
@@ -16,7 +18,12 @@ const FALLBACK = {
   description: "Weather-resistant Thermo Laminate surfaces engineered for outdoor furniture, cladding and high-exposure architectural applications.",
 };
 
-export default async function AsaSheetsPage() {
+export default async function AsaSheetsPage(
+  { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },
+) {
+  // Reading searchParams makes this page render per request, so the H1 and the product grid are in the HTML crawlers receive
+  // (instead of only a "Loading…" shell that the browser fills in afterwards).
+  await searchParams;
   const [items, meta] = await Promise.all([
     fetchProducts("thermo-laminates"),
     fetchCategoryMeta("thermo-laminates"),

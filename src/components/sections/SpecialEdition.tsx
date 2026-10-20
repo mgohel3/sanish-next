@@ -12,12 +12,12 @@ gsap.registerPlugin(ScrollTrigger);
 const DEFAULT_SE = {
   heading: "Special Edition\nArchitectural Panels",
   body: "Our limited edition architectural panels redefine luxury interiors. Featuring synchronised textures that perfectly mimic natural materials with enhanced durability.",
-  tags: ["Syncro-Texture", "1.25 mm Thick", "8ft × 4ft", "Moisture Proof"],
+  tags: ["Synchro-Texture", "1.25 mm Thick", "8ft × 4ft", "Moisture Proof"],
   cta_label: "Explore Range",
   cta_url: "/collection",
   image: "/assets/img/material/15-08-2026/Special%20Edition_Banner.jpg",
   image_kicker: "Limited Collection",
-  image_title: "Syncro-Texture Series",
+  image_title: "Synchro-Texture Series",
 };
 
 export default function SpecialEdition({ content = {} }: { content?: SpecialEditionContent }) {

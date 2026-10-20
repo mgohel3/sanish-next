@@ -167,7 +167,7 @@ async function StaticRewards() {
                 {/* Monogram — was a hand-duplicated dot grid with the colours
                     in the wrong order (swapped vs. the real brand mark used
                     in the header/footer); now the shared component. */}
-                <img src="/assets/img/logo/black-logo-on-dark.svg" alt="Sanish Laminate" className="mb-8 h-[44px] w-auto" />
+                <img src="/assets/img/logo/black-logo-on-dark.svg" alt="Sanish Laminates" className="mb-8 h-[44px] w-auto" />
 
                 <div className="text-white/50 text-[11px] uppercase tracking-[0.2em] font-semibold mb-3" style={{ fontFamily: "var(--font-jakarta)" }}>
                   Sanish Rewards

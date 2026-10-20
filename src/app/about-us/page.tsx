@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities, @next/next/no-img-element */
 import Link from "next/link";
+import { pageMetadata } from "@/lib/seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AboutParallaxHero from "@/components/AboutParallaxHero";
@@ -7,10 +8,11 @@ import AboutMissionSection from "@/components/sections/AboutMissionSection";
 import PageBlocks from "@/components/PageBlockRenderer";
 import { getSitePage } from "@/lib/pages";
 
-export const metadata = {
-  title: "About Us | Sanish Laminates",
-  description: "Best Laminate Company in India. Innovation and Design.",
-};
+export const metadata = pageMetadata({
+  title: "About Sanish Laminates | Decorative Laminate Manufacturer in India",
+  description: "Sanish Laminates manufactures premium decorative laminates in India — BIS-certified to IS 2046, with designs and finishes for kitchens, wardrobes and interiors.",
+  path: "/about-us",
+});
 
 export default async function AboutUsPage() {
   const page = await getSitePage("about-us");

@@ -8,7 +8,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     // 301s from the old PHP site's extension-less /<slug> URLs to /blog/<slug>.
-    return legacyBlogRedirects;
+    return [
+      ...legacyBlogRedirects,
+      // Duplicate home-page addresses -> the one canonical "/" (301).
+      { source: "/home", destination: "/", permanent: true },
+      { source: "/index", destination: "/", permanent: true },
+      { source: "/index.html", destination: "/", permanent: true },
+    ];
   },
 };
 

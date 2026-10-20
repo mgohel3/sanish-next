@@ -101,6 +101,8 @@ type ApiProduct = {
   description?: string;
   finish?: string;
   texture?: string;
+  meta_title?: string;
+  meta_description?: string;
   thickness?: string;
   dimensions?: string;
   surface?: string;
@@ -137,6 +139,8 @@ function mapApiProduct(raw: ApiProduct): Product {
     collection: raw.collection_name || "",
     finish: raw.finish || "",
     texture: raw.texture || "",
+    metaTitle: raw.meta_title || "",
+    metaDescription: raw.meta_description || "",
     thickness: raw.thickness || "",
     dimensions: raw.dimensions || "",
     surface: raw.surface || "",

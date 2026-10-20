@@ -3,6 +3,7 @@ import PopupTrigger from "@/components/brandguide/PopupTrigger";
 import DemoForm from "@/components/brandguide/DemoForm";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: false }, // design variant / internal page - not for search engines
   title: "Brand Guide | Sanish Laminates",
   description: "Internal brand and style reference for Sanish Laminates.",
 };

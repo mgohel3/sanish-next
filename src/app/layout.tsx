@@ -10,6 +10,7 @@ import Popup from "@/components/Popup";
 import { SiteSettingsProvider } from "@/components/SiteSettingsProvider";
 import { getSiteSettings } from "@/lib/siteSettings";
 import { getMegaNavData } from "@/lib/navData";
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE, absoluteUrl } from "@/lib/seo";
 
 const heebo = Heebo({
   variable: "--font-heebo-loaded",
@@ -26,11 +27,19 @@ const vogueFallback = Bodoni_Moda({
 export async function generateMetadata(): Promise<Metadata> {
   const siteSettings = await getSiteSettings();
   const gscVerification = siteSettings.analytics.gsc_verification;
+  const title = "Decorative Laminates Manufacturer in India | Sanish Laminates";
+  const description =
+    "Sanish Laminates — premium decorative laminates manufacturer in India. Explore 800+ designs for kitchens, wardrobes, doors and commercial interiors.";
+  const image = absoluteUrl(DEFAULT_OG_IMAGE);
 
   return {
-    title: "Sanish Laminates | Premium Decorative Surfaces",
-    description:
-      "Crafting elegant laminate and decorative surface solutions for architects, interior designers, commercial projects, and modern living spaces.",
+    metadataBase: new URL(SITE_URL),
+    title,
+    description,
+    // Every page gets a canonical URL = its own address without any ?query (so filter/colour variants never compete with the clean page).
+    alternates: { canonical: "./" },
+    openGraph: { type: "website", siteName: SITE_NAME, locale: "en_IN", title, description, images: [{ url: image, alt: SITE_NAME }] },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
     ...(gscVerification && { verification: { google: gscVerification } }),
   };
 }
