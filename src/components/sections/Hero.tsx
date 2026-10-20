@@ -466,13 +466,13 @@ export default function Hero({ content }: { content?: HeroContent }) {
       {/* ── Stacked layout: image on top (~70%), content strip below (~30%) ── */}
       {slide.stacked && (
         <div className="absolute inset-0 z-10 flex flex-col" style={{ paddingTop: "clamp(84px, 9vh, 96px)", paddingBottom: "78px" }}>
-          <div className="site-container w-full flex-[7] min-h-0 pb-5">
-            <div className="relative w-full h-full overflow-hidden" style={{ borderRadius: "24px", boxShadow: "0 30px 70px rgba(30,30,46,0.12)" }}>
+          <div className="w-full flex-[7] min-h-0 pb-5">
+            <div className="relative w-full h-full overflow-hidden">
               <picture>
                 {slide.mobileImage && <source media="(max-width: 1023px)" srcSet={slide.mobileImage} />}
                 <img src={slide.image} alt={slide.line1} className="w-full h-full object-cover" />
               </picture>
-              <div className="absolute top-5 left-5 px-4 py-2 text-white text-[9.5px] uppercase tracking-[0.16em] font-semibold"
+              <div className="absolute top-5 left-5 md:left-14 px-4 py-2 text-white text-[9.5px] uppercase tracking-[0.16em] font-semibold"
                 style={{ backgroundColor: "#fabf7d", borderRadius: "999px", fontFamily: "var(--font-jakarta)" }}>
                 {slide.tag}
               </div>
