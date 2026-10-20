@@ -56,7 +56,7 @@ export default function Applications({
           </Link>
         </div>
 
-        <div ref={masonryRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[300px_300px] gap-6">
+        <div ref={masonryRef} className="grid grid-cols-2 lg:grid-cols-3 lg:grid-rows-[300px_300px] gap-3 sm:gap-6">
           {/* Real product tiles, picked from the catalogue galleries */}
           {tiles.map((tile, i) => (
             <Link
@@ -65,8 +65,8 @@ export default function Applications({
               className={`masonry-item relative group overflow-hidden rounded-[20px] block aspect-[4/3] lg:aspect-auto ${i === 2 ? "lg:row-span-2" : ""}`}
             >
               <img loading="lazy" decoding="async" src={tile.src} alt={`${tile.catalogueName} — Laminate #${tile.id}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-x-0 bottom-0 p-5 pt-16" style={{ background: "linear-gradient(to top, rgba(20,20,30,0.82), rgba(20,20,30,0))" }}>
-                <span className="block text-white font-serif text-xl tracking-wide">{tile.catalogueName}</span>
+              <div className="absolute inset-x-0 bottom-0 p-3 sm:p-5 pt-14" style={{ background: "linear-gradient(to top, rgba(20,20,30,0.82), rgba(20,20,30,0))" }}>
+                <span className="block text-white font-serif text-base sm:text-xl tracking-wide">{tile.catalogueName}</span>
                 <span className="block text-white/90 text-xs tracking-wide mt-1">Laminate #{tile.id}</span>
               </div>
             </Link>

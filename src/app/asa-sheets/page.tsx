@@ -8,7 +8,7 @@ import { fetchProducts, fetchCategoryMeta } from "@/lib/catalog";
 
 export const metadata: Metadata = pageMetadata({
   title: "Thermo Laminates | Weather-Resistant ASA Sheets | Sanish Laminates",
-  description: "Sanish Thermo Laminates — durable, weather-resistant surfaces for outdoor and high-exposure architectural applications.",
+  description: "Sanish Thermo Laminates — durable, weather-resistant ASA surfaces for outdoor cladding and high-exposure architectural applications. Explore colours and request samples.",
   path: "/asa-sheets",
 });
 

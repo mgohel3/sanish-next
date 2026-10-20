@@ -1068,3 +1068,9 @@ textarea:focus-visible {
   color: var(--accent-blue);
 }
 .faq-card__source:hover { opacity: 0.75; }
+
+/* Phones: keep button / label text readable (was 10-11px) */
+@media (max-width: 767px) {
+  .btn-pill { font-size: 12.5px; }
+  .btn-pill-sm { font-size: 12px; }
+}

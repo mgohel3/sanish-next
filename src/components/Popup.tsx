@@ -262,9 +262,12 @@ export default function Popup() {
               </p>
             )}
 
-            <Button type="submit" variant="primary" fullWidth disabled={submitting}>
-              {submitting ? "Submitting…" : submitLabel}
-            </Button>
+            {/* Sticks to the bottom of the scrolling popup so Submit is always reachable on small screens */}
+            <div className="sticky bottom-0 z-10 bg-white py-2">
+              <Button type="submit" variant="primary" fullWidth disabled={submitting}>
+                {submitting ? "Submitting…" : submitLabel}
+              </Button>
+            </div>
             <p className="text-center text-[11px] mt-1" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
               We typically respond within 24 hours.
             </p>

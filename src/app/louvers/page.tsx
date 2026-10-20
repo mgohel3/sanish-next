@@ -8,7 +8,7 @@ import { fetchProducts, fetchCategoryMeta } from "@/lib/catalog";
 
 export const metadata: Metadata = pageMetadata({
   title: "Fluted Louvers & Architectural Panels | Sanish Laminates",
-  description: "Architectural fluted louvers and panels from Sanish Laminates — slatted surfaces for walls, ceilings and interiors.",
+  description: "Architectural fluted louvers and panels from Sanish Laminates — slatted surfaces for walls, ceilings and interiors. Browse designs, finishes and sizes, and request samples.",
   path: "/louvers",
 });
 

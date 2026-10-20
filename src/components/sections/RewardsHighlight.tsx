@@ -49,7 +49,7 @@ export default function RewardsHighlight({ content = {} }: { content?: RewardsCo
             </p>
 
             {/* Perks grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-10">
               {perks.map((perk) => (
                 <div key={perk.label} className="p-5 rounded-[18px]"
                   style={{ backgroundColor: "#FFFFFF", border: "1px solid var(--color-border-subtle)", boxShadow: "0 16px 40px rgba(30,30,46,0.04)" }}>
