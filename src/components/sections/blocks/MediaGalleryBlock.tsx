@@ -223,7 +223,7 @@ export default function MediaGalleryBlock({ content = {} }: { content?: MediaGal
                     className="group relative block w-full overflow-hidden rounded-[20px] bg-[#24262b]"
                     style={{ aspectRatio: "4 / 3" }}
                   >
-                    <Thumb entry={e} />
+                    <Thumb entry={e} label={label} />
                     <div
                       className="absolute inset-0 pointer-events-none"
                       style={{ background: "linear-gradient(to top, rgba(10,8,18,0.70) 0%, rgba(10,8,18,0.05) 55%)" }}
@@ -316,12 +316,12 @@ export default function MediaGalleryBlock({ content = {} }: { content?: MediaGal
 }
 
 /** Grid thumbnail: the photo / cover image, else a YouTube still, else the video's first frame. */
-function Thumb({ entry }: { entry: Entry }) {
+function Thumb({ entry, label }: { entry: Entry; label: string }) {
   const cls = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700";
-  if (entry.image) return <img src={entry.image} alt={entry.alt || entry.caption} loading="lazy" className={cls} />;
+  if (entry.image) return <img src={entry.image} alt={entry.alt || entry.caption || label} loading="lazy" className={cls} />;
   const v = entry.video;
   if (v?.kind === "youtube")
-    return <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt={entry.alt || entry.caption} loading="lazy" className={cls} />;
+    return <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt={entry.alt || entry.caption || label} loading="lazy" className={cls} />;
   if (v?.kind === "file")
     return <video src={`${v.src}#t=0.1`} preload="metadata" muted playsInline className={cls} />;
   return null;
@@ -330,7 +330,7 @@ function Thumb({ entry }: { entry: Entry }) {
 function Viewer({ entry }: { entry: Entry }) {
   const v = entry.video;
   if (!v) {
-    return <img loading="lazy" decoding="async" src={entry.image} alt={entry.alt || entry.caption} className="max-h-[78vh] w-auto max-w-full object-contain rounded-xl" />;
+    return <img loading="lazy" decoding="async" src={entry.image} alt={entry.alt || entry.caption || label} className="max-h-[78vh] w-auto max-w-full object-contain rounded-xl" />;
   }
   if (v.kind === "file") {
     return (

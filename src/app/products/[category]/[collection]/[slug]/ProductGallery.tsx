@@ -20,7 +20,7 @@ export default function ProductGallery({
         className="relative flex items-center justify-center overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06] cursor-zoom-in group p-3"
         onClick={() => setZoomed(true)}
       >
-        <img loading="lazy" decoding="async"
+        <img fetchPriority="high"
           key={active}
           src={images[active]}
           alt={name}
