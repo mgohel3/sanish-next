@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Page Not Found | Sanish Laminates",
   description: "The page you are looking for has moved or no longer exists. Browse our decorative laminates or contact the Sanish team.",
   robots: { index: false, follow: true },
+  alternates: { canonical: null }, // a 404 has no canonical URL
 };
 
 const LINKS = [

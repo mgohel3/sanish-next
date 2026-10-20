@@ -43,7 +43,7 @@ export default function TestimonialsBlock({ content = {} }: { content?: Testimon
               <div className="flex items-center gap-3 mt-auto">
                 {item.avatar && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={item.avatar} alt={item.name || ""} className="w-11 h-11 rounded-full object-cover flex-shrink-0" />
+                  <img loading="lazy" decoding="async" src={item.avatar} alt={item.name || ""} className="w-11 h-11 rounded-full object-cover flex-shrink-0" />
                 )}
                 <div>
                   {item.name && <div className="text-[14px] font-semibold text-[var(--text-primary)]">{item.name}</div>}

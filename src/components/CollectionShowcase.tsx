@@ -143,7 +143,7 @@ export default function CollectionShowcase() {
                   className={`relative overflow-hidden rounded-[24px] block ${imageOnLeft ? "lg:order-1" : "lg:order-2"}`}
                   style={{ aspectRatio: "4 / 3" }}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={col.image}
                     alt={col.name}
                     className="w-full h-full object-cover"

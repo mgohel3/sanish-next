@@ -144,7 +144,7 @@ export default function CityPageView({
                   <div className="flex items-center gap-3 mt-auto">
                     {t.avatar && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={t.avatar} alt={t.name || ""} className="w-11 h-11 rounded-full object-cover flex-shrink-0" />
+                      <img loading="lazy" decoding="async" src={t.avatar} alt={t.name || ""} className="w-11 h-11 rounded-full object-cover flex-shrink-0" />
                     )}
                     <div>
                       {t.name && <div className="text-[14px] font-semibold text-[var(--text-primary)]">{t.name}</div>}
@@ -216,7 +216,7 @@ export default function CityPageView({
       <section className="relative home-section overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[#1c130a] overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={HERO_IMAGE} alt="" className="w-full h-full object-cover absolute inset-0" />
+          <img loading="lazy" decoding="async" src={HERO_IMAGE} alt="" className="w-full h-full object-cover absolute inset-0" />
           <div
             className="absolute inset-0"
             style={{

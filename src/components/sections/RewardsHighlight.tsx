@@ -53,7 +53,7 @@ export default function RewardsHighlight({ content = {} }: { content?: RewardsCo
               {perks.map((perk) => (
                 <div key={perk.label} className="p-5 rounded-[18px]"
                   style={{ backgroundColor: "#FFFFFF", border: "1px solid var(--color-border-subtle)", boxShadow: "0 16px 40px rgba(30,30,46,0.04)" }}>
-                  <img src={perk.icon} alt="" className="w-8 h-8 mb-3" />
+                  <img loading="lazy" decoding="async" src={perk.icon} alt="" className="w-8 h-8 mb-3" />
                   <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-1" style={{ fontFamily: "var(--font-jakarta)" }}>
                     {perk.label}
                   </div>
@@ -81,7 +81,7 @@ export default function RewardsHighlight({ content = {} }: { content?: RewardsCo
               style={{ background: "radial-gradient(circle, rgba(133,173,220,0.18) 0%, transparent 70%)" }} />
 
             {/* Phone mockup photo */}
-            <img
+            <img loading="lazy" decoding="async"
               src="/assets/img/phone-mckp.jpg"
               alt="S'Rewards app on a smartphone"
               className="relative z-10 w-[340px] sm:w-[400px] h-auto rounded-[28px]"

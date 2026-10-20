@@ -14,7 +14,7 @@ export default function CatalogueDownloadCard({ slug, name, thumbnail }: { slug:
     <div className="rounded-[24px] border border-[var(--color-border-subtle)] overflow-hidden"
       style={{ boxShadow: "0 8px 32px rgba(30,30,46,0.07)" }}>
       <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
-        <img src={thumbnail} alt={`${name} catalogue cover`} className="w-full h-full object-cover" style={{ objectPosition: "center center" }} />
+        <img loading="lazy" decoding="async" src={thumbnail} alt={`${name} catalogue cover`} className="w-full h-full object-cover" style={{ objectPosition: "center center" }} />
       </div>
       <div className="bg-white px-7 py-6 text-center">
         <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-1" style={{ fontFamily: "var(--font-jakarta)" }}>

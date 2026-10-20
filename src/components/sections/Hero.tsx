@@ -204,7 +204,7 @@ export default function Hero({ content }: { content?: HeroContent }) {
       style={{
         backgroundColor: slide.bg,
         transition: "background-color 1400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-        minHeight: "clamp(680px, 88svh, 860px)",
+        minHeight: "max(680px, 100svh)",
         paddingTop: "clamp(108px, 12vh, 132px)",
         paddingBottom: "78px",
       }}

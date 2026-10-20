@@ -99,7 +99,7 @@ export default function SpecialEdition({ content = {} }: { content?: SpecialEdit
           {/* Right — Single parallax image */}
           <div className="relative overflow-hidden lg:order-1" style={{ borderRadius: "28px", aspectRatio: "3 / 2", transform: "translateZ(0)" }}>
             <div ref={imgRef} className="absolute inset-0 w-[110%] h-[110%]" style={{ top: "-5%", left: "-5%" }}>
-              <img
+              <img loading="lazy" decoding="async"
                 src={image}
                 alt={imageTitle}
                 className="w-full h-full object-cover"

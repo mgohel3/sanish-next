@@ -28,7 +28,7 @@ export default function RelatedPosts({ posts }: { posts: BlogPostSummary[] }) {
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6]">
                 {post.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={post.image}
                     alt={post.imageAlt}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"

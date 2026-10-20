@@ -137,7 +137,7 @@ export default function CollectionCarousel() {
 
                 {/* Image panel */}
                 <div className="relative overflow-hidden" style={{ minHeight: "300px" }}>
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={c.image}
                     alt={c.name}
                     className="w-full h-full object-cover"

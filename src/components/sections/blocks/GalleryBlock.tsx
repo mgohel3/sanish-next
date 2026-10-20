@@ -40,7 +40,7 @@ export default function GalleryBlock({ content = {} }: { content?: GalleryConten
             <figure key={i} className="rounded-[20px] overflow-hidden" style={{ aspectRatio: "4 / 3" }}>
               {img.image && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={img.image} alt={img.caption || ""} className="w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" src={img.image} alt={img.caption || ""} className="w-full h-full object-cover" />
               )}
               {img.caption && (
                 <figcaption className="text-[12px] text-[var(--text-secondary)] mt-2 px-1">{img.caption}</figcaption>

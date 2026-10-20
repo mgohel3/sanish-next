@@ -34,7 +34,7 @@ export default function Infrastructure() {
       <div className="site-container">
         <div className="flex flex-col lg:flex-row gap-16 items-start">
           <div className="flex-1 w-full relative h-[400px] lg:h-[600px] infra-fade">
-            <img 
+            <img loading="lazy" decoding="async" 
               src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800" 
               alt="State of the art manufacturing facility" 
               className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700"

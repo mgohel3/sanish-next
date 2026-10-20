@@ -29,7 +29,7 @@ export default function BlogSidebar({ post }: { post: BlogPost }) {
             >
               {author.avatar ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={author.avatar} alt={author.name} className="w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" src={author.avatar} alt={author.name} className="w-full h-full object-cover" />
               ) : (
                 author.name.charAt(0).toUpperCase()
               )}

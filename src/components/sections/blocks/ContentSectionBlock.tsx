@@ -10,7 +10,7 @@ export default function ContentSectionBlock({ content = {} }: { content?: Conten
     <div className="relative">
       <div className="h-full min-h-[420px] rounded-[24px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={image} className="w-full h-full object-cover" alt={heading || ""} />
+        <img loading="lazy" decoding="async" src={image} className="w-full h-full object-cover" alt={heading || ""} />
       </div>
     </div>
   ) : null;

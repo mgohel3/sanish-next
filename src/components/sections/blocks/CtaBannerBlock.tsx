@@ -20,7 +20,7 @@ export default function CtaBannerBlock({ content = {} }: { content?: CtaBannerCo
       {bg_image && (
         <div className="absolute inset-0 z-0 bg-[#1c130a] overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={bg_image} alt="" className="w-full h-full object-cover absolute inset-0" />
+          <img loading="lazy" decoding="async" src={bg_image} alt="" className="w-full h-full object-cover absolute inset-0" />
           <div
             className="absolute inset-0"
             style={{

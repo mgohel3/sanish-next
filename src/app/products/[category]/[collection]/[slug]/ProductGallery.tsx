@@ -20,7 +20,7 @@ export default function ProductGallery({
         className="relative flex items-center justify-center overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06] cursor-zoom-in group p-3"
         onClick={() => setZoomed(true)}
       >
-        <img
+        <img loading="lazy" decoding="async"
           key={active}
           src={images[active]}
           alt={name}
@@ -49,7 +49,7 @@ export default function ProductGallery({
                 transform: i === active ? "scale(0.96)" : "scale(1)",
               }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src={img}
                 alt={`${name} view ${i + 1}`}
                 className="w-full h-full object-cover"

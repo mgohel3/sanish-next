@@ -62,7 +62,7 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
           <X className="w-4 h-4 text-[#3A3A4A]" />
         </button>
         <div className="w-full md:w-[45%] flex-shrink-0 bg-[#f3f4f6] relative" style={{ minHeight: 280 }}>
-          <img src={product.images[0]} alt={product.name} className="absolute inset-0 w-full h-full object-cover" />
+          <img loading="lazy" decoding="async" src={product.images[0]} alt={product.name} className="absolute inset-0 w-full h-full object-cover" />
           {product.badge && (
             <span className="absolute top-3 left-3 text-[9.5px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full text-white"
               style={{ backgroundColor: "#fabf7d" }}>
@@ -484,7 +484,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                   <div key={product.id} className="group block">
                     <div className="relative aspect-[4/5] mb-2.5 lg:mb-4 overflow-hidden rounded-2xl bg-[#f3f4f6]">
                       <Link href={productHref(product)} className="absolute inset-0 block w-full h-full z-0">
-                        <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        <img loading="lazy" decoding="async" src={product.images[0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       </Link>
                       <div className="absolute top-3.5 left-3.5 z-10 pointer-events-none">
                         <span className="text-[9.5px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full"

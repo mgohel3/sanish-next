@@ -44,7 +44,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
       {/* ── Hero ── */}
       <section className="relative pt-24 pb-0 overflow-hidden" style={{ minHeight: "70vh" }}>
         <div className="absolute inset-0 z-0">
-          <img src={app.src} alt={app.label} className="w-full h-full object-cover" />
+          <img loading="lazy" decoding="async" src={app.src} alt={app.label} className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(10,8,18,0.55) 0%, rgba(10,8,18,0.20) 50%, rgba(255,255,255,1) 100%)" }} />
         </div>
 
@@ -96,7 +96,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
               {/* Photo gallery */}
               {app.gallery.length > 0 && (
                 <div className="mb-14 overflow-hidden rounded-[20px]" style={{ aspectRatio: "16/9" }}>
-                  <img src={app.gallery[0]} alt={app.label} className="w-full h-full object-cover" />
+                  <img loading="lazy" decoding="async" src={app.gallery[0]} alt={app.label} className="w-full h-full object-cover" />
                 </div>
               )}
             </div>
@@ -148,7 +148,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
                       <div key={p.name} className={i > 0 ? "pt-5 border-t border-[var(--color-border-subtle)]" : ""}>
                         <div className="flex items-start gap-3 mb-2">
                           <div className="w-14 h-14 rounded-xl flex-shrink-0 overflow-hidden">
-                            <img
+                            <img loading="lazy" decoding="async"
                               src={COLLECTION_THUMB[p.collection] ?? app.src}
                               alt={p.name}
                               className="w-full h-full object-cover"
@@ -244,7 +244,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
                 <Link key={r.slug} href={`/applications/${categorySlug(r.category)}/${r.slug}`}
                   className="group block relative overflow-hidden rounded-[20px]"
                   style={{ minHeight: "260px" }}>
-                  <img src={r.src} alt={r.label}
+                  <img loading="lazy" decoding="async" src={r.src} alt={r.label}
                     className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 transition-opacity duration-300"
                     style={{ background: "linear-gradient(to top, rgba(10,8,18,0.80) 0%, rgba(10,8,18,0.10) 60%)" }} />

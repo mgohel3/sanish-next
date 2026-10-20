@@ -125,7 +125,7 @@ export default async function BlogIndexPage({ searchParams }: Props) {
                   >
                     {post.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <img loading="lazy" decoding="async"
                         src={post.image}
                         alt={post.imageAlt}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"

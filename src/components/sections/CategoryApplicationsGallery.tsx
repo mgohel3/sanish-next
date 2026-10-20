@@ -20,7 +20,7 @@ export default function CategoryApplicationsGallery({ category }: { category: Ap
                 className="group relative overflow-hidden break-inside-avoid block"
                 style={{ borderRadius: "16px" }}
               >
-                <img
+                <img loading="lazy" decoding="async"
                   src={item.src}
                   alt={item.label}
                   className="w-full object-cover transition-transform duration-700 group-hover:scale-105"

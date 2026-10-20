@@ -26,7 +26,7 @@ export default function LogosStripBlock({ content = {} }: { content?: LogosStrip
             <div key={i} className="flex items-center justify-center" style={{ height: "40px" }}>
               {logo.image && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <img loading="lazy" decoding="async"
                   src={logo.image}
                   alt={logo.name || ""}
                   className="h-full w-auto object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"

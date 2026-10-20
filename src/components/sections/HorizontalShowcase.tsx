@@ -208,7 +208,7 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
             >
               {/* Card locked to the source images' native 4:5 ratio, so object-cover
                   fills it completely with no letterboxing and no meaningful cropping. */}
-              <img
+              <img loading="lazy" decoding="async"
                 src={item.image}
                 alt={item.name}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"

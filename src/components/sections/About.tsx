@@ -209,7 +209,7 @@ export default function About({ content }: { content?: AboutContent }) {
             />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <img loading="lazy" decoding="async"
               src={c.media_url}
               alt={c.heading}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}

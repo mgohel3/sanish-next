@@ -54,7 +54,7 @@ export default function CatalogueImageGrid({ catalogue }: { catalogue: GalleryCa
         {paginated.map((img) => (
           <Link key={img.id} href={`/applications/gallery/${catalogue.slug}/${img.id}`}
             className="group relative block overflow-hidden rounded-[18px]" style={{ aspectRatio: "4/3" }}>
-            <img src={img.src} alt={`Laminate #${img.id} — ${catalogue.name}`}
+            <img loading="lazy" decoding="async" src={img.src} alt={`Laminate #${img.id} — ${catalogue.name}`}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             <div className="absolute inset-0 pointer-events-none"
               style={{ background: "linear-gradient(to top, rgba(10,8,18,0.75) 0%, rgba(10,8,18,0.05) 55%)" }} />

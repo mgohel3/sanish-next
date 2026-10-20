@@ -64,7 +64,7 @@ export default async function ApplicationPhotoPage({ params }: { params: Promise
             {/* Left: the photo, shown whole — never cropped */}
             <div>
               <div className="overflow-hidden rounded-[20px] bg-[#ece9e4]">
-                <img
+                <img loading="lazy" decoding="async"
                   src={photo.src}
                   alt={alt}
                   className="w-full h-auto block"

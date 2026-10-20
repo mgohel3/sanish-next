@@ -60,7 +60,7 @@ export default function Blog({ content = {}, posts = [] }: { content?: HeadingLi
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 24px 56px rgba(30,30,46,0.12)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 16px 40px rgba(30,30,46,0.07)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
               >
-                <img src={post.image || FALLBACK_IMAGE} alt={post.imageAlt || post.title} className="img-premium w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" src={post.image || FALLBACK_IMAGE} alt={post.imageAlt || post.title} className="img-premium w-full h-full object-cover" />
                 {/* Category pill overlay */}
                 {post.categories[0] && (
                   <div className="absolute top-4 left-4 px-3 py-1.5 text-white text-[9px] uppercase tracking-[0.16em] font-semibold"

@@ -161,7 +161,7 @@ export default function HeaderApple() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center flex-shrink-0">
-            <img src={settings.logo_dark_url} alt={settings.site_name} className="h-[43px] w-auto object-contain" />
+            <img loading="lazy" decoding="async" src={settings.logo_dark_url} alt={settings.site_name} className="h-[43px] w-auto object-contain" />
           </Link>
 
           {/* ── Desktop nav — evenly spaced, centered between logo and actions ── */}
@@ -331,7 +331,7 @@ export default function HeaderApple() {
                 {megaConfig.collections.slice(0, 4).map((col, i) => (
                   <div key={i} className="absolute inset-0 transition-opacity duration-700"
                     style={{ opacity: featuredIdx === i ? 1 : 0 }}>
-                    <img src={col.image} alt={col.name} className="w-full h-full object-cover" />
+                    <img loading="lazy" decoding="async" src={col.image} alt={col.name} className="w-full h-full object-cover" />
                   </div>
                 ))}
                 <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(10,10,10,0.80) 0%, rgba(10,10,10,0.25) 100%)" }} />

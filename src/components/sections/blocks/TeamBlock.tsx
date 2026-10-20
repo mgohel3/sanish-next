@@ -51,7 +51,7 @@ export default function TeamBlock({ content = {} }: { content?: TeamContent }) {
               {m.photo && (
                 <div className="w-full rounded-[20px] overflow-hidden mb-5" style={{ aspectRatio: "1 / 1" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={m.photo} alt={m.name || ""} className="w-full h-full object-cover" />
+                  <img loading="lazy" decoding="async" src={m.photo} alt={m.name || ""} className="w-full h-full object-cover" />
                 </div>
               )}
               {m.name && <h3 className="text-[16px] font-bold text-[var(--text-primary)]">{m.name}</h3>}

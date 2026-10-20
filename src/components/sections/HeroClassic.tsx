@@ -339,7 +339,7 @@ export default function HeroClassic() {
               zIndex: i === current ? 2 : 1,
             }}
           >
-            <img
+            <img loading="lazy" decoding="async"
               src={s.image}
               alt={s.line1}
               className="absolute inset-0 w-full h-full object-cover"

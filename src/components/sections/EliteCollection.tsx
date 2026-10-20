@@ -100,7 +100,7 @@ export default function EliteCollection() {
                   (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
                 }}
               >
-                <img
+                <img loading="lazy" decoding="async"
                   src={card.image}
                   alt={card.name}
                   className="img-premium w-full h-full object-cover"

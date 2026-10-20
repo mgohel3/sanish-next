@@ -60,7 +60,7 @@ export default function DesignGallery({ catalogues }: { catalogues: GalleryCatal
                 className="group relative overflow-hidden rounded-[20px] block"
                 style={{ aspectRatio: "3/4" }}
               >
-                <img src={c.thumbnail} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img loading="lazy" decoding="async" src={c.thumbnail} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
 
                 <div className="absolute top-4 left-4">
                   <span className="text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1.5"

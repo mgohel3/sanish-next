@@ -285,7 +285,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
                  below the title rather than mixed into the swatch gallery ── */}
             {product.applicationImage && (
             <div className="rounded-2xl overflow-hidden mb-8 bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06]">
-              <img
+              <img loading="lazy" decoding="async"
                 src={product.applicationImage}
                 alt={`${product.name} applied in an interior`}
                 className="w-full max-h-[420px] object-cover"
@@ -379,7 +379,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
               {related.map((rp) => (
                 <Link key={rp.slug} href={productHref(rp)} className="group block">
                   <div className="relative aspect-square overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06]">
-                    <img src={rp.images[0]} alt={rp.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img loading="lazy" decoding="async" src={rp.images[0]} alt={rp.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     {rp.badge && (
                       <span className="absolute top-3 left-3 text-[9px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full text-white"
                         style={{ backgroundColor: "#fabf7d" }}>

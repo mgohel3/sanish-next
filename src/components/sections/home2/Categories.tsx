@@ -79,7 +79,7 @@ export default function Home2Categories() {
             <Link key={cat.name} href="/collection"
               className="group relative overflow-hidden block"
               style={{ borderRadius: "24px", aspectRatio: "4/3" }}>
-              <img src={cat.image} alt={cat.name}
+              <img loading="lazy" decoding="async" src={cat.image} alt={cat.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               {/* Gradient — navy overlay instead of black */}
               <div className="absolute inset-0 transition-opacity duration-300"

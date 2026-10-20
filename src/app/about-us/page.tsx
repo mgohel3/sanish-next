@@ -74,7 +74,7 @@ function StaticAboutUs() {
             </div>
             <div className="relative">
               <div className="h-full min-h-[420px] rounded-[24px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
-                <img
+                <img loading="lazy" decoding="async"
                   src="/assets/img/about/innovation-design.jpg"
                   className="w-full h-full object-cover"
                   alt="Material Finishes"
@@ -107,7 +107,7 @@ function StaticAboutUs() {
                 style={{ boxShadow: "0 12px 40px rgba(30,30,46,0.08)" }}>
                 {/* Certificate image */}
                 <div className="relative overflow-hidden bg-[#f8f8f8]" style={{ height: "340px" }}>
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={cert.image}
                     alt={cert.title}
                     className="w-full h-full object-contain p-6 transition-transform duration-700 hover:scale-105"
@@ -142,7 +142,7 @@ function StaticAboutUs() {
       {/* ── CTA ── */}
       <section className="home-section bg-[var(--bg-secondary)] border-t border-[var(--border)] text-center relative overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img
+          <img loading="lazy" decoding="async"
             src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2000"
             alt="Ready to start"
             className="w-full h-full object-cover opacity-10"

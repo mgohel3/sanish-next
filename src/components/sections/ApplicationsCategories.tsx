@@ -62,7 +62,7 @@ export default function ApplicationsCategories() {
                   href={`/applications/${category.slug}`}
                   className="group relative overflow-hidden rounded-[20px] block break-inside-avoid"
                 >
-                  <img src={category.image} alt={category.label} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img loading="lazy" decoding="async" src={category.image} alt={category.label} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
 
                   {/* Permanent category badge — always visible, not hover-only */}
                   <div className="absolute top-4 left-4">

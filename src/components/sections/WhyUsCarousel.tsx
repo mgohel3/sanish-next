@@ -125,7 +125,7 @@ export default function WhyUsCarousel({ content = {} }: { content?: WhyUsContent
                 className="shrink-0 p-8 bg-white border border-[var(--color-border-subtle)] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(30,30,46,0.06)] transition-all duration-300"
                 style={{ width: cardWidth, borderRadius: "24px" }}>
                 <div className="w-12 h-12 flex items-center justify-center mb-6">
-                  {card.icon ? <img src={card.icon} alt="" className="w-10 h-10" /> : null}
+                  {card.icon ? <img loading="lazy" decoding="async" src={card.icon} alt="" className="w-10 h-10" /> : null}
                 </div>
                 <h3 className="text-[17px] font-semibold text-[var(--text-primary)] mb-3">
                   {card.title}

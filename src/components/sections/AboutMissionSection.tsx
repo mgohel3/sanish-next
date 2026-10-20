@@ -58,7 +58,7 @@ export default function AboutMissionSection() {
         className="absolute inset-0 w-full h-[120%]"
         style={{ top: "-10%" }}
       >
-        <img
+        <img loading="lazy" decoding="async"
           src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2000"
           alt=""
           aria-hidden="true"
@@ -104,7 +104,7 @@ export default function AboutMissionSection() {
             >
               {/* Card image */}
               <div className="overflow-hidden" style={{ height: "220px" }}>
-                <img
+                <img loading="lazy" decoding="async"
                   src={card.image}
                   alt={card.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"

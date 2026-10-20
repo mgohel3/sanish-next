@@ -70,7 +70,7 @@ export default async function GalleryDetailPage({ params }: { params: Promise<{ 
             {/* Left: image + description */}
             <div>
               <div className="mb-10 overflow-hidden rounded-[20px]" style={{ aspectRatio: "16/9" }}>
-                <img src={image.src} alt={`Laminate #${id} — ${catalogue.name}`} className="w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" src={image.src} alt={`Laminate #${id} — ${catalogue.name}`} className="w-full h-full object-cover" />
               </div>
               <p className="text-[16px] text-[var(--text-secondary)] leading-[1.9]" style={{ fontFamily: "var(--font-jakarta)" }}>
                 {getGalleryDescription(catalogue.name, id)}
@@ -135,7 +135,7 @@ export default async function GalleryDetailPage({ params }: { params: Promise<{ 
               {more.map((img) => (
                 <Link key={img.id} href={`/applications/gallery/${catalogue.slug}/${img.id}`}
                   className="group block relative overflow-hidden rounded-[18px]" style={{ aspectRatio: "4/3" }}>
-                  <img src={img.src} alt={`Laminate #${img.id} — ${catalogue.name}`}
+                  <img loading="lazy" decoding="async" src={img.src} alt={`Laminate #${img.id} — ${catalogue.name}`}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,8,18,0.75) 0%, rgba(10,8,18,0.05) 55%)" }} />
                   <div className="absolute bottom-0 left-0 right-0 p-4">

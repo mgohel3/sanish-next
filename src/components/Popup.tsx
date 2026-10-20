@@ -167,7 +167,7 @@ export default function Popup() {
 
           {/* Logo */}
           <div className="mb-5 pr-8">
-            <img src="/assets/img/logo/black-logo.svg" alt="Sanish Laminates" className="h-8 w-auto" />
+            <img loading="lazy" decoding="async" src="/assets/img/logo/black-logo.svg" alt="Sanish Laminates" className="h-8 w-auto" />
           </div>
 
           <div

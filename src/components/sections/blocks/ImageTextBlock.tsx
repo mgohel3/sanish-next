@@ -19,7 +19,7 @@ export default function ImageTextBlock({ content = {} }: { content?: ImageTextCo
       style={{ borderRadius: "28px", aspectRatio: "3 / 2" }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={image} alt={heading || ""} className="w-full h-full object-cover" />
+      <img loading="lazy" decoding="async" src={image} alt={heading || ""} className="w-full h-full object-cover" />
     </div>
   ) : null;
 

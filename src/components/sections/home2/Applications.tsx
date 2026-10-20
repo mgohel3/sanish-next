@@ -116,7 +116,7 @@ export default function Home2Applications() {
               </Link>
             </div>
             <div className="overflow-hidden" style={{ borderRadius: "24px", aspectRatio: "4/3" }}>
-              <img src={app.image} alt={app.label} className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+              <img loading="lazy" decoding="async" src={app.image} alt={app.label} className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
             </div>
           </div>
         </div>

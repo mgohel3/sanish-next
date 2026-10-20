@@ -330,7 +330,7 @@ function Thumb({ entry }: { entry: Entry }) {
 function Viewer({ entry }: { entry: Entry }) {
   const v = entry.video;
   if (!v) {
-    return <img src={entry.image} alt={entry.alt || entry.caption} className="max-h-[78vh] w-auto max-w-full object-contain rounded-xl" />;
+    return <img loading="lazy" decoding="async" src={entry.image} alt={entry.alt || entry.caption} className="max-h-[78vh] w-auto max-w-full object-contain rounded-xl" />;
   }
   if (v.kind === "file") {
     return (

@@ -69,7 +69,7 @@ export default function FooterApple() {
           {/* Col 1 — Brand */}
           <div className="col-span-1 lg:col-span-1">
             <Link href="/" className="inline-flex items-center mb-4">
-              <img src={settings.logo_light_url} alt={settings.site_name} className="h-12 w-auto" />
+              <img loading="lazy" decoding="async" src={settings.logo_light_url} alt={settings.site_name} className="h-12 w-auto" />
             </Link>
             <div className="font-sans text-[12px] font-medium text-[var(--accent-blue)] mb-4 uppercase tracking-[0.1em]">
               {settings.tagline}

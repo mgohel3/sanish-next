@@ -79,11 +79,11 @@ export default function BrandGuidePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="rounded-[20px] p-14 flex flex-col items-center justify-center gap-6"
               style={{ background: "#ffffff", border: "1px solid var(--color-border-subtle)" }}>
-              <img src="/assets/img/logo/black-logo.svg" alt="Sanish black logo" style={{ height: 40, width: "auto" }} />
+              <img loading="lazy" decoding="async" src="/assets/img/logo/black-logo.svg" alt="Sanish black logo" style={{ height: 40, width: "auto" }} />
               <span className="h6" style={{ fontSize: 10.5, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 600, color: "var(--text-secondary)" }}>On Light</span>
             </div>
             <div className="rounded-[20px] p-14 flex flex-col items-center justify-center gap-6" style={{ background: "#1a1c22" }}>
-              <img src="/assets/img/logo/white-logo.svg" alt="Sanish white logo" style={{ height: 40, width: "auto" }} />
+              <img loading="lazy" decoding="async" src="/assets/img/logo/white-logo.svg" alt="Sanish white logo" style={{ height: 40, width: "auto" }} />
               <span style={{ fontSize: 10.5, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 600, color: "rgba(255,255,255,0.55)" }}>On Dark</span>
             </div>
           </div>
@@ -91,7 +91,7 @@ export default function BrandGuidePage() {
           <div className="flex flex-wrap gap-5 mt-6">
             {[44, 28, 18].map((s) => (
               <div key={s} className="flex-1 rounded-[18px] p-7 flex flex-col items-center gap-3.5" style={{ minWidth: 140, background: "#fff", border: "1px solid var(--color-border-subtle)" }}>
-                <img src="/assets/img/favicon.svg" alt="Monogram" width={s} height={s * 0.88} />
+                <img loading="lazy" decoding="async" src="/assets/img/favicon.svg" alt="Monogram" width={s} height={s * 0.88} />
                 <span style={{ fontSize: 11, color: "var(--text-secondary)" }}>{s === 44 ? "Monogram / Favicon mark" : `${s}px`}</span>
               </div>
             ))}
@@ -121,7 +121,7 @@ export default function BrandGuidePage() {
                 <span className="w-2 h-2 rounded-full" style={{ background: "#d6d6da" }} />
               </div>
               <div className="flex items-center gap-2 ml-2.5 px-3.5 py-1.5 rounded-t-lg" style={{ background: "#fff", fontSize: 11.5, color: "var(--text-secondary)" }}>
-                <img src="/assets/img/favicon.svg" alt="favicon" width={14} height={14} />
+                <img loading="lazy" decoding="async" src="/assets/img/favicon.svg" alt="favicon" width={14} height={14} />
                 Sanish Laminates
               </div>
             </div>

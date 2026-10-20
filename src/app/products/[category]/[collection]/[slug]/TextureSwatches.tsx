@@ -30,7 +30,7 @@ export default function TextureSwatches({
           >
             <div className="w-[152px] h-[152px] rounded-xl overflow-hidden bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06] transition-transform duration-200 hover:scale-[1.04]">
               {t.image && (
-                <img src={t.image} alt={t.label || name} className="w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" src={t.image} alt={t.label || name} className="w-full h-full object-cover" />
               )}
             </div>
             {t.label && (

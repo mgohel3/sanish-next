@@ -39,7 +39,7 @@ export default function AboutParallaxHero() {
       style={{ minHeight: "clamp(360px, 48vw, 560px)", background: "#24262b" }}
     >
       {/* Parallax image */}
-      <img
+      <img loading="lazy" decoding="async"
         src="/assets/img/about-page-banner.jpg"
         alt="About Sanish Laminates"
         className="hero-bg-img absolute inset-0 w-full h-[140%] object-cover object-top top-[-20%]"

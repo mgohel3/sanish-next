@@ -53,7 +53,7 @@ export default function CTA({ content = {} }: { content?: CtaContent }) {
     <section ref={ctaRef} id="cta-section" className="relative home-section">
       {/* Parallax background — overflow-hidden lives here, not on the section */}
       <div className="absolute inset-0 z-0 bg-[#1c130a] overflow-hidden">
-        <img
+        <img loading="lazy" decoding="async"
           src={c.bg_image}
           alt="Premium Texture Background"
           className="bg-image w-full h-[130%] object-cover absolute top-[-15%]"

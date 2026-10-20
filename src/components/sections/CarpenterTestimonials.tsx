@@ -129,7 +129,7 @@ export default function CarpenterTestimonials({
                     style={{ backgroundColor: AVATAR_COLORS[i % AVATAR_COLORS.length] }}
                   >
                     {t.photo ? (
-                      <img src={t.photo} alt={t.name} className="w-full h-full object-cover" />
+                      <img loading="lazy" decoding="async" src={t.photo} alt={t.name} className="w-full h-full object-cover" />
                     ) : (
                       t.name.charAt(0).toUpperCase()
                     )}

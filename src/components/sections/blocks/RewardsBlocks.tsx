@@ -45,7 +45,7 @@ export function RewardsIntroBlock({ content = {} }: C) {
               <div className="absolute bottom-[-40px] left-[-40px] w-[200px] h-[200px] rounded-full pointer-events-none"
                 style={{ background: "radial-gradient(circle, rgba(133,173,220,0.20) 0%, transparent 70%)" }} />
 
-              <img src="/assets/img/logo/black-logo-on-dark.svg" alt="Sanish Laminates" className="mb-8 h-[44px] w-auto" />
+              <img loading="lazy" decoding="async" src="/assets/img/logo/black-logo-on-dark.svg" alt="Sanish Laminates" className="mb-8 h-[44px] w-auto" />
 
               {card_eyebrow && (
                 <div className="text-white/50 text-[11px] uppercase tracking-[0.2em] font-semibold mb-3" style={{ fontFamily: "var(--font-jakarta)" }}>

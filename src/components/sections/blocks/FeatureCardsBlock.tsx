@@ -43,7 +43,7 @@ export default function FeatureCardsBlock({ content = {} }: { content?: FeatureC
               {card.image && (
                 <div className="relative overflow-hidden bg-[#f8f8f8]" style={{ height: "260px" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={card.image}
                     alt={card.title || ""}
                     className="w-full h-full object-contain p-6 transition-transform duration-700 hover:scale-105"
