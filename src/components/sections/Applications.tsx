@@ -65,9 +65,9 @@ export default function Applications({
               className={`masonry-item relative group overflow-hidden rounded-[20px] block aspect-[4/3] lg:aspect-auto ${i === 2 ? "lg:row-span-2" : ""}`}
             >
               <img loading="lazy" decoding="async" src={tile.src} alt={`${tile.catalogueName} — Laminate #${tile.id}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
-                <span className="text-white font-serif text-xl tracking-wide translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{tile.catalogueName}</span>
-                <span className="text-white/80 text-xs tracking-wide mt-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">Laminate #{tile.id}</span>
+              <div className="absolute inset-x-0 bottom-0 p-5 pt-16" style={{ background: "linear-gradient(to top, rgba(20,20,30,0.82), rgba(20,20,30,0))" }}>
+                <span className="block text-white font-serif text-xl tracking-wide">{tile.catalogueName}</span>
+                <span className="block text-white/90 text-xs tracking-wide mt-1">Laminate #{tile.id}</span>
               </div>
             </Link>
           ))}
