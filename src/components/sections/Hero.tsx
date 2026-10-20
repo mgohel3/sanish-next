@@ -512,14 +512,16 @@ export default function Hero({ content }: { content?: HeroContent }) {
                 onClick={() => goTo(i)}
                 aria-label={`Slide ${i + 1}`}
                 style={{
-                  width: i === current ? "32px" : "8px",
-                  height: "8px",
+                  width: i === current ? "44px" : "20px",
+                  height: "40px",
+                  boxSizing: "border-box",
+                  backgroundClip: "content-box",
+                  padding: "16px 6px",
                   borderRadius: "999px",
                   backgroundColor: i === current ? slide.accent : "rgba(30,30,46,0.18)",
                   transition: "width 500ms cubic-bezier(0.25,0.46,0.45,0.94), background-color 500ms ease",
                   border: "none",
                   cursor: "pointer",
-                  padding: 0,
                 }}
               />
             ))}

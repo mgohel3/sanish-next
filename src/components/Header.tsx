@@ -488,6 +488,8 @@ export default function Header() {
             { href: "/collection",   label: "Collection",        sub: "All collections" },
             { href: "/applications", label: "Applications",      sub: null },
             { href: "/about-us",     label: "About Us",          sub: null },
+            { href: "/find-a-dealer", label: "Find a Dealer",    sub: "Authorised dealers" },
+            { href: "/contact-us",   label: "Contact Us",        sub: null },
           ].map((item) => (
             <Link key={item.href} href={item.href}
               className="flex items-start justify-between py-3.5 border-b hover:pl-2 transition-all duration-300"
@@ -506,6 +508,9 @@ export default function Header() {
         </nav>
 
         <div className="mt-8 space-y-3">
+          <Link href={"/collection"} onClick={() => setMobileOpen(false)} className="btn-pill btn-pill-primary w-full justify-center flex">
+            Download Catalogue
+          </Link>
           <a href={`tel:${settings.phone_primary.replace(/\s/g, "")}`} className="btn-pill btn-pill-primary w-full justify-center flex">
             Call Us: {settings.phone_primary}
           </a>
