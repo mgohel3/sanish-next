@@ -52,9 +52,10 @@ export async function generateMetadata({ params, searchParams }: Props) {
   if (page) {
     // The CMS page's own title is its H1; a few pages get a fuller search title.
     const SEARCH_TITLES: Record<string, string> = { events: "Events & Media | Exhibitions, Meetups & Launches | Sanish Laminates" };
+    const SEARCH_DESCRIPTIONS: Record<string, string> = { events: "Photos and videos from Sanish Laminates events, exhibitions, carpenter meetups and product launches across India." };
     return pageMetadata({
       title: SEARCH_TITLES[slug] ?? `${page.title} | Sanish Laminates`,
-      description: snippet(page.description || `${page.title} - Sanish Laminates, premium decorative laminates manufacturer in India.`, 160),
+      description: snippet(SEARCH_DESCRIPTIONS[slug] ?? page.description ?? `${page.title} - Sanish Laminates, premium decorative laminates manufacturer in India.`, 160),
       path: `/${slug}`,
     });
   }

@@ -107,6 +107,7 @@ export interface PageSectionData {
 export interface SitePageData {
   slug: string;
   title: string;
+  description?: string;
   path: string;
   sections: PageSectionData[];
 }
