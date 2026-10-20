@@ -1,3 +1,4 @@
+import { pageMetadata, snippet } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -49,10 +50,13 @@ export async function generateMetadata({ params, searchParams }: Props) {
 
   const page = await getSitePage(slug);
   if (page) {
-    return {
-      title: `${page.title} | Sanish Laminates`,
-      description: page.title,
-    };
+    // The CMS page's own title is its H1; a few pages get a fuller search title.
+    const SEARCH_TITLES: Record<string, string> = { events: "Events & Media | Exhibitions, Meetups & Launches | Sanish Laminates" };
+    return pageMetadata({
+      title: SEARCH_TITLES[slug] ?? `${page.title} | Sanish Laminates`,
+      description: snippet(page.description || `${page.title} - Sanish Laminates, premium decorative laminates manufacturer in India.`, 160),
+      path: `/${slug}`,
+    });
   }
 
   const cityPage = await getCityPage(slug);

@@ -47,14 +47,14 @@ export const DEFAULT_NAV: NavData = {
     { label: "About Us",     url: "/about-us",     open_new_tab: false, position: 2 },
   ],
   topbar: [
-    { label: "Dealer Network",     url: "#",                          open_new_tab: false, position: 1 },
-    { label: "Download Catalogue", url: "#",                          open_new_tab: false, position: 2 },
+    { label: "Dealer Network",     url: "/find-a-dealer",                          open_new_tab: false, position: 1 },
+    { label: "Download Catalogue", url: "/collection",                          open_new_tab: false, position: 2 },
   ],
   mega_quick: [
-    { label: "Sustainability",    url: "#", open_new_tab: false, position: 1 },
-    { label: "Find a Dealer",     url: "#", open_new_tab: false, position: 2 },
-    { label: "Technical Support", url: "#", open_new_tab: false, position: 3 },
-    { label: "Project Gallery",   url: "#", open_new_tab: false, position: 4 },
+    { label: "Sustainability",    url: "/about-us", open_new_tab: false, position: 1 },
+    { label: "Find a Dealer",     url: "/find-a-dealer", open_new_tab: false, position: 2 },
+    { label: "Technical Support", url: "/contact-us", open_new_tab: false, position: 3 },
+    { label: "Project Gallery",   url: "/applications", open_new_tab: false, position: 4 },
   ],
   footer_company: [],
 };

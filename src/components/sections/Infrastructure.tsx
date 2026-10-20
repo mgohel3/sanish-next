@@ -81,7 +81,7 @@ export default function Infrastructure() {
               </li>
             </ul>
             <div className="infra-fade">
-              <a href="#" className="text-[13px] font-medium border-b border-[var(--text-primary)] pb-1 hover:text-[var(--accent-blue)] hover:border-[var(--accent-blue)] transition-all">
+              <a href="/about-us" className="text-[13px] font-medium border-b border-[var(--text-primary)] pb-1 hover:text-[var(--accent-blue)] hover:border-[var(--accent-blue)] transition-all">
                 Learn About Our Process
               </a>
             </div>
