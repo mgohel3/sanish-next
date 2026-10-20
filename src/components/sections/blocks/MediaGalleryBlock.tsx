@@ -330,7 +330,7 @@ function Thumb({ entry, label }: { entry: Entry; label: string }) {
 function Viewer({ entry }: { entry: Entry }) {
   const v = entry.video;
   if (!v) {
-    return <img loading="lazy" decoding="async" src={entry.image} alt={entry.alt || entry.caption || label} className="max-h-[78vh] w-auto max-w-full object-contain rounded-xl" />;
+    return <img loading="lazy" decoding="async" src={entry.image} alt={entry.alt || entry.caption || "Sanish Laminates gallery photo"} className="max-h-[78vh] w-auto max-w-full object-contain rounded-xl" />;
   }
   if (v.kind === "file") {
     return (
