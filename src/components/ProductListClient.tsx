@@ -157,12 +157,9 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
     ? products.filter((p) => p.category === category)
     : products;
 
-  /* ── Only offer Finish / Design values that at least one product in THIS view has (Thermo -> Thermo's, Laminates -> laminates', all -> all).
-     The CMS lists stay the master order; a value appears automatically once a product uses it. The one chosen in the URL always stays visible. ── */
-  const urlFinish = matchSlug(searchParams.get("finish"), finishList);
-  const urlDesign = matchSlug(searchParams.get("design"), designList);
-  const finishShown = finishList.filter((f) => f === urlFinish || baseProducts.some((p) => (p.texture ?? "").toLowerCase() === f.toLowerCase()));
-  const designShown = designList.filter((d) => d === urlDesign || baseProducts.some((p) => slugify(p.designType) === slugify(d)));
+  /* ── The CMS lists (Products > Manage options) are the filter: laminates and Thermo each have their own, taken from the client's sheets. ── */
+  const finishShown = finishList;
+  const designShown = designList;
 
   /* ── Dynamic page title from active filters ── */
   const pageTitle = (() => {

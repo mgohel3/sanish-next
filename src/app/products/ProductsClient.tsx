@@ -236,11 +236,9 @@ export default function ProductsClient({
     router.replace(buildUrl(activeCollection, activeFinish, activeDesign, color), { scroll: false });
   }, [router, activeCollection, activeFinish, activeDesign]);
 
-  // Only offer Finish values that at least one product of the chosen product type has (Thermo -> Thermo's, Laminates -> laminates', All -> all).
-  const scoped = activeCategory === "All" ? products : products.filter((p) => p.category === activeCategory);
+  // The CMS lists are the filter: Thermo -> Thermo's list, Laminates -> laminates', All -> both.
   const finishPool = activeCategory === "Thermo Laminates" ? opts.thermo_texture : activeCategory === "All" ? allFinishes : opts.texture;
-  const urlFinish = matchSlug(searchParams.get("finish"), allFinishes);
-  const finishShown = finishPool.filter((f) => f === urlFinish || scoped.some((p) => (p.texture ?? "").toLowerCase() === f.toLowerCase()));
+  const finishShown = finishPool;
 
   // ── Product filtering logic ──
   const filtered = products.filter((p) => {
