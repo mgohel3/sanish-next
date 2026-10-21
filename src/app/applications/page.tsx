@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { pageMetadata } from "@/lib/seo";
+import { cmsPageMetadata } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import ApplicationsCollage from "@/components/ApplicationsCollage";
 import SpaceFilterBar from "@/components/SpaceFilterBar";
@@ -15,11 +15,13 @@ import { getPhotos, getSpaces, interleaveByCatalogue } from "@/lib/photos";
 //   • each photo opens a detail page (SKU, catalogue, tags, Enquire)
 // This is the live /applications page. The earlier catalogue-card index is kept, hidden (noindex), at /applications-catalogues;
 // /applications-new still redirects here.
-export const metadata = pageMetadata({
+export async function generateMetadata() {
+  return cmsPageMetadata({
   title: "Laminate Applications for Kitchen, Wardrobe & More | Sanish Laminates",
   description: "Browse real spaces finished with Sanish Laminates — kitchens, living rooms, bedrooms, wardrobes and more. Filter by space and open any photo for its design code.",
   path: "/applications",
 });
+}
 
 const PAGE_SIZE = 40;
 

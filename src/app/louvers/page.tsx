@@ -3,14 +3,16 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductListClient from "@/components/ProductListClient";
-import { pageMetadata } from "@/lib/seo";
+import { cmsPageMetadata } from "@/lib/seo";
 import { fetchProducts, fetchCategoryMeta } from "@/lib/catalog";
 
-export const metadata: Metadata = pageMetadata({
+export async function generateMetadata() {
+  return cmsPageMetadata({
   title: "Fluted Louvers & Architectural Panels | Sanish Laminates",
   description: "Architectural fluted louvers and panels from Sanish Laminates — slatted surfaces for walls, ceilings and interiors. Browse designs, finishes and sizes, and request samples.",
   path: "/louvers",
 });
+}
 
 const FALLBACK = {
   eyebrow: "Architectural Surfaces",

@@ -1,16 +1,18 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { pageMetadata } from "@/lib/seo";
+import { cmsPageMetadata } from "@/lib/seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductsClient from "./ProductsClient";
 import { fetchProducts, fetchCategories, fetchCollections } from "@/lib/catalog";
 
-export const metadata: Metadata = pageMetadata({
+export async function generateMetadata() {
+  return cmsPageMetadata({
   title: "All Decorative Laminates & Surfaces | Sanish Laminates",
   description: "Browse every Sanish Laminates surface in one place — filter by collection, design type, finish and colour across laminates and thermo laminates.",
   path: "/products",
 });
+}
 
 export default async function ProductsPage(
   { searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> },

@@ -1,15 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
+import { cmsPageMetadata } from "@/lib/seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import CollectionShowcase from "@/components/CollectionShowcase";
 import CollectionInquiryForm from "@/components/CollectionInquiryForm";
 
-export const metadata = {
-  title: "Collections | Sanish Laminates",
-  description:
-    "Explore the full Sanish Laminates collection — S'Shades, Thre3, Cool Colour, Perspective V4 and Thermo Laminates. Premium decorative surface solutions for every interior.",
-};
+export async function generateMetadata() {
+  return cmsPageMetadata({ title: "Collections | Sanish Laminates", description: "Explore the full Sanish Laminates collection — S'Shades, Thre3, Cool Colour, Perspective V4 and Thermo Laminates. Premium decorative surface solutions for every interior.", path: "/collection" });
+}
 
 export default function CollectionPage() {
   return (

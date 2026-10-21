@@ -3,14 +3,16 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductListClient from "@/components/ProductListClient";
-import { pageMetadata } from "@/lib/seo";
+import { cmsPageMetadata } from "@/lib/seo";
 import { fetchProducts, fetchCategoryMeta } from "@/lib/catalog";
 
-export const metadata: Metadata = pageMetadata({
+export async function generateMetadata() {
+  return cmsPageMetadata({
   title: "Decorative Laminates in India | Laminate Sheets | Sanish Laminates",
   description: "Explore the full Sanish Laminates range of decorative laminates — solid colours, wood, marble and stone designs in gloss, matte, suede and flute finishes.",
   path: "/laminates",
 });
+}
 
 const FALLBACK = {
   eyebrow: "Surface Collection",

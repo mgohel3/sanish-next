@@ -1,14 +1,13 @@
+import { cmsPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import { fetchBlogPosts, formatBlogDate } from "@/lib/blog";
 
-export const metadata = {
-  title: "Blog | Sanish Laminates",
-  description:
-    "Design trends, product guides and inspiration for decorative laminates, louvers and surface finishes from Sanish Laminates.",
-};
+export async function generateMetadata() {
+  return cmsPageMetadata({ title: "Blog | Sanish Laminates", description: "Design trends, product guides and inspiration for decorative laminates, louvers and surface finishes from Sanish Laminates.", path: "/blog" });
+}
 
 // Revalidate the listing on the same cadence as the fetch layer.
 export const revalidate = 300;

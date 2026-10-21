@@ -1,4 +1,4 @@
-import { pageMetadata, localBusinessSchema } from "@/lib/seo";
+import { cmsPageMetadata, localBusinessSchema } from "@/lib/seo";
 import JsonLd from "@/components/JsonLd";
 import { getSiteSettings } from "@/lib/siteSettings";
 import Header from "@/components/Header";
@@ -7,11 +7,13 @@ import PageHero from "@/components/PageHero";
 import PageBlocks from "@/components/PageBlockRenderer";
 import { getSitePage } from "@/lib/pages";
 
-export const metadata = pageMetadata({
+export async function generateMetadata() {
+  return cmsPageMetadata({
   title: "Find a Sanish Laminates Dealer | Authorised Dealer Network in India",
   description: "Locate authorised Sanish Laminates dealers across India for samples, product guidance and availability, or enquire about a dealership and distribution partnership.",
   path: "/find-a-dealer",
 });
+}
 
 export default async function FindADealerPage() {
   const page = await getSitePage("find-a-dealer");

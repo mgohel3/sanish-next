@@ -3,14 +3,16 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductListClient from "@/components/ProductListClient";
-import { pageMetadata } from "@/lib/seo";
+import { cmsPageMetadata } from "@/lib/seo";
 import { fetchProducts, fetchCategoryMeta } from "@/lib/catalog";
 
-export const metadata: Metadata = pageMetadata({
+export async function generateMetadata() {
+  return cmsPageMetadata({
   title: "Thermo Laminates | Weather-Resistant ASA Sheets | Sanish Laminates",
   description: "Sanish Thermo Laminates — durable, weather-resistant ASA surfaces for outdoor cladding and high-exposure architectural applications. Explore colours and request samples.",
   path: "/asa-sheets",
 });
+}
 
 const FALLBACK = {
   eyebrow: "Outdoor Surfaces",

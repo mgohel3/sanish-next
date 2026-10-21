@@ -1,14 +1,13 @@
+import { cmsPageMetadata } from "@/lib/seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import FaqGrid from "@/components/faq/FaqGrid";
 import { fetchFaqs } from "@/lib/faq";
 
-export const metadata = {
-  title: "FAQs | Sanish Laminates",
-  description:
-    "Answers to common questions about laminates, veneers, plywood and surface finishes from Sanish Laminates.",
-};
+export async function generateMetadata() {
+  return cmsPageMetadata({ title: "FAQs | Sanish Laminates", description: "Answers to common questions about laminates, veneers, plywood and surface finishes from Sanish Laminates.", path: "/faq" });
+}
 
 export const revalidate = 300;
 

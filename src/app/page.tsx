@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
 import { getSiteSettings } from "@/lib/siteSettings";
-import { pageMetadata, organizationSchema, websiteSchema, MAIN_KEYWORD } from "@/lib/seo";
+import { cmsPageMetadata, organizationSchema, websiteSchema, MAIN_KEYWORD } from "@/lib/seo";
 import BlockBackground from "@/components/BlockBackground";
 import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
@@ -31,11 +31,13 @@ import { fetchBlogPosts } from "@/lib/blog";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export const metadata: Metadata = pageMetadata({
+export async function generateMetadata() {
+  return cmsPageMetadata({
   title: "Decorative Laminates Manufacturer in India | Sanish Laminates",
   description: "Sanish Laminates — premium decorative laminates manufacturer in India. Explore 800+ designs for kitchens, wardrobes, doors and commercial interiors.",
   path: "/",
 });
+}
 
 export default async function Home() {
   const applicationTiles = await getRandomGalleryTiles(5);

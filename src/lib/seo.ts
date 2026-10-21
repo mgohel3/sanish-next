@@ -104,3 +104,30 @@ export function localBusinessSchema(s: SiteSettings) {
     parentOrganization: { "@id": `${SITE_URL}/#organization` },
   };
 }
+
+
+const SEO_API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+type CmsPageSeo = { path: string; title: string; description: string; og_image: string; noindex: boolean };
+
+/** What editors typed in CMS > SEO > Page SEO (only pages that have at least one value). Never throws. */
+async function getCmsPageSeo(): Promise<CmsPageSeo[]> {
+  try {
+    const res = await fetch(`${SEO_API}/seo/pages/`, { next: { revalidate: 300 } });
+    return res.ok ? ((await res.json()) as CmsPageSeo[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+/** pageMetadata() with the CMS "Page SEO" values laid on top; an empty CMS field keeps the default given here. */
+export async function cmsPageMetadata(input: PageMeta): Promise<Metadata> {
+  const o = (await getCmsPageSeo()).find((p) => p.path === input.path);
+  if (!o) return pageMetadata(input);
+  return pageMetadata({
+    ...input,
+    title: o.title || input.title,
+    description: o.description || input.description,
+    image: o.og_image || input.image,
+    noindex: o.noindex || input.noindex,
+  });
+}

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities, @next/next/no-img-element */
 import Link from "next/link";
-import { pageMetadata } from "@/lib/seo";
+import { cmsPageMetadata } from "@/lib/seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AboutParallaxHero from "@/components/AboutParallaxHero";
@@ -8,11 +8,13 @@ import AboutMissionSection from "@/components/sections/AboutMissionSection";
 import PageBlocks from "@/components/PageBlockRenderer";
 import { getSitePage } from "@/lib/pages";
 
-export const metadata = pageMetadata({
+export async function generateMetadata() {
+  return cmsPageMetadata({
   title: "About Sanish Laminates | Decorative Laminate Manufacturer in India",
   description: "Sanish Laminates manufactures premium decorative laminates in India — BIS-certified to IS 2046, with designs and finishes for kitchens, wardrobes and interiors.",
   path: "/about-us",
 });
+}
 
 export default async function AboutUsPage() {
   const page = await getSitePage("about-us");

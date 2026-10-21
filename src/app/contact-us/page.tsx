@@ -1,4 +1,4 @@
-import { pageMetadata, localBusinessSchema } from "@/lib/seo";
+import { cmsPageMetadata, localBusinessSchema } from "@/lib/seo";
 import JsonLd from "@/components/JsonLd";
 import { getSiteSettings } from "@/lib/siteSettings";
 import Header from "@/components/Header";
@@ -9,11 +9,13 @@ import PageBlocks from "@/components/PageBlockRenderer";
 import { getSitePage } from "@/lib/pages";
 import { MapPin, Phone, Mail } from "lucide-react";
 
-export const metadata = pageMetadata({
+export async function generateMetadata() {
+  return cmsPageMetadata({
   title: "Contact Sanish Laminates | Enquiries, Samples & Dealer Support",
   description: "Contact Sanish Laminates for product enquiries, free samples, dealer network details and project support. Call +91 7027 777 032 or send us a message.",
   path: "/contact-us",
 });
+}
 
 export default async function ContactUsPage() {
   const page = await getSitePage("contact-us");
