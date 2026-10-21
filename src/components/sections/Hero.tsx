@@ -81,7 +81,7 @@ type Slide = {
 const DEMO_STACKED_SLIDE: Slide = {
   id: 99,
   image: "/assets/img/hero/slides/slide-2.jpg",
-  tag: "Layout Preview",
+  tag: "",
   line1: "Image On Top,",
   line2: "Content Below",
   sub: "A banner layout with a large image above and a compact content strip beneath it.",
@@ -132,6 +132,13 @@ export default function Hero({ content }: { content?: HeroContent }) {
   }, [content?.slides]);
 
   const slide = slides[current] ?? slides[0];
+
+  /* Warm the browser cache with every slide's picture so none of them pops in late when its turn comes */
+  useEffect(() => {
+    slides.forEach((sl) => {
+      [sl.image, sl.mobileImage].forEach((src) => { if (src) { const im = new window.Image(); im.src = src; } });
+    });
+  }, [slides]);
 
   /* ── Text In — line-mask reveal ── */
   const animIn = useCallback(() => {
@@ -472,10 +479,10 @@ export default function Hero({ content }: { content?: HeroContent }) {
                 {slide.mobileImage && <source media="(max-width: 1023px)" srcSet={slide.mobileImage} />}
                 <img src={slide.image} alt={slide.line1} className="w-full h-full object-cover" />
               </picture>
-              <div className="absolute top-5 left-5 md:left-14 px-4 py-2 text-white text-[11px] uppercase tracking-[0.16em] font-semibold"
+{slide.tag && (              <div className="absolute top-5 left-5 md:left-14 px-4 py-2 text-white text-[11px] uppercase tracking-[0.16em] font-semibold"
                 style={{ backgroundColor: "#fabf7d", borderRadius: "999px", fontFamily: "var(--font-jakarta)" }}>
                 {slide.tag}
-              </div>
+              </div>)}
             </div>
           </div>
           <div ref={contentRef} className="site-container w-full flex-[3] min-h-0 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-12">
@@ -504,26 +511,27 @@ export default function Hero({ content }: { content?: HeroContent }) {
         </div>
 
         <div className="site-container flex items-center justify-between py-5">
-          {/* Pill dots */}
-          <div className="flex items-center gap-2.5">
+          {/* Pill dots - the button is a 40px-tall tap target, the visible pill is the inner span */}
+          <div className="flex items-center">
             {slides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
                 aria-label={`Slide ${i + 1}`}
-                style={{
-                  width: i === current ? "44px" : "20px",
-                  height: "40px",
-                  boxSizing: "border-box",
-                  backgroundClip: "content-box",
-                  padding: "16px 6px",
-                  borderRadius: "999px",
-                  backgroundColor: i === current ? slide.accent : "rgba(30,30,46,0.18)",
-                  transition: "width 500ms cubic-bezier(0.25,0.46,0.45,0.94), background-color 500ms ease",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              />
+                className="flex items-center justify-center"
+                style={{ height: "40px", padding: "0 5px", border: "none", background: "transparent", cursor: "pointer" }}
+              >
+                <span
+                  style={{
+                    display: "block",
+                    width: i === current ? "32px" : "8px",
+                    height: "8px",
+                    borderRadius: "999px",
+                    backgroundColor: i === current ? slide.accent : "rgba(30,30,46,0.18)",
+                    transition: "width 500ms cubic-bezier(0.25,0.46,0.45,0.94), background-color 500ms ease",
+                  }}
+                />
+              </button>
             ))}
           </div>
 
