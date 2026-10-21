@@ -136,3 +136,19 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     return DEFAULT_SITE_SETTINGS;
   }
 }
+
+
+/** Accepts what editors usually paste from Google Maps: either the bare embed link or the whole <iframe ...> snippet. */
+export function mapEmbedSrc(value: string | null | undefined): string {
+  const v = (value || "").trim();
+  if (!v) return "";
+  const m = v.match(/src\s*=\s*["']([^"']+)["']/i);
+  return (m ? m[1] : v).replace(/&amp;/g, "&");
+}
+
+/** Address as shown on the website, one line per row: street lines, then "City, State - Pincode". */
+export function addressLines(s: SiteSettings): string[] {
+  const place = [s.city, s.state].filter((x, i, a) => x && a.indexOf(x) === i).join(", ");
+  const last = [place, s.pincode].filter(Boolean).join(" - ");
+  return [s.address_line1, s.address_line2, last].filter(Boolean);
+}

@@ -2,15 +2,23 @@ import { MapPin, Phone, Mail } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 import DynamicForm from "@/components/DynamicForm";
 import type { ContactDetailsContent } from "@/lib/pages";
+import { addressLines, getSiteSettings, mapEmbedSrc } from "@/lib/siteSettings";
 
 /** Headquarters address / phone / email list beside an embedded map + enquiry form. CMS-managed. */
-export default function ContactDetailsBlock({ content = {} }: { content?: ContactDetailsContent }) {
+export default async function ContactDetailsBlock({ content = {} }: { content?: ContactDetailsContent }) {
+  // CMS > SEO & Settings > Site Settings is the source of truth; what is typed in the block is only the fallback.
+  const site = await getSiteSettings();
+  const siteAddress = addressLines(site).join("\n");
+  const sitePhones = [site.phone_primary, site.phone_secondary].filter(Boolean).map((p) => ({ label: p, value: p.replace(/[^\d+]/g, "") }));
+  const siteEmails = [site.email_primary, site.email_secondary].filter(Boolean).map((e) => ({ value: e }));
   const {
     heading = "Our Headquarters",
-    address,
-    phones = [],
-    emails = [],
-    map_embed_url,
+  } = content;
+  const address = siteAddress || content.address;
+  const phones = sitePhones.length ? sitePhones : content.phones ?? [];
+  const emails = siteEmails.length ? siteEmails : content.emails ?? [];
+  const map_embed_url = mapEmbedSrc(site.map_embed_url) || mapEmbedSrc(content.map_embed_url);
+  const {
     form_heading,
     form_sub,
     form_slug,
