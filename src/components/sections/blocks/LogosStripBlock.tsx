@@ -17,7 +17,7 @@ export default function LogosStripBlock({ content = {} }: { content?: LogosStrip
     <section className="home-section--compact bg-[var(--bg-primary)]">
       <div className="site-container">
         {heading && (
-          <div className="text-center text-[11px] uppercase tracking-[0.18em] text-[var(--text-secondary)] mb-8">
+          <div className="text-center text-[12px] md:text-[11px] uppercase tracking-[0.18em] text-[var(--text-secondary)] mb-8">
             {heading}
           </div>
         )}

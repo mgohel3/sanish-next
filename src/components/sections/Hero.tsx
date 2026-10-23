@@ -397,7 +397,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
                 <div className="font-bold text-[26px] leading-none mb-1.5" style={{ fontFamily: "var(--font-jakarta)", color: slide.accent, transition: "color 800ms ease" }}>
                   {s.value}
                 </div>
-                <div className="text-[11px] uppercase tracking-[0.14em] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                <div className="text-[12px] md:text-[11px] uppercase tracking-[0.14em] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                   {s.label}
                 </div>
               </div>
@@ -448,14 +448,14 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
               </div>
               <div>
                 <div className="text-[12px] font-semibold" style={{ color: "#1E1E2E", fontFamily: "var(--font-jakarta)" }}>{designsCount} Designs</div>
-                <div className="text-[9px] uppercase tracking-[0.12em] mt-0.5" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>Available Now</div>
+                <div className="text-[12px] md:text-[9px] uppercase tracking-[0.12em] mt-0.5" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>Available Now</div>
               </div>
             </div>
           </div>
 
           {/* Accent pill tag — brand orange, matches badge color used site-wide (product cards, etc.) */}
           <div
-            className="absolute top-6 left-6 z-20 px-4 py-2 text-white text-[11px] uppercase tracking-[0.16em] font-semibold"
+            className="absolute top-6 left-6 z-20 px-4 py-2 text-white text-[12px] md:text-[11px] uppercase tracking-[0.16em] font-semibold"
             style={{
               backgroundColor: "#fabf7d",
               borderRadius: "999px",
@@ -479,7 +479,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
                 {slide.mobileImage && <source media="(max-width: 1023px)" srcSet={slide.mobileImage} />}
                 <img src={slide.image} alt={slide.line1} className="w-full h-full object-cover" />
               </picture>
-{slide.tag && (              <div className="absolute top-5 left-5 md:left-14 px-4 py-2 text-white text-[11px] uppercase tracking-[0.16em] font-semibold"
+{slide.tag && (              <div className="absolute top-5 left-5 md:left-14 px-4 py-2 text-white text-[12px] md:text-[11px] uppercase tracking-[0.16em] font-semibold"
                 style={{ backgroundColor: "#fabf7d", borderRadius: "999px", fontFamily: "var(--font-jakarta)" }}>
                 {slide.tag}
               </div>)}
@@ -537,7 +537,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
 
           {/* Counter + arrows */}
           <div className="flex items-center gap-5">
-            <span className="text-[11px] tabular-nums" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+            <span className="text-[12px] md:text-[11px] tabular-nums" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
               <span className="font-semibold" style={{ color: "#1E1E2E" }}>{String(current + 1).padStart(2, "0")}</span>
               {" / "}{String(slides.length).padStart(2, "0")}
             </span>
@@ -562,7 +562,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
           <div className="absolute top-0 left-0 w-full h-1/2"
             style={{ backgroundColor: slide.accent, animation: "heroCue 2.2s cubic-bezier(0.4,0,0.6,1) infinite", transition: "background-color 800ms ease" }} />
         </div>
-        <span className="text-[10px] uppercase tracking-[0.28em]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>Scroll</span>
+        <span className="text-[12px] md:text-[10px] uppercase tracking-[0.28em]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>Scroll</span>
       </div>}
 
       <style>{`

@@ -59,7 +59,7 @@ export default function CatalogueImageGrid({ catalogue }: { catalogue: GalleryCa
             <div className="absolute inset-0 pointer-events-none"
               style={{ background: "linear-gradient(to top, rgba(10,8,18,0.75) 0%, rgba(10,8,18,0.05) 55%)" }} />
             <div className="absolute bottom-0 left-0 right-0 p-4">
-              <div className="text-[9.5px] font-semibold uppercase tracking-[0.12em] text-white/70"
+              <div className="text-[12px] md:text-[9.5px] font-semibold uppercase tracking-[0.12em] text-white/70"
                 style={{ fontFamily: "var(--font-jakarta)" }}>
                 Catalogue: {catalogue.name}
               </div>

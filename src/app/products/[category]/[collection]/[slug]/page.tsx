@@ -189,7 +189,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
       {/* ── Breadcrumb ─────────────────────────────────── */}
       <div className="border-b" style={{ backgroundColor: "var(--bg-secondary)", borderColor: "rgba(30,30,46,0.07)" }}>
         <div className="site-container py-3.5">
-          <nav className="flex items-center gap-2 text-[11.5px]" style={{ fontFamily: "var(--font-jakarta)", color: "#6B6B80" }}>
+          <nav className="flex items-center gap-2 text-[12px] md:text-[11.5px]" style={{ fontFamily: "var(--font-jakarta)", color: "#6B6B80" }}>
             <Link href="/" className="hover:text-[#f39ba2] transition-colors">Home</Link>
             <span className="opacity-40">/</span>
             <Link href="/collection" className="hover:text-[#f39ba2] transition-colors">Collection</Link>
@@ -220,12 +220,12 @@ export default async function ProductPage({ params, searchParams }: Props) {
             {/* Row 1: Collection + product badge */}
             <div className="flex items-center gap-3 mb-3">
               {product.collection && (
-                <span className="text-[10.5px] font-semibold tracking-[0.18em] uppercase" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
+                <span className="text-[12px] md:text-[10.5px] font-semibold tracking-[0.18em] uppercase" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
                   {product.collection} Collection
                 </span>
               )}
               {product.badge && (
-                <span className="text-[9.5px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full text-white"
+                <span className="text-[12px] md:text-[9.5px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full text-white"
                   style={{ backgroundColor: badgeColor, fontFamily: "var(--font-jakarta)" }}>
                   {product.badge}
                 </span>
@@ -235,7 +235,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
             {/* Row 2: Category tags */}
             <div className="flex flex-wrap gap-2 mb-4">
               {categoryTags.map((tag) => (
-                <span key={tag} className="text-[10px] font-semibold px-3 py-1 rounded-full"
+                <span key={tag} className="text-[12px] md:text-[10px] font-semibold px-3 py-1 rounded-full"
                   style={{
                     backgroundColor: "rgba(30,30,46,0.06)",
                     color: "#6B6B80",
@@ -263,7 +263,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
               {product.collection && (
                 <Link
                   href={collectionListHref}
-                  className="flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase font-semibold transition-opacity hover:opacity-70"
+                  className="flex items-center gap-1.5 text-[12px] md:text-[11px] tracking-[0.1em] uppercase font-semibold transition-opacity hover:opacity-70"
                   style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}
                 >
                   Part of the {product.collection} Collection
@@ -319,12 +319,12 @@ export default async function ProductPage({ params, searchParams }: Props) {
             {/* ── Features ── */}
             {product.features.length > 0 && (
             <div className="mb-10">
-              <p className="text-[10.5px] font-semibold tracking-[0.18em] uppercase mb-3" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+              <p className="text-[12px] md:text-[10.5px] font-semibold tracking-[0.18em] uppercase mb-3" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                 Key Features
               </p>
               <div className="flex flex-wrap gap-2">
                 {product.features.map((f) => (
-                  <span key={f} className="text-[11.5px] px-3.5 py-1.5 rounded-full"
+                  <span key={f} className="text-[12px] md:text-[11.5px] px-3.5 py-1.5 rounded-full"
                     style={{ color: "var(--text-primary)", border: "1px solid rgba(30,30,46,0.12)", backgroundColor: "var(--bg-secondary)", fontFamily: "var(--font-jakarta)" }}>
                     {f}
                   </span>
@@ -346,7 +346,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
               <div className="flex-1"><InquireButton /></div>
             </div>
 
-            <p className="text-center text-[11px] mt-3" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
+            <p className="text-center text-[12px] md:text-[11px] mt-3" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
               We typically respond within 24 hours.
             </p>
           </div>
@@ -359,7 +359,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
           <div className="site-container">
             <div className="flex items-end justify-between mb-10">
               <div>
-                <p className="text-[10.5px] font-semibold tracking-[0.2em] uppercase mb-2" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
+                <p className="text-[12px] md:text-[10.5px] font-semibold tracking-[0.2em] uppercase mb-2" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
                   You May Also Like
                 </p>
                 <h2 className="font-serif" style={{ fontSize: "clamp(26px, 3vw, 34px)", color: "var(--text-primary)" }}>
@@ -381,7 +381,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
                   <div className="relative aspect-square overflow-hidden rounded-2xl mb-4 bg-[#f3f4f6] ring-1 ring-inset ring-black/[0.06]">
                     <img loading="lazy" decoding="async" src={rp.images[0]} alt={rp.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     {rp.badge && (
-                      <span className="absolute top-3 left-3 text-[9px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full text-white"
+                      <span className="absolute top-3 left-3 text-[12px] md:text-[9px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full text-white"
                         style={{ backgroundColor: "#fabf7d" }}>
                         {rp.badge}
                       </span>

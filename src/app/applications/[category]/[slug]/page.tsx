@@ -50,7 +50,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
 
         <div className="site-container relative z-10 pt-16 pb-32">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-[11px] text-white/70 mb-10" style={{ fontFamily: "var(--font-jakarta)" }}>
+          <nav className="flex items-center gap-2 text-[12px] md:text-[11px] text-white/70 mb-10" style={{ fontFamily: "var(--font-jakarta)" }}>
             <Link href="/applications" className="hover:text-white transition-colors">Applications</Link>
             <span className="opacity-50">/</span>
             <Link href={`/applications/${categorySlugParam}`} className="hover:text-white transition-colors">{app.category}</Link>
@@ -60,7 +60,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
 
           {/* Category pill */}
           <Link href={`/applications/${categorySlugParam}`}
-            className="inline-block text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full text-white mb-5 hover:opacity-90 transition-opacity"
+            className="inline-block text-[12px] md:text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full text-white mb-5 hover:opacity-90 transition-opacity"
             style={{ backgroundColor: accent, fontFamily: "var(--font-jakarta)" }}>
             {app.category}
           </Link>
@@ -108,7 +108,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
                 style={{ boxShadow: "0 8px 32px rgba(30,30,46,0.07)" }}>
                 <div className="px-7 py-5 border-b border-[var(--color-border-subtle)]"
                   style={{ backgroundColor: `${accent}10` }}>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.14em]"
+                  <div className="text-[12px] md:text-[11px] font-bold uppercase tracking-[0.14em]"
                     style={{ color: accent, fontFamily: "var(--font-jakarta)" }}>
                     Project Details
                   </div>
@@ -138,7 +138,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
                   style={{ boxShadow: "0 8px 32px rgba(30,30,46,0.07)" }}>
                   <div className="px-7 py-5 border-b border-[var(--color-border-subtle)]"
                     style={{ backgroundColor: `${accent}10` }}>
-                    <div className="text-[11px] font-bold uppercase tracking-[0.14em]"
+                    <div className="text-[12px] md:text-[11px] font-bold uppercase tracking-[0.14em]"
                       style={{ color: accent, fontFamily: "var(--font-jakarta)" }}>
                       Products Used
                     </div>
@@ -159,7 +159,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
                               style={{ fontFamily: "var(--font-jakarta)" }}>
                               {p.code}
                             </div>
-                            <div className="text-[11.5px] text-[var(--text-secondary)]"
+                            <div className="text-[12px] md:text-[11.5px] text-[var(--text-secondary)]"
                               style={{ fontFamily: "var(--font-jakarta)" }}>
                               {p.collection} Collection · {p.finish}
                             </div>
@@ -171,7 +171,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
                         </div>
                         {p.productSlug && (
                           <Link href={`/products/${p.productSlug}`}
-                            className="inline-block text-[11px] font-semibold uppercase tracking-[0.09em] px-4 py-2 rounded-full border transition-all duration-200 hover:-translate-y-[2px]"
+                            className="inline-block text-[12px] md:text-[11px] font-semibold uppercase tracking-[0.09em] px-4 py-2 rounded-full border transition-all duration-200 hover:-translate-y-[2px]"
                             style={{ borderColor: accent, color: accent, fontFamily: "var(--font-jakarta)" }}>
                             View Product →
                           </Link>
@@ -185,7 +185,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
               {/* Highlights card */}
               <div className="rounded-[24px] bg-white border border-[var(--color-border-subtle)] px-7 py-6"
                 style={{ boxShadow: "0 8px 32px rgba(30,30,46,0.07)" }}>
-                <div className="text-[11px] font-bold uppercase tracking-[0.14em] mb-4"
+                <div className="text-[12px] md:text-[11px] font-bold uppercase tracking-[0.14em] mb-4"
                   style={{ color: accent, fontFamily: "var(--font-jakarta)" }}>
                   Project Highlights
                 </div>
@@ -249,7 +249,7 @@ export default async function ApplicationCaseStudy({ params }: { params: Promise
                   <div className="absolute inset-0 transition-opacity duration-300"
                     style={{ background: "linear-gradient(to top, rgba(10,8,18,0.80) 0%, rgba(10,8,18,0.10) 60%)" }} />
                   <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-white/70"
+                    <span className="text-[12px] md:text-[10px] font-bold uppercase tracking-[0.12em] text-white/70"
                       style={{ fontFamily: "var(--font-jakarta)" }}>{r.category}</span>
                     <div className="text-white text-[17px] font-bold mt-1"
                       style={{ fontFamily: "var(--font-jakarta)" }}>{r.label}</div>

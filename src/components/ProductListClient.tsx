@@ -64,20 +64,20 @@ function QuickViewModal({ product, onClose }: { product: Product; onClose: () =>
         <div className="w-full md:w-[45%] flex-shrink-0 bg-[#f3f4f6] relative" style={{ minHeight: 280 }}>
           <img loading="lazy" decoding="async" src={product.images[0]} alt={product.name} className="absolute inset-0 w-full h-full object-cover" />
           {product.badge && (
-            <span className="absolute top-3 left-3 text-[9.5px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full text-white"
+            <span className="absolute top-3 left-3 text-[12px] md:text-[9.5px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full text-white"
               style={{ backgroundColor: "#fabf7d" }}>
               {product.badge}
             </span>
           )}
         </div>
         <div className="flex-1 p-7 md:p-9 overflow-y-auto flex flex-col">
-          <p className="text-[10.5px] font-semibold tracking-[0.18em] uppercase mb-2" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
+          <p className="text-[12px] md:text-[10.5px] font-semibold tracking-[0.18em] uppercase mb-2" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>
             {product.collection} Collection
           </p>
           <h2 className="font-serif mb-1" style={{ fontSize: "clamp(24px,3vw,30px)", color: "var(--text-primary)" }}>
             {product.name}
           </h2>
-          <p className="text-[11.5px] tracking-[0.1em] uppercase mb-4" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>{code}</p>
+          <p className="text-[12px] md:text-[11.5px] tracking-[0.1em] uppercase mb-4" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>{code}</p>
           <p className="text-[13.5px] leading-relaxed mb-6" style={{ color: "#5A5A6A", fontFamily: "var(--font-jakarta)" }}>{product.shortDescription}</p>
           <div className="rounded-xl overflow-hidden mb-6" style={{ border: "1px solid rgba(30,30,46,0.08)" }}>
             {[
@@ -360,7 +360,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold text-[13px]" style={{ color: "var(--text-primary)" }}>Colour</h3>
           {activeColor !== "All Colours" && (
-            <button onClick={() => applyColor("All Colours")} className="text-[11px] hover:underline"
+            <button onClick={() => applyColor("All Colours")} className="text-[12px] md:text-[11px] hover:underline"
               style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>
               Clear
             </button>
@@ -393,7 +393,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
       {/* Active filter chips */}
       {hasFilter && (
         <div className="space-y-2">
-          <div className="text-[10px] uppercase tracking-[0.12em] font-semibold" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Active filters</div>
+          <div className="text-[12px] md:text-[10px] uppercase tracking-[0.12em] font-semibold" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Active filters</div>
           {activeCollection !== "All" && (
             <div className="flex items-center justify-between px-3 py-2 rounded-xl text-[12px]" style={{ backgroundColor: "rgba(133,173,220,0.10)", border: "1px solid rgba(133,173,220,0.2)" }}>
               <span className="font-semibold" style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}>{activeCollection}</span>
@@ -412,7 +412,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
               <button onClick={() => applyFinish("All Finishes")} className="text-[13px] hover:opacity-60" style={{ color: "#9B9BB0" }}>×</button>
             </div>
           )}
-          <button onClick={clearAll} className="text-[11px] w-full text-left hover:underline mt-1" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Clear all ×</button>
+          <button onClick={clearAll} className="text-[12px] md:text-[11px] w-full text-left hover:underline mt-1" style={{ color: "#9B9BB0", fontFamily: "var(--font-jakarta)" }}>Clear all ×</button>
         </div>
       )}
     </>
@@ -487,14 +487,14 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                         <img loading="lazy" decoding="async" src={product.images[0]} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       </Link>
                       <div className="absolute top-3.5 left-3.5 z-10 pointer-events-none">
-                        <span className="text-[9.5px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full"
+                        <span className="text-[12px] md:text-[9.5px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-full"
                           style={{ background: "rgba(255,255,255,0.88)", backdropFilter: "blur(8px)", color: "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>
                           {product.collection}
                         </span>
                       </div>
                       {product.badge && (
                         <div className="absolute top-3.5 right-3.5 z-10 pointer-events-none">
-                          <span className="text-[9.5px] uppercase tracking-wider font-bold px-2.5 py-1.5 rounded-full text-white"
+                          <span className="text-[12px] md:text-[9.5px] uppercase tracking-wider font-bold px-2.5 py-1.5 rounded-full text-white"
                             style={{ backgroundColor: "#fabf7d", fontFamily: "var(--font-jakarta)" }}>
                             {product.badge}
                           </span>
@@ -507,7 +507,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                         </Link>
                         <div className="flex items-center gap-2 transform translate-y-3 group-hover:translate-y-0 transition-all duration-300 pointer-events-auto" style={{ transitionDelay: "40ms" }}>
                           <button onClick={() => setQuickView(product)}
-                            className="flex items-center gap-1.5 bg-white/20 hover:bg-white/35 backdrop-blur-sm text-white rounded-full px-3.5 py-2 text-[10.5px] font-semibold tracking-wide transition-all border border-white/30"
+                            className="flex items-center gap-1.5 bg-white/20 hover:bg-white/35 backdrop-blur-sm text-white rounded-full px-3.5 py-2 text-[12px] md:text-[10.5px] font-semibold tracking-wide transition-all border border-white/30"
                             style={{ fontFamily: "var(--font-jakarta)" }}>
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
@@ -555,7 +555,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
         <ListFilter className="w-3.5 h-3.5" />
         Filters
         {activeFilterCount > 0 && (
-          <span className="flex items-center justify-center rounded-full text-[10px] font-bold" style={{ width: 17, height: 17, background: "white", color: "#85addc" }}>
+          <span className="flex items-center justify-center rounded-full text-[12px] md:text-[10px] font-bold" style={{ width: 17, height: 17, background: "white", color: "#85addc" }}>
             {activeFilterCount}
           </span>
         )}

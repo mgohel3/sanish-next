@@ -171,7 +171,7 @@ export default function Popup() {
           </div>
 
           <div
-            className="text-[10.5px] font-semibold tracking-[0.2em] uppercase mb-3"
+            className="text-[12px] md:text-[10.5px] font-semibold tracking-[0.2em] uppercase mb-3"
             style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}
           >
             Have a Project?
@@ -268,7 +268,7 @@ export default function Popup() {
                 {submitting ? "Submitting…" : submitLabel}
               </Button>
             </div>
-            <p className="text-center text-[11px] mt-1" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
+            <p className="text-center text-[12px] md:text-[11px] mt-1" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
               We typically respond within 24 hours.
             </p>
           </form>

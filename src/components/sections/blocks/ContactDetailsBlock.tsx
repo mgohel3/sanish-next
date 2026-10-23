@@ -40,7 +40,7 @@ export default async function ContactDetailsBlock({ content = {} }: { content?: 
                       <MapPin className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">
+                      <h4 className="text-[12px] md:text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">
                         Address
                       </h4>
                       <p className="text-[15px] text-[var(--text-primary)] leading-[1.6] whitespace-pre-line">
@@ -56,7 +56,7 @@ export default async function ContactDetailsBlock({ content = {} }: { content?: 
                       <Phone className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">
+                      <h4 className="text-[12px] md:text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">
                         Phone
                       </h4>
                       <p className="text-[15px] text-[var(--text-primary)] leading-[1.6]">
@@ -79,7 +79,7 @@ export default async function ContactDetailsBlock({ content = {} }: { content?: 
                       <Mail className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">
+                      <h4 className="text-[12px] md:text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">
                         Email
                       </h4>
                       <p className="text-[15px] text-[var(--text-primary)] leading-[1.6]">

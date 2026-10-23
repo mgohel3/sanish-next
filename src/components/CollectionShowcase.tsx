@@ -150,7 +150,7 @@ export default function CollectionShowcase() {
                   />
                   <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,8,18,0.45) 0%, transparent 55%)" }} />
                   <span
-                    className="absolute top-5 left-5 text-[10px] font-bold uppercase tracking-[0.14em] px-3 py-1.5 rounded-full"
+                    className="absolute top-5 left-5 text-[12px] md:text-[10px] font-bold uppercase tracking-[0.14em] px-3 py-1.5 rounded-full"
                     style={{ backgroundColor: "#fabf7d", color: "#24262b", fontFamily: "var(--font-jakarta)" }}
                   >
                     {col.category}

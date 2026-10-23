@@ -203,7 +203,7 @@ export default function Header() {
                   }}
                 >
                   <style>{`@keyframes dropIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}`}</style>
-                  <div className="px-3 pt-2 pb-1.5 text-[9px] uppercase tracking-[0.18em] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                  <div className="px-3 pt-2 pb-1.5 text-[12px] md:text-[9px] uppercase tracking-[0.18em] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                     Product Range
                   </div>
                   {[
@@ -222,7 +222,7 @@ export default function Header() {
                           style={{ color: pathname.startsWith(item.href) ? "var(--accent-blue)" : "var(--text-primary)", fontFamily: "var(--font-jakarta)" }}>
                           {item.label}
                         </div>
-                        <div className="text-[10.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{item.sub}</div>
+                        <div className="text-[12px] md:text-[10.5px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{item.sub}</div>
                       </div>
                     </Link>
                   ))}
@@ -318,7 +318,7 @@ export default function Header() {
                 </ul>
                 <Link
                   href={megaConfig.basePath}
-                  className="flex items-center gap-2 mt-5 px-3 text-[11.5px] font-semibold transition-colors duration-200"
+                  className="flex items-center gap-2 mt-5 px-3 text-[12px] md:text-[11.5px] font-semibold transition-colors duration-200"
                   style={{ color: megaConfig.accent, fontFamily: "var(--font-jakarta)" }}
                   onClick={() => setActiveMega(null)}
                 >
@@ -338,7 +338,7 @@ export default function Header() {
                 <div className="flex gap-4">
                   {/* Design Type */}
                   <div className="flex-1">
-                    <div className="px-3 mb-2 text-[9.5px] font-bold uppercase tracking-[0.18em]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                    <div className="px-3 mb-2 text-[12px] md:text-[9.5px] font-bold uppercase tracking-[0.18em]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                       Design Type
                     </div>
                     <ul className="space-y-0.5">
@@ -361,7 +361,7 @@ export default function Header() {
 
                   {/* Finish */}
                   <div className="flex-1">
-                    <div className="px-3 mb-2 text-[9.5px] font-bold uppercase tracking-[0.18em]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                    <div className="px-3 mb-2 text-[12px] md:text-[9.5px] font-bold uppercase tracking-[0.18em]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                       Finish
                     </div>
                     <ul className="space-y-0.5">
@@ -396,7 +396,7 @@ export default function Header() {
 
                 <div className="relative z-10 p-7 h-full flex flex-col justify-between" style={{ minHeight: "320px" }}>
                   <div>
-                    <div className="inline-block text-[9.5px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 mb-4"
+                    <div className="inline-block text-[12px] md:text-[9.5px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 mb-4"
                       style={{ backgroundColor: "rgba(255,255,255,0.15)", color: "white", borderRadius: "999px", fontFamily: "var(--font-jakarta)" }}>
                       FEATURED
                     </div>
@@ -410,7 +410,7 @@ export default function Header() {
                   <div className="flex flex-col gap-4">
                     <Link
                       href={`${megaConfig.basePath}?collection=${megaConfig.collections[featuredIdx]?.slug ?? ""}`}
-                      className="flex items-center gap-2 text-[11px] font-semibold text-white uppercase tracking-[0.14em] transition-opacity hover:opacity-80 w-fit"
+                      className="flex items-center gap-2 text-[12px] md:text-[11px] font-semibold text-white uppercase tracking-[0.14em] transition-opacity hover:opacity-80 w-fit"
                       style={{ fontFamily: "var(--font-jakarta)" }}
                       onClick={() => setActiveMega(null)}
                     >
@@ -438,16 +438,16 @@ export default function Header() {
 
             {/* Bottom bar */}
             <div className="mt-8 pt-6 border-t flex items-center gap-6 flex-wrap" style={{ borderColor: "rgba(30,30,46,0.07)" }}>
-              <span className="text-[11px] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+              <span className="text-[12px] md:text-[11px] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                 {settings.designs_count || "800+"} Designs Available
               </span>
-              <span className="text-[11px] text-gray-200">•</span>
+              <span className="text-[12px] md:text-[11px] text-gray-200">•</span>
               {[
                 { label: "Find a Dealer", href: "/find-a-dealer" },
                 { label: "Applications",  href: "/applications"  },
               ].map((l) => (
                 <Link key={l.label} href={l.href}
-                  className="text-[11.5px] font-medium hover:text-[var(--accent-blue)] transition-colors"
+                  className="text-[12px] md:text-[11.5px] font-medium hover:text-[var(--accent-blue)] transition-colors"
                   style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}
                   onClick={() => setActiveMega(null)}
                 >
@@ -498,7 +498,7 @@ export default function Header() {
             >
               <div>
                 <div className="text-[16px] font-semibold" style={{ fontFamily: "var(--font-jakarta)", color: "var(--text-primary)" }}>{item.label}</div>
-                {item.sub && <div className="text-[11px] mt-0.5" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{item.sub}</div>}
+                {item.sub && <div className="text-[12px] md:text-[11px] mt-0.5" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>{item.sub}</div>}
               </div>
               <svg className="w-4 h-4 mt-1 opacity-25" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                 <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />

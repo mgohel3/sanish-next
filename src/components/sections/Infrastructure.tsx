@@ -46,18 +46,18 @@ export default function Infrastructure() {
               <div className="grid grid-cols-2 gap-8">
                 <div>
                   <div className="text-3xl font-serif text-[var(--accent-blue)] mb-1">2M+</div>
-                  <div className="text-[11px] uppercase tracking-wider text-[var(--text-secondary)]">Sheets<br/>Annually</div>
+                  <div className="text-[12px] md:text-[11px] uppercase tracking-wider text-[var(--text-secondary)]">Sheets<br/>Annually</div>
                 </div>
                 <div>
                   <div className="text-3xl font-serif text-[var(--accent-blue)] mb-1">50+</div>
-                  <div className="text-[11px] uppercase tracking-wider text-[var(--text-secondary)]">Countries<br/>Exported</div>
+                  <div className="text-[12px] md:text-[11px] uppercase tracking-wider text-[var(--text-secondary)]">Countries<br/>Exported</div>
                 </div>
               </div>
             </div>
           </div>
           
           <div className="flex-1">
-            <div className="infra-fade text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-4 font-medium">
+            <div className="infra-fade text-[12px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-4 font-medium">
               World-Class Infrastructure
             </div>
             <h2 className="infra-fade font-serif text-[clamp(32px,4vw,48px)] leading-[1.2] text-[var(--text-primary)] mb-8">

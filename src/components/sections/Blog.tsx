@@ -63,14 +63,14 @@ export default function Blog({ content = {}, posts = [] }: { content?: HeadingLi
                 <img loading="lazy" decoding="async" src={post.image || FALLBACK_IMAGE} alt={post.imageAlt || post.title} className="img-premium w-full h-full object-cover" />
                 {/* Category pill overlay */}
                 {post.categories[0] && (
-                  <div className="absolute top-4 left-4 px-3 py-1.5 text-white text-[9px] uppercase tracking-[0.16em] font-semibold"
+                  <div className="absolute top-4 left-4 px-3 py-1.5 text-white text-[12px] md:text-[9px] uppercase tracking-[0.16em] font-semibold"
                     style={{ backgroundColor: ACCENT, borderRadius: "999px" }}>
                     {post.categories[0].name}
                   </div>
                 )}
               </div>
 
-              <div className="flex items-center gap-3 text-[10.5px] uppercase tracking-wider mb-3" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+              <div className="flex items-center gap-3 text-[12px] md:text-[10.5px] uppercase tracking-wider mb-3" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                 <span className="w-1 h-1 rounded-full" style={{ backgroundColor: ACCENT }} />
                 <span>{formatBlogDate(post.date)}</span>
               </div>

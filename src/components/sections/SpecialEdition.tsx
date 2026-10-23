@@ -85,7 +85,7 @@ export default function SpecialEdition({ content = {} }: { content?: SpecialEdit
             </p>
             <div className="flex flex-wrap gap-3 mb-10">
               {tags.map((tag) => (
-                <span key={tag} className="text-[11px] font-semibold px-4 py-2 rounded-full border"
+                <span key={tag} className="text-[12px] md:text-[11px] font-semibold px-4 py-2 rounded-full border"
                   style={{ color: "var(--accent-blue)", borderColor: "var(--accent-blue)", fontFamily: "var(--font-jakarta)", opacity: 0.85 }}>
                   {tag}
                 </span>
@@ -108,7 +108,7 @@ export default function SpecialEdition({ content = {} }: { content?: SpecialEdit
             {/* Bottom gradient label */}
             <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,8,18,0.55) 0%, transparent 55%)" }} />
             <div className="absolute bottom-0 left-0 right-0 p-8">
-              <div className="text-[10px] uppercase tracking-[0.18em] text-white/60 mb-1"
+              <div className="text-[12px] md:text-[10px] uppercase tracking-[0.18em] text-white/60 mb-1"
                 style={{ fontFamily: headingFontFamily || "var(--font-jakarta)" }}>
                 {imageKicker}
               </div>

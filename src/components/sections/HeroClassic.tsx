@@ -254,7 +254,7 @@ export default function HeroClassic() {
         <div className="hc2-btns flex flex-wrap items-center gap-4 mb-12">
           <Link
             href="/#products"
-            className="group relative overflow-hidden flex items-center gap-2.5 text-white text-[11px] font-semibold px-7 py-3.5 transition-all duration-400"
+            className="group relative overflow-hidden flex items-center gap-2.5 text-white text-[12px] md:text-[11px] font-semibold px-7 py-3.5 transition-all duration-400"
             style={{
               backgroundColor: slide.accent,
               borderRadius: "999px",
@@ -282,7 +282,7 @@ export default function HeroClassic() {
 
           <Link
             href="/#about"
-            className="group flex items-center gap-2 text-[11px] font-semibold transition-all duration-400"
+            className="group flex items-center gap-2 text-[12px] md:text-[11px] font-semibold transition-all duration-400"
             style={{
               color: "#1E1E2E",
               fontFamily: "var(--font-jakarta)",
@@ -314,7 +314,7 @@ export default function HeroClassic() {
                 style={{ fontFamily: "var(--font-jakarta)", color: slide.accent, transition: "color 600ms ease" }}>
                 {s.v}
               </div>
-              <div className="text-[9px] uppercase tracking-[0.18em] font-semibold"
+              <div className="text-[12px] md:text-[9px] uppercase tracking-[0.18em] font-semibold"
                 style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                 {s.l}
               </div>
@@ -356,7 +356,7 @@ export default function HeroClassic() {
 
         {/* Slide counter — top right */}
         <div className="absolute top-6 right-6 z-20">
-          <span className="text-[11px] font-semibold tabular-nums"
+          <span className="text-[12px] md:text-[11px] font-semibold tabular-nums"
             style={{ color: "#1E1E2E", fontFamily: "var(--font-jakarta)", opacity: 0.5 }}>
             <span style={{ color: slide.accent, opacity: 1 }}>{String(current + 1).padStart(2, "0")}</span>
             {" "}/{" "}{String(slides.length).padStart(2, "0")}
@@ -364,7 +364,7 @@ export default function HeroClassic() {
         </div>
 
         {/* Accent tag pill — floats over image */}
-        <div className="absolute top-6 left-8 z-20 px-4 py-2 text-white text-[9.5px] uppercase tracking-[0.18em] font-semibold"
+        <div className="absolute top-6 left-8 z-20 px-4 py-2 text-white text-[12px] md:text-[9.5px] uppercase tracking-[0.18em] font-semibold"
           style={{
             backgroundColor: slide.accent,
             borderRadius: "999px",
@@ -451,7 +451,7 @@ export default function HeroClassic() {
           <div className="absolute top-0 left-0 w-full h-1/2"
             style={{ backgroundColor: slide.accent, animation: "hc2Cue 2.2s cubic-bezier(0.4,0,0.6,1) infinite", transition: "background-color 600ms ease" }} />
         </div>
-        <span className="text-[8px] uppercase tracking-[0.3em] font-semibold"
+        <span className="text-[12px] md:text-[8px] uppercase tracking-[0.3em] font-semibold"
           style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>Scroll</span>
       </div>
 

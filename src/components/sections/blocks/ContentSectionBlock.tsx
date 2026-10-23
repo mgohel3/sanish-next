@@ -18,7 +18,7 @@ export default function ContentSectionBlock({ content = {} }: { content?: Conten
   const copyEl = (
     <div>
       {eyebrow && (
-        <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-4 font-medium">
+        <div className="text-[12px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-4 font-medium">
           {eyebrow}
         </div>
       )}

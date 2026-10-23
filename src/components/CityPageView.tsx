@@ -61,22 +61,22 @@ export default function CityPageView({
                 className="rounded-[24px] p-8 border border-[var(--color-border-subtle)] bg-white"
                 style={{ boxShadow: "0 12px 40px rgba(30,30,46,0.06)" }}
               >
-                <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-6 font-medium">
+                <div className="text-[12px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-6 font-medium">
                   Quick Facts
                 </div>
                 <dl className="space-y-5">
                   <div>
-                    <dt className="text-[11px] text-[var(--text-secondary)] mb-1">Serving</dt>
+                    <dt className="text-[12px] md:text-[11px] text-[var(--text-secondary)] mb-1">Serving</dt>
                     <dd className="text-[15px] font-medium text-[var(--text-primary)]">
                       {d.city}{d.state ? `, ${d.state}` : ""}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-[11px] text-[var(--text-secondary)] mb-1">Product Range</dt>
+                    <dt className="text-[12px] md:text-[11px] text-[var(--text-secondary)] mb-1">Product Range</dt>
                     <dd className="text-[15px] font-medium text-[var(--text-primary)]">{d.product_type}</dd>
                   </div>
                   <div>
-                    <dt className="text-[11px] text-[var(--text-secondary)] mb-1">Dealer Network</dt>
+                    <dt className="text-[12px] md:text-[11px] text-[var(--text-secondary)] mb-1">Dealer Network</dt>
                     <dd className="text-[15px] font-medium text-[var(--text-primary)]">Authorised local dealers</dd>
                   </div>
                 </dl>
@@ -94,7 +94,7 @@ export default function CityPageView({
         <section className="home-section--compact bg-[var(--bg-secondary)] border-y border-[var(--color-border-subtle)]">
           <div className="site-container">
             <div className="section-header">
-              <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] font-medium">
+              <div className="text-[12px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] font-medium">
                 Why Sanish
               </div>
               <h2 style={TITLE_STYLE}>Why Choose Sanish {d.product_type} in {d.city}?</h2>
@@ -128,7 +128,7 @@ export default function CityPageView({
         <section className="home-section--compact bg-[var(--bg-primary)]">
           <div className="site-container">
             <div className="section-header">
-              <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] font-medium">
+              <div className="text-[12px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] font-medium">
                 Testimonials
               </div>
               <h2 style={TITLE_STYLE}>What {d.city} Customers Say</h2>
@@ -164,7 +164,7 @@ export default function CityPageView({
           <div className="site-container">
             <div className="max-w-[760px]">
               <div className="section-header">
-                <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] font-medium">
+                <div className="text-[12px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] font-medium">
                   FAQ
                 </div>
                 <h2 style={TITLE_STYLE}>Frequently Asked Questions</h2>
@@ -192,7 +192,7 @@ export default function CityPageView({
         <section className="home-section--compact bg-[var(--bg-primary)]">
           <div className="site-container">
             <div className="section-header">
-              <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] font-medium">
+              <div className="text-[12px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] font-medium">
                 Nearby
               </div>
               <h2 style={TITLE_STYLE}>Also Serving</h2>

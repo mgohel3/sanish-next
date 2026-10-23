@@ -14,10 +14,10 @@ export default function TextureSwatches({
 
   return (
     <div className="mb-8">
-      <p className="text-[10.5px] font-semibold tracking-[0.18em] uppercase mb-1" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+      <p className="text-[12px] md:text-[10.5px] font-semibold tracking-[0.18em] uppercase mb-1" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
         Available Textures
       </p>
-      <p className="text-[11.5px] mb-3" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
+      <p className="text-[12px] md:text-[11.5px] mb-3" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>
         Click a swatch to view full size
       </p>
       <div className="flex flex-wrap gap-4">

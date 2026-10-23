@@ -13,7 +13,7 @@ export default function RelatedPosts({ posts }: { posts: BlogPostSummary[] }) {
     >
       <div className="site-container">
         <p
-          className="text-[10.5px] font-semibold tracking-[0.2em] uppercase mb-2"
+          className="text-[12px] md:text-[10.5px] font-semibold tracking-[0.2em] uppercase mb-2"
           style={{ color: "#85addc", fontFamily: "var(--font-jakarta)" }}
         >
           Keep Reading
@@ -40,7 +40,7 @@ export default function RelatedPosts({ posts }: { posts: BlogPostSummary[] }) {
                 )}
                 {post.categories[0] && (
                   <span
-                    className="absolute top-3 left-3 text-[9px] font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full text-white"
+                    className="absolute top-3 left-3 text-[12px] md:text-[9px] font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full text-white"
                     style={{ backgroundColor: "#fabf7d" }}
                   >
                     {post.categories[0].name}
@@ -48,7 +48,7 @@ export default function RelatedPosts({ posts }: { posts: BlogPostSummary[] }) {
                 )}
               </div>
               <p
-                className="text-[10.5px] uppercase tracking-wider mb-2"
+                className="text-[12px] md:text-[10.5px] uppercase tracking-wider mb-2"
                 style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}
               >
                 {formatBlogDate(post.date)}

@@ -43,7 +43,7 @@ export default async function GalleryDetailPage({ params }: { params: Promise<{ 
       {/* ── Page header (plain — no cover image) ── */}
       <section className="pt-32 pb-10 bg-white border-b border-[var(--color-border-subtle)]">
         <div className="site-container">
-          <nav className="flex items-center gap-2 text-[11px] text-[var(--text-secondary)] mb-6" style={{ fontFamily: "var(--font-jakarta)" }}>
+          <nav className="flex items-center gap-2 text-[12px] md:text-[11px] text-[var(--text-secondary)] mb-6" style={{ fontFamily: "var(--font-jakarta)" }}>
             <Link href="/applications" className="hover:text-[var(--accent-blue)] transition-colors">Applications</Link>
             <span className="opacity-50">/</span>
             <Link href={`/applications/gallery/${catalogue.slug}`} className="hover:text-[var(--accent-blue)] transition-colors">{catalogue.name}</Link>
@@ -51,7 +51,7 @@ export default async function GalleryDetailPage({ params }: { params: Promise<{ 
             <span className="text-[var(--text-primary)]">Laminate #{id}</span>
           </nav>
 
-          <span className="inline-block text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full text-white mb-5"
+          <span className="inline-block text-[12px] md:text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full text-white mb-5"
             style={{ backgroundColor: "var(--accent-blue)", fontFamily: "var(--font-jakarta)" }}>
             Catalogue: {catalogue.name}
           </span>
@@ -83,7 +83,7 @@ export default async function GalleryDetailPage({ params }: { params: Promise<{ 
                 style={{ boxShadow: "0 8px 32px rgba(30,30,46,0.07)" }}>
                 <div className="px-7 py-5 border-b border-[var(--color-border-subtle)]"
                   style={{ backgroundColor: "rgba(133,173,220,0.08)" }}>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.14em]"
+                  <div className="text-[12px] md:text-[11px] font-bold uppercase tracking-[0.14em]"
                     style={{ color: "var(--accent-blue)", fontFamily: "var(--font-jakarta)" }}>
                     Product Details
                   </div>

@@ -56,7 +56,7 @@ function StaticAboutUs() {
         <div className="site-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] lg:gap-[100px] items-stretch">
             <div>
-              <div className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-4 font-medium">
+              <div className="text-[12px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--text-secondary)] mb-4 font-medium">
                 Best Laminate Company in India
               </div>
               <h2 className="font-serif text-[clamp(32px,4vw,48px)] text-[var(--text-primary)] mb-8 leading-[1.1]">
@@ -115,7 +115,7 @@ function StaticAboutUs() {
                     className="w-full h-full object-contain p-6 transition-transform duration-700 hover:scale-105"
                   />
                   <div className="absolute top-4 right-4">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1.5 rounded-full text-white"
+                    <span className="text-[12px] md:text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1.5 rounded-full text-white"
                       style={{ backgroundColor: cert.accent, fontFamily: "var(--font-jakarta)" }}>
                       Certified
                     </span>
@@ -126,7 +126,7 @@ function StaticAboutUs() {
                 <div className="px-8 py-7">
                   <div className="w-8 h-1 rounded-full mb-5" style={{ backgroundColor: cert.accent }} />
                   <h3 className="font-serif text-[22px] text-[var(--text-primary)] mb-1">{cert.title}</h3>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-4"
+                  <div className="text-[12px] md:text-[11px] font-semibold uppercase tracking-[0.12em] mb-4"
                     style={{ color: cert.accent, fontFamily: "var(--font-jakarta)" }}>
                     {cert.subtitle}
                   </div>

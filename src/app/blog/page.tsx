@@ -136,7 +136,7 @@ export default async function BlogIndexPage({ searchParams }: Props) {
                     )}
                     {post.categories[0] && (
                       <div
-                        className="absolute top-4 left-4 px-3 py-1.5 text-white text-[9px] uppercase tracking-[0.16em] font-semibold"
+                        className="absolute top-4 left-4 px-3 py-1.5 text-white text-[12px] md:text-[9px] uppercase tracking-[0.16em] font-semibold"
                         style={{ backgroundColor: "#fabf7d", borderRadius: "999px" }}
                       >
                         {post.categories[0].name}
@@ -145,7 +145,7 @@ export default async function BlogIndexPage({ searchParams }: Props) {
                   </div>
 
                   <div
-                    className="flex items-center gap-3 text-[10.5px] uppercase tracking-wider mb-3"
+                    className="flex items-center gap-3 text-[12px] md:text-[10.5px] uppercase tracking-wider mb-3"
                     style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}
                   >
                     <span

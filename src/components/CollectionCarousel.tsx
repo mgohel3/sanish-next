@@ -153,14 +153,14 @@ export default function CollectionCarousel() {
 
                   {/* Category badge — brand orange/yellow, consistent site-wide */}
                   <div className="absolute top-6 left-6">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full"
+                    <span className="text-[12px] md:text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full"
                       style={{ backgroundColor: "#fabf7d", color: "#24262b", fontFamily: "var(--font-jakarta)" }}>
                       {c.category}
                     </span>
                   </div>
 
                   {/* Slide counter */}
-                  <div className="absolute bottom-6 left-6 text-white/60 text-[11px] font-semibold"
+                  <div className="absolute bottom-6 left-6 text-white/60 text-[12px] md:text-[11px] font-semibold"
                     style={{ fontFamily: "var(--font-jakarta)" }}>
                     {pad(i + 1)} / {pad(total)}
                   </div>
@@ -168,7 +168,7 @@ export default function CollectionCarousel() {
                   {/* Thickness pill */}
                   <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm rounded-full px-4 py-1.5"
                     style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}>
-                    <span className="text-[11px] font-semibold" style={{ color: c.accent, fontFamily: "var(--font-jakarta)" }}>
+                    <span className="text-[12px] md:text-[11px] font-semibold" style={{ color: c.accent, fontFamily: "var(--font-jakarta)" }}>
                       {c.thickness}
                     </span>
                   </div>
@@ -211,7 +211,7 @@ export default function CollectionCarousel() {
                   <div className="flex flex-wrap gap-3">
                     <Link
                       href={`${c.path}?collection=${c.slug}`}
-                      className="inline-flex items-center gap-2 text-[11.5px] font-semibold uppercase tracking-[0.09em] px-7 py-3.5 text-white rounded-full transition-all duration-300 hover:-translate-y-[2px]"
+                      className="inline-flex items-center gap-2 text-[12px] md:text-[11.5px] font-semibold uppercase tracking-[0.09em] px-7 py-3.5 text-white rounded-full transition-all duration-300 hover:-translate-y-[2px]"
                       style={{
                         backgroundColor: c.accent,
                         fontFamily: "var(--font-jakarta)",
@@ -227,7 +227,7 @@ export default function CollectionCarousel() {
                     <button
                       type="button"
                       onClick={openDownload}
-                      className="inline-flex items-center gap-2 text-[11.5px] font-semibold uppercase tracking-[0.09em] px-7 py-3.5 rounded-full transition-all duration-300 hover:-translate-y-[2px] hover:bg-[var(--bg-secondary)]"
+                      className="inline-flex items-center gap-2 text-[12px] md:text-[11.5px] font-semibold uppercase tracking-[0.09em] px-7 py-3.5 rounded-full transition-all duration-300 hover:-translate-y-[2px] hover:bg-[var(--bg-secondary)]"
                       style={{
                         border: `1.5px solid ${c.accent}`,
                         color: c.accent,

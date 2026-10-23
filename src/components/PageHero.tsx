@@ -55,7 +55,7 @@ export default function PageHero({
       <div className="page-hero__overlay" />
       <div className="page-hero__content">
         {breadcrumb && breadcrumb.length > 0 && (
-          <div className="flex items-center gap-2 mb-4 text-[11px]" style={{ color: "rgba(255,255,255,0.6)" }}>
+          <div className="flex items-center gap-2 mb-4 text-[12px] md:text-[11px]" style={{ color: "rgba(255,255,255,0.6)" }}>
             {breadcrumb.map((c, i) => (
               <span key={i} className="flex items-center gap-2">
                 {i > 0 && <span>/</span>}

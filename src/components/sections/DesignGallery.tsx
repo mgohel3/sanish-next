@@ -63,7 +63,7 @@ export default function DesignGallery({ catalogues }: { catalogues: GalleryCatal
                 <img loading="lazy" decoding="async" src={c.thumbnail} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
 
                 <div className="absolute top-4 left-4">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1.5"
+                  <span className="text-[12px] md:text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1.5"
                     style={{
                       backgroundColor: "#fabf7d",
                       color: "#24262b",

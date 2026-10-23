@@ -96,7 +96,7 @@ export default async function BlogPostPage({ params, searchParams }: Props) {
 
       {/* meta row */}
       <div
-        className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] uppercase tracking-[0.14em] mb-8"
+        className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] md:text-[11px] uppercase tracking-[0.14em] mb-8"
         style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}
       >
         <span>{formatBlogDate(post.date)}</span>
@@ -119,7 +119,7 @@ export default async function BlogPostPage({ params, searchParams }: Props) {
           {post.tags.map((t) => (
             <span
               key={t.id}
-              className="text-[11.5px] px-3.5 py-1.5 rounded-full"
+              className="text-[12px] md:text-[11.5px] px-3.5 py-1.5 rounded-full"
               style={{
                 color: "var(--text-primary)",
                 border: "1px solid rgba(30,30,46,0.12)",

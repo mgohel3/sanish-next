@@ -114,7 +114,7 @@ export default function EliteCollection() {
                 {/* Tag */}
                 {card.tag && (
                   <div
-                    className="absolute top-5 right-5 z-10 px-4 py-1.5 text-white text-[9px] uppercase tracking-[0.16em] font-semibold"
+                    className="absolute top-5 right-5 z-10 px-4 py-1.5 text-white text-[12px] md:text-[9px] uppercase tracking-[0.16em] font-semibold"
                     style={{ backgroundColor: card.accent, borderRadius: "999px", boxShadow: `0 6px 18px ${card.accent}55` }}
                   >
                     {card.tag}

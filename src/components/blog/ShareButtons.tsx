@@ -68,7 +68,7 @@ export default function ShareButtons({ title }: { title: string }) {
       className="rounded-2xl p-5"
       style={{ backgroundColor: "var(--bg-secondary)", border: "1px solid var(--color-border-subtle)" }}
     >
-      <p className="text-[10px] font-semibold tracking-[0.18em] uppercase mb-3" style={{ color: "#6B6B80" }}>
+      <p className="text-[12px] md:text-[10px] font-semibold tracking-[0.18em] uppercase mb-3" style={{ color: "#6B6B80" }}>
         Share
       </p>
       <div className="flex flex-wrap gap-2">

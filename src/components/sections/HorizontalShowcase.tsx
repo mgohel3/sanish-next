@@ -153,7 +153,7 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
                   onClick={() => scrollToFilter(filter)}
                   style={{
                     fontFamily: "var(--font-heebo)",
-                    fontSize: "10px",
+                    fontSize: "12px",
                     fontWeight: 700,
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
@@ -220,7 +220,7 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
               />
               <div className="absolute bottom-0 left-0 right-0 p-7">
                 <div
-                  className="inline-block px-3 py-1 text-[9px] uppercase tracking-[0.16em] font-semibold text-white mb-3"
+                  className="inline-block px-3 py-1 text-[12px] md:text-[9px] uppercase tracking-[0.16em] font-semibold text-white mb-3"
                   style={{ backgroundColor: item.accent, borderRadius: "999px" }}
                 >
                   {item.sub}

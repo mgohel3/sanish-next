@@ -19,7 +19,7 @@ export default function CmsPreviewBanner({
       <span className="uppercase tracking-[0.12em]">CMS Preview</span>
       {status && (
         <span
-          className="rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide"
+          className="rounded-full px-2.5 py-0.5 text-[12px] md:text-[10px] font-bold uppercase tracking-wide"
           style={{ backgroundColor: "rgba(255,255,255,0.18)" }}
         >
           {status}

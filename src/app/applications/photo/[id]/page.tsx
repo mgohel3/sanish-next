@@ -39,13 +39,13 @@ export default async function ApplicationPhotoPage({ params }: { params: Promise
       {/* ── Page header ── */}
       <section className="pt-32 pb-10 bg-white border-b border-[var(--color-border-subtle)]">
         <div className="site-container">
-          <nav className="flex items-center gap-2 text-[11px] text-[var(--text-secondary)] mb-6" style={{ fontFamily: "var(--font-jakarta)" }}>
+          <nav className="flex items-center gap-2 text-[12px] md:text-[11px] text-[var(--text-secondary)] mb-6" style={{ fontFamily: "var(--font-jakarta)" }}>
             <Link href="/applications" className="hover:text-[var(--accent-blue)] transition-colors">Applications</Link>
             <span className="opacity-50">/</span>
             <span className="text-[var(--text-primary)]">{label}</span>
           </nav>
 
-          <span className="inline-block text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full text-white mb-5"
+          <span className="inline-block text-[12px] md:text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full text-white mb-5"
             style={{ backgroundColor: "var(--accent-blue)", fontFamily: "var(--font-jakarta)" }}>
             Catalogue: {photo.catalogue.name}
           </span>
@@ -79,7 +79,7 @@ export default async function ApplicationPhotoPage({ params }: { params: Promise
                 style={{ boxShadow: "0 8px 32px rgba(30,30,46,0.07)" }}>
                 <div className="px-7 py-5 border-b border-[var(--color-border-subtle)]"
                   style={{ backgroundColor: "rgba(133,173,220,0.08)" }}>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.14em]"
+                  <div className="text-[12px] md:text-[11px] font-bold uppercase tracking-[0.14em]"
                     style={{ color: "var(--accent-blue)", fontFamily: "var(--font-jakarta)" }}>
                     Product Details
                   </div>
@@ -105,7 +105,7 @@ export default async function ApplicationPhotoPage({ params }: { params: Promise
                           key={s.slug}
                           href={`/applications?space=${s.slug}`}
                           prefetch={false}
-                          className="text-[11px] font-semibold px-3 py-1 transition-colors hover:text-white hover:bg-[var(--accent-purple)] hover:border-[var(--accent-purple)]"
+                          className="text-[12px] md:text-[11px] font-semibold px-3 py-1 transition-colors hover:text-white hover:bg-[var(--accent-purple)] hover:border-[var(--accent-purple)]"
                           style={{ borderRadius: "999px", border: "1.5px solid rgba(30,30,46,0.12)", color: "var(--text-secondary)", fontFamily: "var(--font-jakarta)" }}
                         >
                           {s.name}

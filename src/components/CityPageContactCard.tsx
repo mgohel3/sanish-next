@@ -21,7 +21,7 @@ export default function CityPageContactCard({ city }: { city: string }) {
         border: "1px solid rgba(255,255,255,0.22)",
       }}
     >
-      <div className="text-[11px] tracking-[0.15em] uppercase text-white/70 mb-1">
+      <div className="text-[12px] md:text-[11px] tracking-[0.15em] uppercase text-white/70 mb-1">
         Talk to us now
       </div>
       <p className="text-[13px] text-white/80 mb-5 leading-[1.6]">

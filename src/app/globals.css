@@ -1073,4 +1073,5 @@ textarea:focus-visible {
 @media (max-width: 767px) {
   .btn-pill { font-size: 12.5px; }
   .btn-pill-sm { font-size: 12px; }
+  .eyebrow, .page-hero__eyebrow, .faq-card__index { font-size: 12px; }
 }

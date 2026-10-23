@@ -236,7 +236,7 @@ export default function MediaGalleryBlock({ content = {} }: { content?: MediaGal
                     {(e.caption || e.category) && (
                       <div className="absolute bottom-0 left-0 right-0 p-4">
                         {e.category && (
-                          <div className="text-[9.5px] font-semibold uppercase tracking-[0.12em] text-white/70" style={{ fontFamily: "var(--font-jakarta)" }}>
+                          <div className="text-[12px] md:text-[9.5px] font-semibold uppercase tracking-[0.12em] text-white/70" style={{ fontFamily: "var(--font-jakarta)" }}>
                             {e.category}
                           </div>
                         )}
@@ -302,7 +302,7 @@ export default function MediaGalleryBlock({ content = {} }: { content?: MediaGal
             {(current.caption || current.category || n > 1) && (
               <div className="mt-4 text-center text-white" style={{ fontFamily: "var(--font-jakarta)" }}>
                 {current.category && (
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">{current.category}</div>
+                  <div className="text-[12px] md:text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">{current.category}</div>
                 )}
                 {current.caption && <div className="text-[15px] font-semibold mt-0.5">{current.caption}</div>}
                 {n > 1 && open !== null && <div className="text-[12px] text-white/50 mt-1">{open + 1} / {n}</div>}

@@ -29,7 +29,7 @@ export default function CategoryApplicationsGallery({ category }: { category: Ap
 
                 {/* Post title badge — always visible, not hover-only */}
                 <div className="absolute top-4 left-4">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1.5"
+                  <span className="text-[12px] md:text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1.5"
                     style={{
                       backgroundColor: "#fabf7d",
                       color: "#24262b",
@@ -54,7 +54,7 @@ export default function CategoryApplicationsGallery({ category }: { category: Ap
                         style={{ color: category.accent, fontFamily: "var(--font-jakarta)" }}>
                         {item.finish}
                       </div>
-                      <span className="text-[11px] font-semibold text-white/70 flex items-center gap-1"
+                      <span className="text-[12px] md:text-[11px] font-semibold text-white/70 flex items-center gap-1"
                         style={{ fontFamily: "var(--font-jakarta)" }}>
                         View Case Study
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">

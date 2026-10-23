@@ -169,7 +169,7 @@ async function StaticRewards() {
                     in the header/footer); now the shared component. */}
                 <img loading="lazy" decoding="async" src="/assets/img/logo/black-logo-on-dark.svg" alt="Sanish Laminates" className="mb-8 h-[44px] w-auto" />
 
-                <div className="text-white/50 text-[11px] uppercase tracking-[0.2em] font-semibold mb-3" style={{ fontFamily: "var(--font-jakarta)" }}>
+                <div className="text-white/50 text-[12px] md:text-[11px] uppercase tracking-[0.2em] font-semibold mb-3" style={{ fontFamily: "var(--font-jakarta)" }}>
                   Sanish Rewards
                 </div>
                 <div className="text-white text-[32px] font-bold leading-tight mb-6" style={{ fontFamily: "var(--font-jakarta)" }}>
@@ -186,7 +186,7 @@ async function StaticRewards() {
                   ].map((s) => (
                     <div key={s.label} className="rounded-2xl px-4 py-3" style={{ backgroundColor: "rgba(255,255,255,0.07)" }}>
                       <div className="text-[20px] font-bold text-white mb-0.5" style={{ fontFamily: "var(--font-jakarta)" }}>{s.val}</div>
-                      <div className="text-[10px] uppercase tracking-[0.12em] text-white/50" style={{ fontFamily: "var(--font-jakarta)" }}>{s.label}</div>
+                      <div className="text-[12px] md:text-[10px] uppercase tracking-[0.12em] text-white/50" style={{ fontFamily: "var(--font-jakarta)" }}>{s.label}</div>
                     </div>
                   ))}
                 </div>
@@ -313,7 +313,7 @@ async function StaticRewards() {
         </div>
 
         <div className="site-container relative z-10 text-center">
-          <div className="text-[11px] uppercase tracking-[0.22em] font-semibold mb-4" style={{ color: "#fabf7d", fontFamily: "var(--font-jakarta)" }}>
+          <div className="text-[12px] md:text-[11px] uppercase tracking-[0.22em] font-semibold mb-4" style={{ color: "#fabf7d", fontFamily: "var(--font-jakarta)" }}>
             Start Earning Today
           </div>
           <h2 className="font-serif text-[clamp(32px,4.5vw,58px)] text-white leading-[1.08] mb-6">

@@ -59,7 +59,7 @@ function StaticContactUs() {
                       <MapPin className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">Address</h4>
+                      <h4 className="text-[12px] md:text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">Address</h4>
                       <p className="text-[15px] text-[var(--text-primary)] leading-[1.6]">
                         SAPPHIRE WOODS (INDIA) LLP<br />
                         Regd. Office: 203 Aggarwal Chamber, Sainik Vihar<br />
@@ -73,7 +73,7 @@ function StaticContactUs() {
                       <Phone className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">Phone</h4>
+                      <h4 className="text-[12px] md:text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">Phone</h4>
                       <p className="text-[15px] text-[var(--text-primary)] leading-[1.6]">
                         <a href="tel:+917027777032" className="hover:text-[var(--accent-blue)] transition-colors">(+91) 7027 777 032</a>
                       </p>
@@ -85,7 +85,7 @@ function StaticContactUs() {
                       <Mail className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">Email</h4>
+                      <h4 className="text-[12px] md:text-[11px] uppercase tracking-[0.15em] font-semibold text-[var(--text-secondary)] mb-2">Email</h4>
                       <p className="text-[15px] text-[var(--text-primary)] leading-[1.6]">
                         <a href="mailto:info@sanishlaminate.com" className="hover:text-[var(--accent-blue)] transition-colors">info@sanishlaminate.com</a><br />
                         <a href="mailto:sales@sanishlaminate.com" className="hover:text-[var(--accent-blue)] transition-colors">sales@sanishlaminate.com</a>

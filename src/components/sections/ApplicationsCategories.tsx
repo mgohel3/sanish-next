@@ -66,7 +66,7 @@ export default function ApplicationsCategories() {
 
                   {/* Permanent category badge — always visible, not hover-only */}
                   <div className="absolute top-4 left-4">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1.5"
+                    <span className="text-[12px] md:text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1.5"
                       style={{
                         backgroundColor: "#fabf7d",
                         color: "#24262b",

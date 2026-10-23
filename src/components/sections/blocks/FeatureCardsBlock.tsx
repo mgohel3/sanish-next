@@ -59,7 +59,7 @@ export default function FeatureCardsBlock({ content = {} }: { content?: FeatureC
                 )}
                 {card.subtitle && (
                   <div
-                    className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-4"
+                    className="text-[12px] md:text-[11px] font-semibold uppercase tracking-[0.12em] mb-4"
                     style={{ color: card.accent || "var(--text-secondary)", fontFamily: "var(--font-jakarta)" }}
                   >
                     {card.subtitle}

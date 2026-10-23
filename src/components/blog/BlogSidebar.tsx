@@ -19,7 +19,7 @@ export default function BlogSidebar({ post }: { post: BlogPost }) {
           className="rounded-2xl p-5"
           style={{ backgroundColor: "var(--bg-secondary)", border: "1px solid var(--color-border-subtle)" }}
         >
-          <p className="text-[10px] font-semibold tracking-[0.18em] uppercase mb-4" style={{ color: "#6B6B80" }}>
+          <p className="text-[12px] md:text-[10px] font-semibold tracking-[0.18em] uppercase mb-4" style={{ color: "#6B6B80" }}>
             Written by
           </p>
           <div className="flex items-center gap-3">
@@ -53,7 +53,7 @@ export default function BlogSidebar({ post }: { post: BlogPost }) {
         className="rounded-2xl p-5"
         style={{ backgroundColor: "var(--bg-secondary)", border: "1px solid var(--color-border-subtle)" }}
       >
-        <p className="text-[10px] font-semibold tracking-[0.18em] uppercase mb-2" style={{ color: "#6B6B80" }}>
+        <p className="text-[12px] md:text-[10px] font-semibold tracking-[0.18em] uppercase mb-2" style={{ color: "#6B6B80" }}>
           Published
         </p>
         <p className="text-[14px]" style={{ color: "var(--text-primary)" }}>
@@ -70,7 +70,7 @@ export default function BlogSidebar({ post }: { post: BlogPost }) {
           className="rounded-2xl p-5"
           style={{ backgroundColor: "var(--bg-secondary)", border: "1px solid var(--color-border-subtle)" }}
         >
-          <p className="text-[10px] font-semibold tracking-[0.18em] uppercase mb-3" style={{ color: "#6B6B80" }}>
+          <p className="text-[12px] md:text-[10px] font-semibold tracking-[0.18em] uppercase mb-3" style={{ color: "#6B6B80" }}>
             Categories
           </p>
           <ul className="flex flex-col gap-1.5">
@@ -95,14 +95,14 @@ export default function BlogSidebar({ post }: { post: BlogPost }) {
           className="rounded-2xl p-5"
           style={{ backgroundColor: "var(--bg-secondary)", border: "1px solid var(--color-border-subtle)" }}
         >
-          <p className="text-[10px] font-semibold tracking-[0.18em] uppercase mb-3" style={{ color: "#6B6B80" }}>
+          <p className="text-[12px] md:text-[10px] font-semibold tracking-[0.18em] uppercase mb-3" style={{ color: "#6B6B80" }}>
             Tags
           </p>
           <div className="flex flex-wrap gap-2">
             {tags.map((t) => (
               <span
                 key={t.id}
-                className="text-[11.5px] px-3 py-1 rounded-full"
+                className="text-[12px] md:text-[11.5px] px-3 py-1 rounded-full"
                 style={{ color: "var(--text-primary)", border: "1px solid rgba(30,30,46,0.12)" }}
               >
                 #{t.name}

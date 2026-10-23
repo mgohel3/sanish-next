@@ -33,13 +33,13 @@ export default async function CatalogueGalleryPage({ params }: { params: Promise
         <div className="site-container">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <nav className="flex items-center gap-2 text-[11px] text-[var(--text-secondary)] mb-6" style={{ fontFamily: "var(--font-jakarta)" }}>
+              <nav className="flex items-center gap-2 text-[12px] md:text-[11px] text-[var(--text-secondary)] mb-6" style={{ fontFamily: "var(--font-jakarta)" }}>
                 <Link href="/applications" className="hover:text-[var(--accent-blue)] transition-colors">Applications</Link>
                 <span className="opacity-50">/</span>
                 <span className="text-[var(--text-primary)]">{catalogue.name}</span>
               </nav>
 
-              <span className="inline-block text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full text-white mb-5"
+              <span className="inline-block text-[12px] md:text-[10px] font-bold uppercase tracking-[0.14em] px-3.5 py-1.5 rounded-full text-white mb-5"
                 style={{ backgroundColor: "var(--accent-blue)", fontFamily: "var(--font-jakarta)" }}>
                 Catalogue: {catalogue.name}
               </span>

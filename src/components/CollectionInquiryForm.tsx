@@ -93,7 +93,7 @@ export default function CollectionInquiryForm() {
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
+          <label className="block text-[12px] md:text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
             style={{ fontFamily: "var(--font-jakarta)" }}>Full Name</label>
           <input type="text" placeholder="Your full name" required
             value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -101,7 +101,7 @@ export default function CollectionInquiryForm() {
             style={{ fontFamily: "var(--font-jakarta)" }} />
         </div>
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
+          <label className="block text-[12px] md:text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
             style={{ fontFamily: "var(--font-jakarta)" }}>Email Address</label>
           <input type="email" placeholder="you@example.com" required
             value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -111,7 +111,7 @@ export default function CollectionInquiryForm() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
+          <label className="block text-[12px] md:text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
             style={{ fontFamily: "var(--font-jakarta)" }}>Contact Number</label>
           <input type="tel" placeholder="+91 00000 00000"
             value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -119,7 +119,7 @@ export default function CollectionInquiryForm() {
             style={{ fontFamily: "var(--font-jakarta)" }} />
         </div>
         <div>
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
+          <label className="block text-[12px] md:text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
             style={{ fontFamily: "var(--font-jakarta)" }}>Select Collection</label>
           <select
             value={form.collection} onChange={(e) => setForm({ ...form, collection: e.target.value })}
@@ -135,7 +135,7 @@ export default function CollectionInquiryForm() {
         </div>
       </div>
       <div>
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
+        <label className="block text-[12px] md:text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
           style={{ fontFamily: "var(--font-jakarta)" }}>Enquiry Purpose</label>
         <select
           value={form.purpose} onChange={(e) => setForm({ ...form, purpose: e.target.value })}
@@ -149,9 +149,9 @@ export default function CollectionInquiryForm() {
         </select>
       </div>
       <div>
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
+        <label className="block text-[12px] md:text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] mb-2"
           style={{ fontFamily: "var(--font-jakarta)" }}>Message</label>
-        <textarea rows={4} placeholder="Tell us about your project…"
+        <textarea rows={4} placeholder={"Enter the Product IDs You're Interested In\ne.g.,\n6001 UG\n3003 UG\n10005 AM"}
           value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
           className="w-full px-4 py-3 rounded-xl border border-[var(--color-border-subtle)] bg-white text-[14px] text-[var(--text-primary)] outline-none focus:border-[var(--accent-blue)] transition-colors resize-none"
           style={{ fontFamily: "var(--font-jakarta)" }} />

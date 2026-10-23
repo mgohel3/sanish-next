@@ -146,7 +146,7 @@ export default function Footer() {
                 style={{ outline: "none" }}
                 className="flex-1 min-w-0 bg-white px-5 py-3 text-[12px] text-[var(--text-primary)]" />
               <button
-                className="text-white px-5 py-3 text-[11px] tracking-[0.16em] uppercase font-semibold transition-colors whitespace-nowrap"
+                className="text-white px-5 py-3 text-[12px] md:text-[11px] tracking-[0.16em] uppercase font-semibold transition-colors whitespace-nowrap"
                 style={{ background: "var(--accent-blue)", fontFamily: "var(--font-heebo)" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--accent-pink)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--accent-blue)"; }}
