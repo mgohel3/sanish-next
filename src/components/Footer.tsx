@@ -1,5 +1,6 @@
 "use client";
 
+import NewsletterForm from "@/components/NewsletterForm";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useSiteSettings, useNavData } from "@/components/SiteSettingsProvider";
@@ -135,28 +136,26 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 4 — Newsletter */}
+          {/* Col 4 — Newsletter + app buttons (each can be switched off in CMS > Site Settings > Footer) */}
+          {(footer.show_newsletter !== false || footer.show_apps !== false) && (
           <div className="col-span-1 lg:col-span-1">
-            <h4 className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Stay Connected</h4>
-            <p className="text-[13px] font-normal leading-[1.7] mb-5 text-[var(--text-secondary)]">
-              {footer.newsletter_text}
-            </p>
-            <div className="flex mb-6 rounded-full overflow-hidden border border-[var(--color-border-subtle)] focus-within:border-[var(--accent-blue)] transition-colors">
-              <input type="email" placeholder="Your email address"
-                style={{ outline: "none" }}
-                className="flex-1 min-w-0 bg-white px-5 py-3 text-[12px] text-[var(--text-primary)]" />
-              <button
-                className="text-white px-5 py-3 text-[12px] md:text-[11px] tracking-[0.16em] uppercase font-semibold transition-colors whitespace-nowrap"
-                style={{ background: "var(--accent-blue)", fontFamily: "var(--font-heebo)" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--accent-pink)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--accent-blue)"; }}
-              >
-                Subscribe
-              </button>
-            </div>
-            <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-3 uppercase tracking-[0.05em]">Download App</div>
-            <StoreBadges size="sm" />
+            {footer.show_newsletter !== false && (
+              <>
+                <h4 className="text-[13px] font-semibold text-[var(--text-primary)] mb-5 uppercase tracking-[0.05em]">Stay Connected</h4>
+                <p className="text-[13px] font-normal leading-[1.7] mb-5 text-[var(--text-secondary)]">
+                  {footer.newsletter_text}
+                </p>
+                <NewsletterForm />
+              </>
+            )}
+            {footer.show_apps !== false && (
+              <>
+                <div className="text-[13px] font-semibold text-[var(--text-primary)] mb-3 uppercase tracking-[0.05em]">Download App</div>
+                <StoreBadges size="sm" />
+              </>
+            )}
           </div>
+          )}
         </div>
       </div>
 

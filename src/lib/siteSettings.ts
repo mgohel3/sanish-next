@@ -15,6 +15,8 @@ export interface SiteSettingsHeader {
 }
 
 export interface SiteSettingsFooter {
+  show_newsletter?: boolean;
+  show_apps?: boolean;
   description: string;
   copyright: string;
   newsletter_text: string;
