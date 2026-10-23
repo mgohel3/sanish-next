@@ -69,8 +69,9 @@ export default async function GalleryDetailPage({ params }: { params: Promise<{ 
 
             {/* Left: image + description */}
             <div>
-              <div className="mb-10 overflow-hidden rounded-[20px]" style={{ aspectRatio: "16/9" }}>
-                <img loading="lazy" decoding="async" src={image.src} alt={`Laminate #${id} — ${catalogue.name}`} className="w-full h-full object-cover" />
+              <div className="mb-10 overflow-hidden rounded-[20px] bg-[#f4f4f4] flex justify-center">
+                {/* Shown whole (no cropping), whatever the photo's proportions */}
+                <img src={image.src} alt={`${catalogue.name} Laminate #${id}`} className="block max-h-[78vh] w-auto max-w-full object-contain" loading="eager" fetchPriority="high" />
               </div>
               <p className="text-[16px] text-[var(--text-secondary)] leading-[1.9]" style={{ fontFamily: "var(--font-jakarta)" }}>
                 {getGalleryDescription(catalogue.name, id)}
