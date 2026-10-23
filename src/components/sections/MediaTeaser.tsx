@@ -24,8 +24,8 @@ export default async function MediaTeaser({ content = {} }: { content?: Record<s
   // Nothing to preview yet: show nothing rather than an empty box.
   if (shown.length === 0) return null;
 
+  // Soft grey-blue (same tone as Collections) so it reads as its own band below the off-white Editorial section.
   return (
-    {/* Soft grey-blue (same tone as Collections) so it reads as its own band below the off-white Editorial section */}
     <section className="home-section relative" style={{ backgroundColor: "var(--bg-secondary)" }}>
       <div className="site-container">
         <div className="home-heading-row">
