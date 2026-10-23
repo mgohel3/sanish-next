@@ -25,7 +25,8 @@ export default async function MediaTeaser({ content = {} }: { content?: Record<s
   if (shown.length === 0) return null;
 
   return (
-    <section className="home-section relative" style={{ backgroundColor: "#FAFAFA" }}>
+    {/* Soft grey-blue (same tone as Collections) so it reads as its own band below the off-white Editorial section */}
+    <section className="home-section relative" style={{ backgroundColor: "var(--bg-secondary)" }}>
       <div className="site-container">
         <div className="home-heading-row">
           <div>
