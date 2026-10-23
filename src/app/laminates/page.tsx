@@ -17,7 +17,7 @@ export async function generateMetadata() {
 const FALLBACK = {
   eyebrow: "Surface Collection",
   image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000",
-  description: "Premium decorative laminates crafted for contemporary interiors — high-gloss, matte, metallic, wood, stone and fabric designs.",
+  description: "Premium decorative laminates crafted for contemporary interiors in Wood, Marble, Solid Colour and Stone designs.",
 };
 
 export default async function LaminatesPage(
