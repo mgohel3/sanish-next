@@ -8,6 +8,8 @@ import Header from "@/components/Header";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import HorizontalShowcase from "@/components/sections/HorizontalShowcase";
+import MediaTeaser from "@/components/sections/MediaTeaser";
+import MediaGalleryBlock from "@/components/sections/blocks/MediaGalleryBlock";
 import SpecialEdition from "@/components/sections/SpecialEdition";
 import WhyUsCarousel from "@/components/sections/WhyUsCarousel";
 import Applications from "@/components/sections/Applications";
@@ -66,6 +68,8 @@ export default async function Home() {
     stats: (c) => <StatsBlock content={c} />,
     logos_strip: (c) => <LogosStripBlock content={c} />,
     video_embed: (c) => <VideoEmbedBlock content={c} />,
+    media_teaser: (c) => <MediaTeaser content={c} />,
+    media_gallery: (c) => <MediaGalleryBlock content={c} />,
   };
 
   return (
