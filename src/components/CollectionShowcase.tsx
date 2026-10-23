@@ -155,12 +155,6 @@ export default function CollectionShowcase() {
                   >
                     {col.category}
                   </span>
-                  <span
-                    className="absolute top-5 right-5 bg-white/90 backdrop-blur-sm rounded-full px-3.5 py-1.5 text-[11px] font-semibold"
-                    style={{ color: col.accent, fontFamily: "var(--font-jakarta)" }}
-                  >
-                    {col.thickness}
-                  </span>
                 </div>
 
                 {/* Content */}
