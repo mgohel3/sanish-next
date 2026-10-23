@@ -1,16 +1,17 @@
 "use client";
 
 import { useRef, useState, useEffect, useMemo, useCallback, type MouseEvent } from "react";
+import { useRouter } from "next/navigation";
 import type { HorizontalShowcaseContent } from "@/lib/homepage";
 
 const ACCENT = "#fabf7d";
 
 const DEFAULT_COLLECTIONS = [
-  { name: "S'Shades", sub: "Premium Finishes", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Shades Collection.jpg", accent: ACCENT },
-  { name: "Thre3", sub: "Exclusive Designs", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Thre3 Collection.jpg", accent: ACCENT },
-  { name: "Cool Colour", sub: "Modern Shades", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Cool Colour Collection.jpg", accent: ACCENT },
-  { name: "Perspective V4", sub: "Durable Series", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_0.8mm Collection.jpg", accent: ACCENT },
-  { name: "Thermo Laminates", sub: "Weather Resistant", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/thermocollection.jpg", accent: ACCENT },
+  { name: "S'Shades", link: "/laminates?collection=sshades", sub: "Premium Finishes", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Shades Collection.jpg", accent: ACCENT },
+  { name: "Thre3", link: "/laminates?collection=thre3", sub: "Exclusive Designs", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Thre3 Collection.jpg", accent: ACCENT },
+  { name: "Cool Colour", link: "/laminates?collection=cool-colour", sub: "Modern Shades", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_Cool Colour Collection.jpg", accent: ACCENT },
+  { name: "Perspective V4", link: "/laminates?collection=08mm", sub: "Durable Series", category: "Laminates", image: "/assets/img/material/15-08-2026/Our Collections_0.8mm Collection.jpg", accent: ACCENT },
+  { name: "Thermo Laminates", link: "/asa-sheets", sub: "Weather Resistant", category: "Thermo Laminates", image: "/assets/img/material/15-08-2026/thermocollection.jpg", accent: ACCENT },
 ];
 
 // Filter tabs; each card's category must match one of these exactly. Both lists are editable in the CMS (Home page > Collections Showcase).
@@ -25,6 +26,7 @@ function easeOutCubic(t: number) {
 
 export default function HorizontalShowcase({ content = {} }: { content?: HorizontalShowcaseContent }) {
   const heading = content.heading || "Our Collections";
+  const router = useRouter();
 
   const collections = useMemo(() => {
     if (content.collections && content.collections.length > 0) {
@@ -33,6 +35,7 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
         sub: c.sub || "",
         category: c.category || "",
         image: c.image || "",
+        link: c.link || "",
         accent: ACCENT,
       }));
     }
@@ -130,6 +133,13 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
 
   const handleCardClick = (i: number) => {
     if (dragRef.current.moved) return; // this was a drag, not a click
+    const link = collections[i]?.link;
+    if (link) {
+      // The page this card was given in the CMS (Home page > Collections Showcase > Link).
+      if (/^https?:\/\//i.test(link)) window.open(link, "_blank", "noopener");
+      else router.push(link);
+      return;
+    }
     goTo(i);
   };
 
@@ -193,6 +203,9 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
             <div
               key={`${item.name}-${i}`}
               onClick={() => handleCardClick(i)}
+              role={item.link ? "link" : undefined}
+              tabIndex={item.link ? 0 : undefined}
+              onKeyDown={(e) => { if (item.link && e.key === "Enter") handleCardClick(i); }}
               className={`group flex-shrink-0 relative cursor-pointer select-none ${i === activeIdx ? "scale-[1.03]" : ""}`}
               style={{
                 width: "clamp(240px, 28vw, 360px)",

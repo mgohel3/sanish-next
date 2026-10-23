@@ -57,6 +57,7 @@ export interface ShowcaseCollection {
   sub?: string;
   category?: string;
   image?: string;
+  link?: string;
 }
 export interface HorizontalShowcaseContent {
   heading?: string;
