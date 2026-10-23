@@ -84,7 +84,7 @@ export default function CategoryApplicationsGallery({ category }: { category: Ap
               Ready to create your space?
             </h2>
             <p className="text-[15px] text-[var(--text-secondary)]" style={{ fontFamily: "var(--font-jakarta)" }}>
-              Explore 500+ premium surface designs or speak with our design consultants.
+              Explore 800+ premium surface designs or speak with our design consultants.
             </p>
           </div>
           <div className="flex gap-3 flex-shrink-0">

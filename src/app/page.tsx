@@ -47,7 +47,7 @@ export default async function Home() {
 
   // Registry: CMS block_type → rendered section. Unknown types are skipped.
   const registry: Record<string, (c: any) => React.ReactNode> = {
-    hero: (c) => <Hero content={c} />,
+    hero: (c) => <Hero content={c} designsCount={siteSettings.designs_count} />,
     about: (c) => <About content={c} />,
     horizontal_showcase: (c) => <HorizontalShowcase content={c} />,
     special_edition: (c) => <SpecialEdition content={c} />,

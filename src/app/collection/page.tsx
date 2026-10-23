@@ -42,7 +42,7 @@ export default function CollectionPage() {
                 { title: "Extensive Range",   desc: "Designs across every finish and texture", accent: "#85addc" },
                 { title: "Curated Collections", desc: "Distinct lines for every design language", accent: "#ac8cc0" },
                 { title: "Proven Expertise",   desc: "Decades of manufacturing excellence", accent: "#f39ba2" },
-                { title: "Certified Quality",  desc: "Compliant with IS:848 safety standards", accent: "#fabf7d" },
+                { title: "Certified Quality",  desc: "Compliant with IS 2046 standards", accent: "#fabf7d" },
               ].map((s) => (
                 <div key={s.title} className="rounded-[20px] p-6 border border-[var(--color-border-subtle)]"
                   style={{ backgroundColor: `${s.accent}0d` }}>

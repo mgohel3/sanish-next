@@ -94,7 +94,7 @@ const DEMO_STACKED_SLIDE: Slide = {
 
 const SLIDE_DURATION = 6500;
 
-export default function Hero({ content }: { content?: HeroContent }) {
+export default function Hero({ content, designsCount = "800+" }: { content?: HeroContent; designsCount?: string }) {
   const [current, setCurrent] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -392,7 +392,7 @@ export default function Hero({ content }: { content?: HeroContent }) {
 
           {/* Stats */}
           <div className="flex items-start gap-10 pt-7 border-t" style={{ borderColor: "rgba(30,30,46,0.08)" }}>
-            {[{ value: "500+", label: "Designs" }, { value: "9+", label: "Years" }, { value: "18K+", label: "Clients" }].map((s) => (
+            {[{ value: designsCount, label: "Designs" }, { value: "9+", label: "Years" }, { value: "18K+", label: "Clients" }].map((s) => (
               <div key={s.label} className="h-stats">
                 <div className="font-bold text-[26px] leading-none mb-1.5" style={{ fontFamily: "var(--font-jakarta)", color: slide.accent, transition: "color 800ms ease" }}>
                   {s.value}
@@ -447,7 +447,7 @@ export default function Hero({ content }: { content?: HeroContent }) {
                 ))}
               </div>
               <div>
-                <div className="text-[12px] font-semibold" style={{ color: "#1E1E2E", fontFamily: "var(--font-jakarta)" }}>500+ Collections</div>
+                <div className="text-[12px] font-semibold" style={{ color: "#1E1E2E", fontFamily: "var(--font-jakarta)" }}>{designsCount} Designs</div>
                 <div className="text-[9px] uppercase tracking-[0.12em] mt-0.5" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>Available Now</div>
               </div>
             </div>

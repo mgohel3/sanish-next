@@ -13,7 +13,7 @@ export const metadata = {
   robots: { index: false, follow: false }, // design variant / internal page — not for search engines
   title: "Sanish Laminates | Premium Laminates for Every Surface",
   description:
-    "India's trusted laminate manufacturer — 500+ designs, ISI certified, moisture & scratch resistant. Explore decorative laminates for kitchens, wardrobes, offices & more.",
+    "India's trusted laminate manufacturer — 800+ designs, ISI certified, moisture & scratch resistant. Explore decorative laminates for kitchens, wardrobes, offices & more.",
 };
 
 export default function Home2() {

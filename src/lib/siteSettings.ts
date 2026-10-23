@@ -36,6 +36,7 @@ export interface SiteSettingsRecaptcha {
 export interface SiteSettings {
   site_name: string;
   tagline: string;
+  designs_count: string;
   logo_dark_url: string;
   logo_light_url: string;
   favicon_url: string;
@@ -63,6 +64,7 @@ export interface SiteSettings {
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   site_name: "Sanish Laminates",
   tagline: "Premium Decorative Surface Solutions",
+  designs_count: "800+",
   logo_dark_url: "/assets/img/logo/black-logo.svg",
   logo_light_url: "/assets/img/logo/footer-black-logo.svg",
   favicon_url: "/favicon.ico",

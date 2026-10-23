@@ -68,7 +68,7 @@ export const applications: ApplicationProject[] = [
       "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=900",
       "https://images.unsplash.com/photo-1604014237800-1c9102c219da?q=80&w=1400",
     ],
-    highlights: ["IS:848 fire-retardant grade", "Anti-scuff coating", "Custom cut-to-size panels"],
+    highlights: ["IS 2046 certified grade", "Anti-scuff coating", "Custom cut-to-size panels"],
   },
   {
     slug: "corporate-office-matte",
@@ -137,7 +137,7 @@ export const applications: ApplicationProject[] = [
       "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1400",
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900",
     ],
-    highlights: ["Fire-retardant IS:848 certified", "Anti-tarnish metallic coating", "Custom 22-room specification"],
+    highlights: ["IS 2046 certified, fire-retardant", "Anti-tarnish metallic coating", "Custom 22-room specification"],
   },
   {
     slug: "premium-kitchen-suede",

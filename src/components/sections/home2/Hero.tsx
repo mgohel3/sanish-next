@@ -126,7 +126,7 @@ export default function Home2Hero() {
             ))}
           </div>
           <div className="hidden md:flex items-center gap-6">
-            {["ISI Certified", "20+ Years", "500+ Designs", "Pan India"].map((b) => (
+            {["ISI Certified", "20+ Years", "800+ Designs", "Pan India"].map((b) => (
               <div key={b} className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: C.accent }} />
                 <span className="text-[11px] uppercase tracking-[0.12em]"

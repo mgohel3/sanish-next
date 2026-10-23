@@ -4,7 +4,7 @@ const ON   = "#F5F2EE";
 
 const STATS = [
   { value: "20+",   label: "Years of Manufacturing", desc: "Established since 2004" },
-  { value: "500+",  label: "Laminate Designs",        desc: "Across 12 surface categories" },
+  { value: "800+",  label: "Laminate Designs",        desc: "Across 12 surface categories" },
   { value: "1200+", label: "Dealer Network",           desc: "Across 15 Indian states" },
   { value: "8mm",   label: "Quality Thickness",        desc: "ISI 2046 certified standard" },
 ];

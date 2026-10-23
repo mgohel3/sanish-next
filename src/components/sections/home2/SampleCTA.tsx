@@ -55,7 +55,7 @@ export default function Home2SampleCTA() {
             </p>
             <div className="space-y-3">
               {[
-                "Choose from 500+ designs",
+                "Choose from 800+ designs",
                 "A4-size physical sample chips",
                 "Delivered anywhere in India",
                 "No cost, no commitment",

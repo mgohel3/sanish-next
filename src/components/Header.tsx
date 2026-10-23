@@ -439,7 +439,7 @@ export default function Header() {
             {/* Bottom bar */}
             <div className="mt-8 pt-6 border-t flex items-center gap-6 flex-wrap" style={{ borderColor: "rgba(30,30,46,0.07)" }}>
               <span className="text-[11px] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
-                500+ Designs Available
+                {settings.designs_count || "800+"} Designs Available
               </span>
               <span className="text-[11px] text-gray-200">•</span>
               {[

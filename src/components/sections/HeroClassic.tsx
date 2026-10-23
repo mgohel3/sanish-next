@@ -308,7 +308,7 @@ export default function HeroClassic() {
 
         {/* Stats */}
         <div className="flex items-start gap-10 pt-7 border-t" style={{ borderColor: "rgba(30,30,46,0.08)" }}>
-          {[{ v: "500+", l: "Designs" }, { v: "9+", l: "Years" }, { v: "18K+", l: "Clients" }].map((s) => (
+          {[{ v: "800+", l: "Designs" }, { v: "9+", l: "Years" }, { v: "18K+", l: "Clients" }].map((s) => (
             <div key={s.l} className="hc2-stats">
               <div className="font-bold text-[24px] leading-none mb-1.5"
                 style={{ fontFamily: "var(--font-jakarta)", color: slide.accent, transition: "color 600ms ease" }}>
