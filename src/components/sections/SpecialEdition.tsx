@@ -17,7 +17,7 @@ const DEFAULT_SE = {
   cta_url: "/collection",
   image: "/assets/img/material/15-08-2026/Special%20Edition_Banner.jpg",
   image_kicker: "Limited Collection",
-  image_title: "Synchro-Texture Series",
+  image_title: "Synchronised Textures",
 };
 
 export default function SpecialEdition({ content = {} }: { content?: SpecialEditionContent }) {
