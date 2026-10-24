@@ -38,6 +38,10 @@ export interface HeroSlideContent {
   cta_label?: string;
   cta_url?: string;
   image_only?: boolean;
+  /** "split" (default) | "stacked" (image on top, text below) | "image_only" */
+  layout?: string;
+  /** Switched off in the CMS: kept there, not shown on the site. */
+  hidden?: boolean;
 }
 
 export interface HeroContent {

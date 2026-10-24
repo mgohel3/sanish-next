@@ -76,22 +76,6 @@ type Slide = {
   imageOnly?: boolean; stacked?: boolean; ctaLabel?: string; ctaUrl?: string;
 };
 
-/* DEMO ONLY — "image on top (70%), content below (30%)" banner layout, shown as an extra last slide so the client can
-   review it. Remove this constant and its one use in `slides` below to drop it. */
-const DEMO_STACKED_SLIDE: Slide = {
-  id: 99,
-  image: "/assets/img/hero/slides/slide-2.jpg",
-  tag: "",
-  line1: "Image On Top,",
-  line2: "Content Below",
-  sub: "A banner layout with a large image above and a compact content strip beneath it.",
-  accent: "#ac8cc0",
-  bg: "#F4F0F8",
-  orb1: "rgba(172,140,192,0.20)",
-  orb2: "rgba(250,191,125,0.14)",
-  stacked: true,
-};
-
 const SLIDE_DURATION = 6500;
 
 export default function Hero({ content, designsCount = "800+" }: { content?: HeroContent; designsCount?: string }) {
@@ -109,26 +93,34 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
   // (accent / bg / orbs) is reused from the built-in slide at the same index.
   const slides = useMemo<Slide[]>(() => {
     const cmsSlides = content?.slides;
-    if (!cmsSlides || cmsSlides.length === 0) return [...DEFAULT_SLIDES, DEMO_STACKED_SLIDE];
-    return [...cmsSlides.map((s, i) => {
-      const style = DEFAULT_SLIDES[i % DEFAULT_SLIDES.length];
+    if (!cmsSlides || cmsSlides.length === 0) return DEFAULT_SLIDES;
+    const all = cmsSlides.map((s, i) => {
+      const style = allSlides[i % allSlides.length];
+      const layout = s.layout || (s.image_only ? "image_only" : "split");
       return {
-        id: i + 1,
-        image: s.image || style.image,
-        mobileImage: s.mobile_image || undefined,
-        tag: s.tag ?? "",
-        line1: s.line1 ?? "",
-        line2: s.line2 ?? "",
-        sub: s.sub ?? "",
-        accent: style.accent,
-        bg: style.bg,
-        orb1: style.orb1,
-        orb2: style.orb2,
-        imageOnly: !!s.image_only,
-        ctaLabel: s.cta_label || "Explore Collection",
-        ctaUrl: s.cta_url || "/collection",
+        slide: {
+          id: i + 1,
+          image: s.image || style.image,
+          mobileImage: s.mobile_image || undefined,
+          tag: s.tag ?? "",
+          line1: s.line1 ?? "",
+          line2: s.line2 ?? "",
+          sub: s.sub ?? "",
+          accent: style.accent,
+          bg: style.bg,
+          orb1: style.orb1,
+          orb2: style.orb2,
+          imageOnly: layout === "image_only",
+          stacked: layout === "stacked",
+          ctaLabel: s.cta_label || "Explore Collection",
+          ctaUrl: s.cta_url || "/collection",
+        } as Slide,
+        hidden: !!s.hidden,
       };
-    }), DEMO_STACKED_SLIDE];
+    });
+    // Banners switched off in the CMS are skipped; if every one is off, the first stays so the top of the page is never empty.
+    const shown = all.filter((x) => !x.hidden).map((x) => x.slide);
+    return shown.length ? shown : [all[0].slide];
   }, [content?.slides]);
 
   const slide = slides[current] ?? slides[0];
