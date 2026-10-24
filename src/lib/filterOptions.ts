@@ -6,15 +6,15 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
 /** The Finish/Texture and Design filter lists, managed in the CMS (Products > any product > Manage options).
  *  Laminates and Thermo have separate lists, so there is no hard-coded copy to drift out of sync. */
-export type FilterOptions = { texture: string[]; thermo_texture: string[]; design_type: string[]; thermo_design_type: string[] };
-const EMPTY: FilterOptions = { texture: [], thermo_texture: [], design_type: [], thermo_design_type: [] };
+export type FilterOptions = { texture: string[]; thermo_texture: string[]; design_type: string[]; thermo_design_type: string[]; color: string[]; color_swatches: Record<string, string> };
+const EMPTY: FilterOptions = { texture: [], thermo_texture: [], design_type: [], thermo_design_type: [], color: [], color_swatches: {} };
 
 let cache: Promise<FilterOptions> | null = null;
 
 export function useFilterOptions(): FilterOptions {
   const [opts, setOpts] = useState<FilterOptions>(EMPTY);
   useEffect(() => {
-    cache ??= fetch(`${API_BASE}/attribute-options/`).then((r) => (r.ok ? r.json() : EMPTY)).catch(() => EMPTY);
+    cache ??= fetch(`${API_BASE}/attribute-options/`).then((r) => (r.ok ? r.json().then((j) => ({ ...EMPTY, ...j })) : EMPTY)).catch(() => EMPTY);
     cache.then(setOpts);
   }, []);
   return opts;

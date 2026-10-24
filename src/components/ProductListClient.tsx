@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X, ListFilter } from "lucide-react";
-import { collections, colors, COLOR_SWATCH, type Product, type ProductCategory } from "@/lib/products";
+import { collections, colors, COLOR_SWATCH, toColorSlug, type Product, type ProductCategory } from "@/lib/products";
 import { useFilterOptions, slugify, unionList, matchSlug } from "@/lib/filterOptions";
 import PageHero from "@/components/PageHero";
 import { productHref, fetchCollections, findCollectionPdfUrl, collectionSlugForName, type CollectionMeta } from "@/lib/catalog";
@@ -20,23 +20,6 @@ const COLLECTION_SLUG_MAP: Record<string, string> = {
   "08mm":        "Perspective V4",
   fluted:        "Fluted",
   perspective:   "All",
-};
-
-const COLOR_SLUG_MAP: Record<string, string> = {
-  white: "White",
-  beige: "Beige",
-  black: "Black",
-  blue: "Blue",
-  brown: "Brown",
-  green: "Green",
-  grey: "Grey",
-  metallic: "Metallic",
-  multicolor: "Multicolor",
-  orange: "Orange",
-  pink: "Pink",
-  purple: "Purple",
-  red: "Red",
-  yellow: "Yellow",
 };
 
 
@@ -132,6 +115,8 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
   const searchParams = useSearchParams();
   const router = useRouter();
   const opts = useFilterOptions();
+  // The Colour filter is the CMS list (Products > Colour Filter); the built-in list only shows while it loads.
+  const colorList = opts.color.length ? opts.color : colors;
   // Thermo has its own Finish/Design lists; every other category uses the laminate ones; the all-products view shows both.
   const finishList = category === "Thermo Laminates" ? opts.thermo_texture : category ? opts.texture : unionList(opts.texture, opts.thermo_texture);
   const designList = category === "Thermo Laminates" ? opts.thermo_design_type : category ? opts.design_type : unionList(opts.design_type, opts.thermo_design_type);
@@ -196,7 +181,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
     const collection = colParam && COLLECTION_SLUG_MAP[colParam] !== "All" ? (COLLECTION_SLUG_MAP[colParam] ?? "All") : "All";
     const design = desParam ? desParam : null;
     const finish = matchSlug(finParam, finishList) ?? "All Finishes";
-    const color = colorParam ? (COLOR_SLUG_MAP[colorParam] ?? "All Colours") : "All Colours";
+    const color = colorParam ? (colorList.find((c) => toColorSlug(c) === colorParam) ?? "All Colours") : "All Colours";
 
     return { activeCollection: collection, activeFinish: finish, activeDesign: design, activeColor: color };
   })();
@@ -206,7 +191,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
     const params = new URLSearchParams();
     const colSlug = Object.entries(COLLECTION_SLUG_MAP).find(([, v]) => v === col)?.[0];
     const finSlug = fin !== "All Finishes" ? slugify(fin) : undefined;
-    const colorSlug = Object.entries(COLOR_SLUG_MAP).find(([, v]) => v === color)?.[0];
+    const colorSlug = color !== "All Colours" ? toColorSlug(color) : undefined;
     if (design) params.set("design", slugify(design));
     if (col !== "All" && colSlug) params.set("collection", colSlug);
     if (fin !== "All Finishes" && finSlug) params.set("finish", finSlug);
@@ -367,7 +352,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
           )}
         </div>
         <div className="flex flex-wrap gap-2.5">
-          {colors.map((color) => {
+          {colorList.map((color) => {
             const isActive = activeColor === color;
             return (
               <button
@@ -380,7 +365,7 @@ export default function ProductListClient({ category, basePath, categoryLabel, h
                 style={{
                   width: 26,
                   height: 26,
-                  background: COLOR_SWATCH[color] ?? "#ccc",
+                  background: opts.color_swatches[color] ?? COLOR_SWATCH[color] ?? "#ccc",
                   border: color === "White" ? "1px solid rgba(30,30,46,0.15)" : "1px solid rgba(30,30,46,0.08)",
                   boxShadow: isActive ? "0 0 0 2px white, 0 0 0 4px #85addc" : "none",
                 }}

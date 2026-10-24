@@ -374,6 +374,9 @@ export const designTypes: DesignType[] = ["Wood", "Stone", "Fabric", "Solid", "M
 export const productCategories: ProductCategory[] = ["Laminates", "Louvers", "Thermo Laminates"];
 export const colors: ProductColor[] = ["White", "Beige", "Black", "Blue", "Brown", "Green", "Grey", "Metallic", "Multicolor", "Orange", "Pink", "Purple", "Red", "Yellow"];
 
+/** Web-address form of a colour name ("Light Grey" -> "light-grey"), so any colour added in the CMS can be filtered. */
+export const toColorSlug = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
 /** Swatch fill (hex or gradient) shown for each colour filter option. */
 export const COLOR_SWATCH: Record<string, string> = {
   White: "#F7F6F3",
