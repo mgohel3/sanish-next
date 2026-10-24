@@ -179,10 +179,8 @@ async function StaticRewards() {
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { val: "10,000+", label: "Active Carpenters" },
-                    { val: "₹50L+",   label: "Rewards Paid Out" },
-                    { val: "5★",      label: "App Rating" },
-                    { val: "Free",    label: "To Join" },
+                    { val: "100+",  label: "Active Carpenters" },
+                    { val: "Free",  label: "To Join" },
                   ].map((s) => (
                     <div key={s.label} className="rounded-2xl px-4 py-3" style={{ backgroundColor: "rgba(255,255,255,0.07)" }}>
                       <div className="text-[20px] font-bold text-white mb-0.5" style={{ fontFamily: "var(--font-jakarta)" }}>{s.val}</div>
