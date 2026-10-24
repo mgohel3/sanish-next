@@ -372,7 +372,8 @@ export const collections = ["All", "S'Shades", "Thre3", "Cool Colour", "Fluted",
 export const finishes = ["All Finishes", "High Gloss", "Ultra Matte", "Matte", "Satin", "Suede", "Textured", "Metallic"];
 export const designTypes: DesignType[] = ["Wood", "Stone", "Fabric", "Solid", "Metallic"];
 export const productCategories: ProductCategory[] = ["Laminates", "Louvers", "Thermo Laminates"];
-export const colors: ProductColor[] = ["White", "Beige", "Black", "Blue", "Brown", "Green", "Grey", "Metallic", "Multicolor", "Orange", "Pink", "Purple", "Red", "Yellow"];
+// First-paint fallback only: the live list is Products > Colour Filter in the CMS (see useFilterOptions).
+export const colors: ProductColor[] = ["White", "Beige", "Grey", "Black", "Brown", "Blue", "Green", "Pink", "Red", "Orange", "Purple", "Yellow"];
 
 /** Web-address form of a colour name ("Light Grey" -> "light-grey"), so any colour added in the CMS can be filtered. */
 export const toColorSlug = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
