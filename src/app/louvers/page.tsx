@@ -16,7 +16,7 @@ export async function generateMetadata() {
 
 const FALLBACK = {
   eyebrow: "Architectural Surfaces",
-  image: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=80&w=2000",
+  image: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?q=65&auto=format&w=1280",
   description: "Fluted and architectural panel surfaces that transform ordinary walls into striking design statements.",
 };
 

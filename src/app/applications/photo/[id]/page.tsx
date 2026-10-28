@@ -126,7 +126,7 @@ export default async function ApplicationPhotoPage({ params }: { params: Promise
                 <p className="text-[12px] text-[var(--text-secondary)] mb-5 leading-[1.6]" style={{ fontFamily: "var(--font-jakarta)" }}>
                   Talk to our consultants about samples, specifications and pricing.
                 </p>
-                <InquireButton />
+                <InquireButton product={photoLabel(photo)} />
               </div>
             </div>
           </div>

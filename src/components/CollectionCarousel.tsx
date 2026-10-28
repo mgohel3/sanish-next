@@ -106,6 +106,7 @@ export default function CollectionCarousel() {
     window.dispatchEvent(new CustomEvent("open-inquiry-popup", {
       detail: {
         downloadAfterSubmit: true,
+        product: col.name,
         downloadUrl: `/assets/pdf/collections/${col.pdf}`,
         downloadFilename: `Sanish-${col.name.replace(/[^a-zA-Z0-9]+/g, "-")}-Catalogue.pdf`,
       },

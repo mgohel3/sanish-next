@@ -3,6 +3,10 @@ export interface NavLinkItem {
   url: string;
   open_new_tab: boolean;
   position: number;
+  subtitle?: string;
+  badge?: string;
+  icon?: string;
+  children?: { label: string; url: string; subtitle?: string; open_new_tab: boolean }[];
 }
 
 export interface NavData {
@@ -10,6 +14,9 @@ export interface NavData {
   topbar: NavLinkItem[];
   mega_quick: NavLinkItem[];
   footer_company: NavLinkItem[];
+  footer_collections?: NavLinkItem[];
+  footer_legal?: NavLinkItem[];
+  mobile: NavLinkItem[];
 }
 
 export interface CategoryItem {
@@ -43,8 +50,19 @@ export interface MegaNavData {
 // Static fallbacks — used when API is unreachable
 export const DEFAULT_NAV: NavData = {
   main: [
-    { label: "Applications", url: "/applications", open_new_tab: false, position: 1 },
-    { label: "About Us",     url: "/about-us",     open_new_tab: false, position: 2 },
+    { label: "Home", url: "/", open_new_tab: false, position: 0 },
+    {
+      label: "Products", url: "", open_new_tab: false, position: 1,
+      children: [
+        { label: "Laminates", url: "/laminates", subtitle: "Decorative surface sheets", open_new_tab: false },
+        { label: "Louvers", url: "/louvers", subtitle: "Architectural panels", open_new_tab: false },
+        { label: "Thermo Laminates", url: "/asa-sheets", subtitle: "Outdoor surfaces", open_new_tab: false },
+        { label: "View All Products", url: "/products", open_new_tab: false },
+      ],
+    },
+    { label: "Collection",   url: "/collection",   open_new_tab: false, position: 2 },
+    { label: "Applications", url: "/applications", open_new_tab: false, position: 3 },
+    { label: "About Us",     url: "/about-us",     open_new_tab: false, position: 4 },
   ],
   topbar: [
     { label: "Dealer Network",     url: "/find-a-dealer",                          open_new_tab: false, position: 1 },
@@ -57,6 +75,18 @@ export const DEFAULT_NAV: NavData = {
     { label: "Project Gallery",   url: "/applications", open_new_tab: false, position: 4 },
   ],
   footer_company: [],
+  mobile: [
+    { label: "Home", url: "/", subtitle: "", open_new_tab: false, position: 0 },
+    { label: "Laminates", url: "/laminates", subtitle: "Decorative surfaces", open_new_tab: false, position: 1 },
+    { label: "Louvers", url: "/louvers", subtitle: "Architectural panels", open_new_tab: false, position: 2 },
+    { label: "Thermo Laminates", url: "/asa-sheets", subtitle: "Outdoor surfaces", open_new_tab: false, position: 3 },
+    { label: "View All Products", url: "/products", subtitle: "Full product catalogue", open_new_tab: false, position: 4 },
+    { label: "Collection", url: "/collection", subtitle: "All collections", open_new_tab: false, position: 5 },
+    { label: "Applications", url: "/applications", subtitle: "", open_new_tab: false, position: 6 },
+    { label: "About Us", url: "/about-us", subtitle: "", open_new_tab: false, position: 7 },
+    { label: "Find a Dealer", url: "/find-a-dealer", subtitle: "Authorised dealers", open_new_tab: false, position: 8 },
+    { label: "Contact Us", url: "/contact-us", subtitle: "", open_new_tab: false, position: 9 },
+  ],
 };
 
 export const DEFAULT_CATEGORIES: CategoryItem[] = [
@@ -72,7 +102,7 @@ export const DEFAULT_CATEGORIES: CategoryItem[] = [
 ];
 
 export const DEFAULT_COLLECTIONS: CollectionItem[] = [
-  { id: 1, name: "S'Shades",    slug: "sshades",      show_in_mega_menu: true, mega_accent_color: "#ac8cc0", mega_position: 0, images: [{ url: "/assets/img/material/shadesCollection.png" }],         status: "published" },
+  { id: 1, name: "S'Shades",    slug: "sshades",      show_in_mega_menu: true, mega_accent_color: "#ac8cc0", mega_position: 0, images: [{ url: "/assets/img/material/shadesCollection.webp" }],         status: "published" },
   { id: 2, name: "Thre3",       slug: "thre3",        show_in_mega_menu: true, mega_accent_color: "#ac8cc0", mega_position: 1, images: [{ url: "/assets/img/material/threeCollection.jpg" }],          status: "published" },
   { id: 3, name: "Cool Colour", slug: "cool-colour",  show_in_mega_menu: true, mega_accent_color: "#ac8cc0", mega_position: 2, images: [{ url: "/assets/img/material/cool_colour_Collection.webp" }],  status: "published" },
   { id: 4, name: "Fluted",      slug: "fluted-col",   show_in_mega_menu: true, mega_accent_color: "#ac8cc0", mega_position: 3, images: [{ url: "/assets/img/material/flutedCollection.webp" }],        status: "published" },
@@ -110,6 +140,9 @@ export async function getMegaNavData(): Promise<MegaNavData> {
     topbar:         (navLinks.topbar        || []).length > 0 ? navLinks.topbar        : DEFAULT_NAV.topbar,
     mega_quick:     (navLinks.mega_quick    || []).length > 0 ? navLinks.mega_quick    : DEFAULT_NAV.mega_quick,
     footer_company: navLinks.footer_company || [],
+    footer_collections: navLinks.footer_collections || [],
+    footer_legal: navLinks.footer_legal || [],
+    mobile:         (navLinks.mobile        || []).length > 0 ? navLinks.mobile        : DEFAULT_NAV.mobile,
   };
 
   return { navLinks: navData, categories, collections };

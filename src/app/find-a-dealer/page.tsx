@@ -36,7 +36,7 @@ function StaticFindADealer() {
       <PageHero
         eyebrow="Dealer Network"
         title="Find a Dealer"
-        image="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?q=80&w=2000"
+        image="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?q=65&auto=format&w=1280"
         description="Connect with an authorised Sanish dealer for samples, product guidance and availability."
       />
 

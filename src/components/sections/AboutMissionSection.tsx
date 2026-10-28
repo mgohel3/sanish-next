@@ -59,7 +59,7 @@ export default function AboutMissionSection() {
         style={{ top: "-10%" }}
       >
         <img loading="lazy" decoding="async"
-          src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2000"
+          src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=65&auto=format&w=1280"
           alt=""
           aria-hidden="true"
           className="w-full h-full object-cover"

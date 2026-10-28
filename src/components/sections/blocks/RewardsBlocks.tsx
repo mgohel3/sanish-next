@@ -225,7 +225,7 @@ export function AppCtaBlock({ content = {} }: C) {
 
         {show_store_badges !== false && (
           <div className="inline-flex flex-wrap items-center justify-center gap-5">
-            <StoreBadges size="lg" variant="light" />
+            <StoreBadges size="lg" variant="light" align="center" />
           </div>
         )}
 

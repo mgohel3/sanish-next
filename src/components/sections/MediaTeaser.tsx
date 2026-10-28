@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSitePage } from "@/lib/pages";
+import MediaTeaserGrid from "./MediaTeaserGrid";
 
 type Item = { image?: string; video?: string; caption?: string; alt?: string; category?: string };
 
@@ -40,40 +41,7 @@ export default async function MediaTeaser({ content = {} }: { content?: Record<s
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-          {shown.map((it, i) => (
-            <Link
-              key={i}
-              href={ctaUrl}
-              className="group relative block overflow-hidden"
-              style={{ aspectRatio: "4 / 3", borderRadius: "20px", boxShadow: "0 16px 40px rgba(30,30,46,0.07)", backgroundColor: "#24262b" }}
-              aria-label={it.caption || it.alt || (it.video ? "Watch video" : "View photo")}
-            >
-              <img
-                loading="lazy"
-                decoding="async"
-                src={it.image}
-                alt={it.alt || it.caption || "Sanish Laminates event"}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              {it.video && (
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                    <svg className="w-5 h-5 ml-0.5" viewBox="0 0 24 24" fill="#24262b"><path d="M8 5v14l11-7z" /></svg>
-                  </span>
-                </span>
-              )}
-              {(it.caption || it.category) && (
-                <span
-                  className="absolute inset-x-0 bottom-0 p-3 sm:p-4 pt-12 text-white text-[12px] sm:text-[13px] leading-snug"
-                  style={{ background: "linear-gradient(to top, rgba(20,20,30,0.82), rgba(20,20,30,0))", fontFamily: "var(--font-jakarta)" }}
-                >
-                  <span className="line-clamp-2">{it.caption || it.category}</span>
-                </span>
-              )}
-            </Link>
-          ))}
-        </div>
+        <MediaTeaserGrid items={shown} />
       </div>
     </section>
   );

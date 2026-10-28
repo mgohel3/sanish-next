@@ -102,7 +102,7 @@ function StaticTermsConditions() {
       <PageHero
         eyebrow="Legal"
         title="Terms & Conditions"
-        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2000"
+        image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=65&auto=format&w=1280"
         description="The terms governing your use of the Sanish Laminates website and services."
       />
 

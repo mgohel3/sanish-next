@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageBlocks from "@/components/PageBlockRenderer";
 import CityPageView from "@/components/CityPageView";
-import CityPageEditBar from "@/components/CityPageEditBar";
 import { getSitePage } from "@/lib/pages";
 import { getCityPage, getCityPagePreview, getCityPageList, getCmsBaseUrl } from "@/lib/cityPages";
 import CmsPreviewBanner from "@/components/CmsPreviewBanner";
@@ -119,7 +118,6 @@ export default async function DynamicSitePage({ params, searchParams }: Props) {
         <Header />
         <CityPageView page={cityPage} siblingCities={siblingCities} />
         <Footer />
-        <CityPageEditBar cmsBaseUrl={getCmsBaseUrl()} pageId={cityPage.id} />
       </main>
     );
   }

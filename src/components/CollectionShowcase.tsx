@@ -69,8 +69,8 @@ const COLLECTIONS = [
   },
 ];
 
-function openInquiryPopup() {
-  window.dispatchEvent(new CustomEvent("open-inquiry-popup", { detail: { downloadAfterSubmit: false } }));
+function openInquiryPopup(product: string) {
+  window.dispatchEvent(new CustomEvent("open-inquiry-popup", { detail: { downloadAfterSubmit: false, product } }));
 }
 
 function openCataloguePopup(col: (typeof COLLECTIONS)[number], cmsCollections: CollectionMeta[]) {
@@ -106,7 +106,7 @@ export default function CollectionShowcase() {
         <h2 className="font-serif text-[clamp(28px,3.5vw,46px)] text-[var(--text-primary)] shrink-0" style={{ marginTop: 0 }}>
           Our Collections
         </h2>
-        <div className="flex flex-wrap gap-2 lg:justify-end" role="group" aria-label="Filter collections">
+        <div className="flex flex-nowrap gap-2 overflow-x-auto max-w-full lg:ml-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="group" aria-label="Filter collections">
           {[{ slug: "all", name: "All Collections", accent: "#85addc" }, ...COLLECTIONS].map((c) => {
             const on = active === c.slug;
             return (
@@ -115,7 +115,7 @@ export default function CollectionShowcase() {
                 type="button"
                 onClick={() => select(c.slug)}
                 aria-pressed={on}
-                className="px-4 py-2 text-[12.5px] font-semibold border transition-all duration-200 whitespace-nowrap"
+                className="shrink-0 px-4 py-2 text-[12.5px] font-semibold border transition-all duration-200 whitespace-nowrap"
                 style={{
                   backgroundColor: on ? "var(--accent-blue)" : "white", // same colour as every primary button on the site
                   color: on ? "white" : "#6B6B80",
@@ -184,7 +184,7 @@ export default function CollectionShowcase() {
                   </ul>
 
                   <div className="flex flex-wrap items-center gap-3">
-                    <Button type="button" variant="primary" onClick={openInquiryPopup}>
+                    <Button type="button" variant="primary" onClick={() => openInquiryPopup(col.name)}>
                       Enquire Now
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />

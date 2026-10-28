@@ -323,7 +323,7 @@ async function StaticRewards() {
           </p>
 
           <div className="inline-flex flex-wrap items-center justify-center gap-5">
-            <StoreBadges size="lg" variant="light" />
+            <StoreBadges size="lg" variant="light" align="center" />
           </div>
 
           <div className="mt-10 flex items-center justify-center gap-8 flex-wrap">

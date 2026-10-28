@@ -37,7 +37,7 @@ type VideoSource =
   | { kind: "vimeo"; id: string }
   | { kind: "file"; src: string };
 
-function parseVideo(url?: string): VideoSource | null {
+export function parseVideo(url?: string): VideoSource | null {
   const v = (url || "").trim();
   if (!v) return null;
   const yt = v.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/i);
@@ -56,7 +56,7 @@ function entryHref(e: { image: string; video: VideoSource | null }): string {
   return e.image;
 }
 
-interface Entry {
+export interface Entry {
   image: string;
   video: VideoSource | null;
   caption: string;
@@ -327,7 +327,7 @@ function Thumb({ entry, label }: { entry: Entry; label: string }) {
   return null;
 }
 
-function Viewer({ entry }: { entry: Entry }) {
+export function Viewer({ entry }: { entry: Entry }) {
   const v = entry.video;
   if (!v) {
     return <img loading="lazy" decoding="async" src={entry.image} alt={entry.alt || entry.caption || "Sanish Laminates gallery photo"} className="max-h-[78vh] w-auto max-w-full object-contain rounded-xl" />;

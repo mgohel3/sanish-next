@@ -1,3 +1,4 @@
+import type { FieldStyle } from "@/components/FieldStyles";
 /**
  * Home-page block data served by the CMS (`GET /api/homepage/`).
  *
@@ -40,12 +41,26 @@ export interface HeroSlideContent {
   image_only?: boolean;
   /** "split" (default) | "stacked" (image on top, text below) | "image_only" */
   layout?: string;
+  /** Video banner (layout "video"): MP4 url, text position and overlay strength. */
+  video?: string;
+  /** Image focus point (CSS object-position keyword), phone/tablet picture fit, and text/image order. */
+  image_focus?: string;
+  fit_mode?: string;
+  mobile_order?: string;
+  swap_desktop?: boolean;
+  text_align?: string;
+  text_valign?: string;
+  overlay?: string | number;
+  /** Per-field text style from the CMS toolbar, e.g. line1__style = {color, font, size, bold, ...}. */
+  tag__style?: FieldStyle; line1__style?: FieldStyle; line2__style?: FieldStyle; sub__style?: FieldStyle; cta_label__style?: FieldStyle;
   /** Switched off in the CMS: kept there, not shown on the site. */
   hidden?: boolean;
 }
 
 export interface HeroContent {
   slides?: HeroSlideContent[];
+  /** Seconds each slide stays on screen (CMS "Slide speed"). */
+  slide_seconds?: string | number;
 }
 
 export interface AboutContent {
@@ -65,6 +80,9 @@ export interface ShowcaseCollection {
 }
 export interface HorizontalShowcaseContent {
   heading?: string;
+  mobile_style?: "slider" | "strips" | "rows";
+  desktop_style?: "slider" | "strips";
+  autoplay_seconds?: string | number;
   filters?: { label?: string }[];
   collections?: ShowcaseCollection[];
 }

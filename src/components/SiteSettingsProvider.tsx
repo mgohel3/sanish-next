@@ -15,6 +15,7 @@ const DEFAULT_NAV_DATA: MegaNavData = {
     topbar: DEFAULT_NAV.topbar,
     mega_quick: DEFAULT_NAV.mega_quick,
     footer_company: [],
+    mobile: DEFAULT_NAV.mobile,
   },
   categories: DEFAULT_CATEGORIES,
   collections: DEFAULT_COLLECTIONS,

@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const cards = [
   {
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=65&auto=format&w=600",
     name: "Venetian Marble",
     sub: "High Gloss Finish",
     tag: "New",
@@ -16,7 +16,7 @@ const cards = [
     offset: false,
   },
   {
-    image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=600",
+    image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=65&auto=format&w=600",
     name: "Nordic Walnut",
     sub: "Synchronized Texture",
     tag: null,
@@ -24,7 +24,7 @@ const cards = [
     offset: true,
   },
   {
-    image: "https://images.unsplash.com/photo-1598928636135-d146006ff4be?q=80&w=600",
+    image: "https://images.unsplash.com/photo-1598928636135-d146006ff4be?q=65&auto=format&w=600",
     name: "Oxidized Brass",
     sub: "Metallic Series",
     tag: "Bestseller",

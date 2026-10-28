@@ -43,16 +43,20 @@ export default function Popup() {
   const [render, setRender] = useState(false);
   const [show, setShow] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
+  const [sent, setSent] = useState<false | { download: boolean; product: string }>(false);
   const pendingDownload = useRef<{ url: string; filename: string } | null>(null);
+  const productRef = useRef("");
 
   const openPopup = () => {
+    setSent(false);
     setRender(true);
     setTimeout(() => setShow(true), 50);
   };
 
   useEffect(() => {
     const onOpen = (e: Event) => {
-      const detail = (e as CustomEvent<{ downloadAfterSubmit?: boolean; downloadUrl?: string; downloadFilename?: string }>).detail;
+      const detail = (e as CustomEvent<{ product?: string; downloadAfterSubmit?: boolean; downloadUrl?: string; downloadFilename?: string }>).detail;
+      productRef.current = detail?.product || "";
       pendingDownload.current = detail?.downloadAfterSubmit
         ? {
             url: detail.downloadUrl || "/assets/pdf/sanish-catalogue.pdf",
@@ -93,7 +97,17 @@ export default function Popup() {
   const otherFields = fields.filter((f) => !lineFields.includes(f));
 
   const onSubmit = (e: { preventDefault: () => void }) =>
-    handleSubmit(e, undefined, () => {
+    handleSubmit(
+      e,
+      productRef.current
+        ? {
+            product_enquired: productRef.current,
+            request_type: pendingDownload.current ? "Catalogue download" : "Enquiry",
+            ...(pendingDownload.current ? { catalogue_url: pendingDownload.current.url } : {}),
+          }
+        : undefined,
+      () => {
+      const download = !!pendingDownload.current;
       if (pendingDownload.current) {
         const { url, filename } = pendingDownload.current;
         const a = document.createElement("a");
@@ -104,8 +118,11 @@ export default function Popup() {
         document.body.removeChild(a);
         pendingDownload.current = null;
       }
-      handleClose();
+      // show a thank-you first, then close by itself
+      setSent({ download, product: productRef.current });
+      setTimeout(handleClose, 6000);
     });
+
 
   return (
     <div
@@ -193,6 +210,24 @@ export default function Popup() {
 
         {/* ── Form zone ───────────────────────────────────── */}
         <div className="bg-white px-6 py-6 sm:px-9 sm:py-8">
+          {sent ? (
+            <div className="flex flex-col items-center text-center py-6" role="status" aria-live="polite">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5" style={{ background: "linear-gradient(135deg,#EBF1F8,#FBF0EA)" }}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#85addc" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+              </div>
+              <h4 className="font-serif text-[26px] leading-tight mb-2" style={{ color: "#1E1E2E" }}>Thank you!</h4>
+              <p className="text-[14px] leading-relaxed max-w-[320px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                {sent.download
+                  ? `Your ${sent.product || ""} catalogue download has started. Our team will be in touch within 24 hours.`
+                  : sent.product
+                    ? `We have received your enquiry about ${sent.product}. Our team will get back to you within 24 hours.`
+                    : "We have received your enquiry. Our team will get back to you within 24 hours."}
+              </p>
+              <button type="button" onClick={handleClose} className="mt-6 text-[13px] font-semibold underline underline-offset-4" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                Close
+              </button>
+            </div>
+          ) : (
           <form className="flex flex-col gap-3.5" onSubmit={onSubmit}>
             {lineFields.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -272,6 +307,7 @@ export default function Popup() {
               We typically respond within 24 hours.
             </p>
           </form>
+          )}
         </div>
         </div>
       </div>

@@ -222,5 +222,6 @@ export function pickRelatedPosts(
 export function formatBlogDate(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  // Fixed timezone: the server renders in UTC and visitors are mostly in IST, so without this the day differed by one (React hydration error #418)
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Kolkata" });
 }

@@ -145,7 +145,7 @@ function StaticAboutUs() {
       <section className="home-section bg-[var(--bg-secondary)] border-t border-[var(--border)] text-center relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img loading="lazy" decoding="async"
-            src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2000"
+            src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=65&auto=format&w=1280"
             alt="Ready to start"
             className="w-full h-full object-cover opacity-10"
           />

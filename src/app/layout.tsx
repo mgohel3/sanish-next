@@ -5,9 +5,11 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import SoundToggle from "@/components/SoundToggle";
 import Preloader from "@/components/Preloader";
 import Popup from "@/components/Popup";
 import { SiteSettingsProvider } from "@/components/SiteSettingsProvider";
+import SiteModeGate from "@/components/SiteModeGate";
 import { getSiteSettings } from "@/lib/siteSettings";
 import { getMegaNavData } from "@/lib/navData";
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE, absoluteUrl } from "@/lib/seo";
@@ -76,9 +78,11 @@ export default async function RootLayout({
           <CustomCursor />
           <Popup />
           <SmoothScroll>
+            <SiteModeGate />
             {children}
           </SmoothScroll>
           <WhatsAppButton />
+          <SoundToggle />
         </SiteSettingsProvider>
 
         {gtm_id && (

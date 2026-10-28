@@ -16,7 +16,7 @@ const C = {
 
 const SLIDES = [
   {
-    image:   "/assets/img/material/shadesCollection.png",
+    image:   "/assets/img/material/shadesCollection.webp",
     eyebrow: "S'Shades Collection",
     title:   "Where Colour Meets\nPrecision Craft",
     sub:     "Over 200 curated shades engineered for architects, designers and discerning homeowners.",

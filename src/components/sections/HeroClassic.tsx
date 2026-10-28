@@ -8,7 +8,7 @@ import Link from "next/link";
 const slides = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000",
+    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=65&auto=format&w=1280",
     tag: "New 2024 Collection",
     number: "01",
     line1: "Where",
@@ -21,7 +21,7 @@ const slides = [
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000",
+    image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=65&auto=format&w=1280",
     tag: "S'Shades Collection",
     number: "02",
     line1: "Crafted",
@@ -34,7 +34,7 @@ const slides = [
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=2000",
+    image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=65&auto=format&w=1280",
     tag: "Architectural Series",
     number: "03",
     line1: "Texture",
@@ -47,7 +47,7 @@ const slides = [
   },
   {
     id: 4,
-    image: "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?q=80&w=2000",
+    image: "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?q=65&auto=format&w=1280",
     tag: "Fluted Panels",
     number: "04",
     line1: "Defining",

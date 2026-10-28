@@ -16,7 +16,7 @@ export async function generateMetadata() {
 
 const FALLBACK = {
   eyebrow: "Outdoor Surfaces",
-  image: "https://images.unsplash.com/photo-1598928636135-d146006ff4be?q=80&w=2000",
+  image: "https://images.unsplash.com/photo-1598928636135-d146006ff4be?q=65&auto=format&w=1280",
   description: "Weather-resistant Thermo Laminate surfaces engineered for outdoor furniture, cladding and high-exposure architectural applications.",
 };
 

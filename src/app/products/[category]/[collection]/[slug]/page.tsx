@@ -343,7 +343,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
                 </svg>
                 WhatsApp Us
               </a>
-              <div className="flex-1"><InquireButton /></div>
+              <div className="flex-1"><InquireButton product={product.name} /></div>
             </div>
 
             <p className="text-center text-[12px] md:text-[11px] mt-3" style={{ color: "#A0A0B0", fontFamily: "var(--font-jakarta)" }}>

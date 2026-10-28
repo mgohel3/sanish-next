@@ -17,6 +17,13 @@ export interface SiteSettingsHeader {
 export interface SiteSettingsFooter {
   show_newsletter?: boolean;
   show_apps?: boolean;
+  show_social?: boolean;
+  order?: string[];
+  social_show_title?: boolean;
+  social_title?: string;
+  social_title_font?: string;
+  social_title_color?: string;
+  social_icon_size?: number;
   description: string;
   copyright: string;
   newsletter_text: string;
@@ -33,6 +40,40 @@ export interface SiteSettingsAnalytics {
 export interface SiteSettingsRecaptcha {
   version: "off" | "v2" | "v3";
   site_key: string;
+}
+
+export interface SiteSettingsSound {
+  enabled: boolean;
+  url: string;
+  show_button: boolean;
+  size: number;
+  volume: number;
+  position: "left" | "right";
+}
+
+export interface SiteSettingsMobileMenu {
+  style: "drawer_right" | "drawer_left" | "fullscreen";
+  theme: "light" | "dark" | "brand";
+  bg_color: string;
+  bg_image: string;
+  logo_url: string;
+  show_catalogue: boolean;
+  show_contact: boolean;
+  show_social?: boolean;
+  effect?: "plain" | "glass" | "liquid" | "image";
+  overlay?: number;
+  layout?: "list" | "tiles";
+  motion?: "off" | "slow" | "normal" | "fast";
+}
+
+export interface SiteSettingsSiteMode {
+  mode: "off" | "coming_soon" | "maintenance";
+  launch_at: string;
+  title: string;
+  message: string;
+  show_timer: boolean;
+  auto_open: boolean;
+  bypass_hash: string;
 }
 
 export interface SiteSettings {
@@ -61,6 +102,10 @@ export interface SiteSettings {
   footer: SiteSettingsFooter;
   analytics: SiteSettingsAnalytics;
   recaptcha: SiteSettingsRecaptcha;
+  sound?: SiteSettingsSound;
+  mobile_menu?: SiteSettingsMobileMenu;
+  site_mode?: SiteSettingsSiteMode;
+  applications?: { mobile_layout?: "grid2" | "grid1" | "grid1zoom" | "insta" };
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {

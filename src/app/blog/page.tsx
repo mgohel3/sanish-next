@@ -13,7 +13,7 @@ export async function generateMetadata() {
 export const revalidate = 300;
 
 const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1600";
+  "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=65&auto=format&w=1280";
 
 // Posts shown per page before the numbered pager kicks in.
 const PAGE_SIZE = 15;

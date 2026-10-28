@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
 }
 
 const COLLECTION_THUMB: Record<string, string> = {
-  "S'Shades":      "/assets/img/material/shadesCollection.png",
+  "S'Shades":      "/assets/img/material/shadesCollection.webp",
   "Thre3":         "/assets/img/material/threeCollection.jpg",
   "Cool Colour":   "/assets/img/material/cool_colour_Collection.webp",
   "Perspective V4": "/assets/img/material/08mmCollection.webp",

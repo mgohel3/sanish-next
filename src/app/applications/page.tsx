@@ -5,6 +5,7 @@ import PageHero from "@/components/PageHero";
 import ApplicationsCollage from "@/components/ApplicationsCollage";
 import SpaceFilterBar from "@/components/SpaceFilterBar";
 import CollagePager from "@/components/CollagePager";
+import { getSiteSettings } from "@/lib/siteSettings";
 import { getPhotos, getSpaces, interleaveByCatalogue } from "@/lib/photos";
 
 // NEW Applications layout (review copy of /applications-previous, built to the client's brief):
@@ -31,6 +32,7 @@ export default async function ApplicationsNewPage({
   searchParams: Promise<{ space?: string | string[]; page?: string | string[] }>;
 }) {
   const sp = await searchParams;
+  const settings = await getSiteSettings();
   const first = (v?: string | string[]) => (Array.isArray(v) ? v[0] : v);
 
   const [photos, spaces] = await Promise.all([getPhotos(), getSpaces()]);
@@ -80,7 +82,7 @@ export default async function ApplicationsNewPage({
               {active ? `No photos tagged ${activeName} yet.` : "Photos will appear here soon."}
             </div>
           ) : (
-            <ApplicationsCollage photos={shown} />
+            <ApplicationsCollage photos={shown} mobileLayout={settings.applications?.mobile_layout} />
           )}
 
           <CollagePager page={page} totalPages={totalPages} space={active} />

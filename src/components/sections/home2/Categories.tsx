@@ -4,7 +4,7 @@ const CATEGORIES = [
   {
     name: "High Gloss Laminates",
     desc: "Mirror-perfect surfaces with deep colour saturation. Ideal for modern kitchens and furniture.",
-    image: "/assets/img/material/shadesCollection.png",
+    image: "/assets/img/material/shadesCollection.webp",
     tag: "Most Popular",
     accent: "#fabf7d",
   },
@@ -25,7 +25,7 @@ const CATEGORIES = [
   {
     name: "Metallic Series",
     desc: "Brushed and oxidised metallic effects for contemporary commercial and hospitality spaces.",
-    image: "/assets/img/material/shadesCollection.png",
+    image: "/assets/img/material/shadesCollection.webp",
     tag: "Commercial",
     accent: "#fabf7d",
   },

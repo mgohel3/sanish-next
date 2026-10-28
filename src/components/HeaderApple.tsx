@@ -9,10 +9,10 @@ import BrandMonogram from "@/components/BrandMonogram";
 
 /* ─── Mega menu static data ─────────────────────────────── */
 const MEGA_COLLECTIONS_LAMINATES = [
-  { name: "S'Shades Premium",   slug: "sshades",      image: "/assets/img/material/shadesCollection.png",         accent: "#85addc" },
+  { name: "S'Shades Premium",   slug: "sshades",      image: "/assets/img/material/shadesCollection.webp",         accent: "#85addc" },
   { name: "Thre3",              slug: "thre3",        image: "/assets/img/material/threeCollection.jpg",          accent: "#ac8cc0" },
   { name: "Cool Colour",        slug: "cool-colour",  image: "/assets/img/material/cool_colour_Collection.webp",  accent: "#f39ba2" },
-  { name: "Perspective V4",     slug: "08mm",         image: "/assets/img/material/shadesCollection.png",         accent: "#fabf7d" },
+  { name: "Perspective V4",     slug: "08mm",         image: "/assets/img/material/shadesCollection.webp",         accent: "#fabf7d" },
 ];
 
 const MEGA_COLLECTIONS_LOUVERS = [
@@ -21,7 +21,7 @@ const MEGA_COLLECTIONS_LOUVERS = [
 ];
 
 const MEGA_COLLECTIONS_ASA = [
-  { name: "Outdoor Series",     slug: "outdoor",      image: "/assets/img/material/shadesCollection.png",         accent: "#fabf7d" },
+  { name: "Outdoor Series",     slug: "outdoor",      image: "/assets/img/material/shadesCollection.webp",         accent: "#fabf7d" },
   { name: "Weather Guard",      slug: "weather",      image: "/assets/img/material/threeCollection.jpg",          accent: "#f39ba2" },
 ];
 
@@ -56,7 +56,7 @@ const MEGA_CONFIG: Record<MegaType, {
     label: "Laminates",
     accent: "#85addc",
     collections: MEGA_COLLECTIONS_LAMINATES,
-    featuredImage: "/assets/img/material/shadesCollection.png",
+    featuredImage: "/assets/img/material/shadesCollection.webp",
   },
   louvers: {
     basePath: "/louvers",

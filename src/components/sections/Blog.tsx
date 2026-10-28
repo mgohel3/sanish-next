@@ -11,7 +11,7 @@ import { formatBlogDate } from "@/lib/blog";
 gsap.registerPlugin(ScrollTrigger);
 
 const ACCENT = "#fabf7d";
-const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=600";
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=65&auto=format&w=600";
 
 export default function Blog({ content = {}, posts = [] }: { content?: HeadingLinkContent; posts?: BlogPostSummary[] }) {
   const heading = content.heading || "Editorial";

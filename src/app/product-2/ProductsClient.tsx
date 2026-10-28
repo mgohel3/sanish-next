@@ -248,7 +248,7 @@ export default function ProductsClient({ products }: { products: Product[] }) {
       <PageHero
         eyebrow="Product Categories"
         title={pageTitle}
-        image="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=2000"
+        image="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=65&auto=format&w=1280"
         description="Browse laminates, louvers and sheet solutions through one consistent product system."
         breadcrumb={breadcrumbItems}
         rightSlot={

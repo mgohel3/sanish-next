@@ -24,6 +24,21 @@ function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3);
 }
 
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function padL(track: HTMLElement) {
+  return parseFloat(getComputedStyle(track).paddingLeft) || 0;
+}
+
+// Distance between a card and the same card in the next copy of the strip.
+function setWidthOf(track: HTMLElement, n: number) {
+  const a = track.children[0] as HTMLElement | undefined;
+  const b = track.children[n] as HTMLElement | undefined;
+  return a && b ? b.offsetLeft - a.offsetLeft : 0;
+}
+
 export default function HorizontalShowcase({ content = {} }: { content?: HorizontalShowcaseContent }) {
   const heading = content.heading || "Our Collections";
   const router = useRouter();
@@ -50,7 +65,32 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
   }, [content.filters]);
 
   // Every collection appears exactly once — autoplay wraps back to the first card instead of cloning it.
-  const displayItems = collections;
+  const n = collections.length;
+  const loop = n >= 2;
+  const displayItems = useMemo(
+    () =>
+      Array.from({ length: loop ? 3 : 1 }).flatMap((_, copy) =>
+        collections.map((item, i) => ({ item, i, clone: loop && copy !== 1, key: `${copy}-${item.name}-${i}` })),
+      ),
+    [collections, loop],
+  );
+
+  const mobileStyle = content.mobile_style === "strips" || content.mobile_style === "rows" ? content.mobile_style : "slider";
+  const desktopStyle = content.desktop_style === "strips" ? "strips" : "slider";
+  // null until mounted; phones + tablets (< 1024px) use the mobile style
+  const [wide, setWide] = useState<boolean | null>(null);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const on = () => setWide(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  const secs = Number(content.autoplay_seconds ?? 4);
+  const autoMs = Number.isFinite(secs) && secs > 0 ? secs * 1000 : 0;
+  const shownStyle = wide === null ? "slider" : wide ? desktopStyle : mobileStyle;
+  const accordionShown = shownStyle !== "slider";
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
@@ -63,32 +103,69 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
   /* ── Fixed-duration eased scroll — native scroll-behavior:smooth has no
      speed control and visibly drags on for bigger jumps, so we animate the
      scrollLeft ourselves at a fixed, snappy duration regardless of distance. ── */
-  const scrollToCard = useCallback((idx: number) => {
+  // Keep the strip inside the middle copy. Every copy looks identical, so the jump is invisible.
+  const recentre = useCallback(() => {
+    const track = trackRef.current;
+    if (!track || n < 2) return;
+    const w = setWidthOf(track, n);
+    if (!w) return;
+    const startMid = (track.children[n] as HTMLElement).offsetLeft - track.offsetLeft - padL(track);
+    if (track.scrollLeft >= startMid + w) track.scrollLeft -= w;
+    else if (track.scrollLeft < startMid) track.scrollLeft += w;
+  }, [n]);
+
+  /* ── Fixed-duration eased scroll — native scroll-behavior:smooth has no
+     speed control and visibly drags on for bigger jumps, so we animate the
+     scrollLeft ourselves. `idx` is the position in the three-copy strip. ── */
+  const scrollToCard = useCallback((idx: number, ms: number = SCROLL_DURATION, ease: (t: number) => number = easeOutCubic) => {
     const track = trackRef.current;
     const card = track?.children[idx] as HTMLElement | undefined;
     if (!track || !card) return;
     if (scrollAnimRef.current !== null) cancelAnimationFrame(scrollAnimRef.current);
 
     const start = track.scrollLeft;
-    const target = card.offsetLeft - track.offsetLeft;
+    const target = card.offsetLeft - track.offsetLeft - padL(track);
     const distance = target - start;
     if (distance === 0) return;
 
     const startTime = performance.now();
     const step = (now: number) => {
-      const t = Math.min((now - startTime) / SCROLL_DURATION, 1);
-      track.scrollLeft = start + distance * easeOutCubic(t);
-      scrollAnimRef.current = t < 1 ? requestAnimationFrame(step) : null;
+      const t = Math.min((now - startTime) / ms, 1);
+      track.scrollLeft = start + distance * ease(t);
+      if (t < 1) scrollAnimRef.current = requestAnimationFrame(step);
+      else { scrollAnimRef.current = null; recentre(); }
     };
     scrollAnimRef.current = requestAnimationFrame(step);
-  }, []);
+  }, [recentre]);
 
   const goTo = (idx: number) => {
     setActiveIdx(idx);
-    scrollToCard(idx);
+    scrollToCard(loop ? n + idx : idx);
   };
 
+  // Start on the first card of the middle copy, and re-settle after a swipe or drag stops.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || !loop || accordionShown) return;
+    const w = setWidthOf(track, n);
+    if (w && track.scrollLeft < (track.children[n] as HTMLElement).offsetLeft - track.offsetLeft - padL(track)) {
+      track.scrollLeft = (track.children[n] as HTMLElement).offsetLeft - track.offsetLeft - padL(track);
+    }
+    let idle: ReturnType<typeof setTimeout> | undefined;
+    const onScroll = () => {
+      if (idle) clearTimeout(idle);
+      idle = setTimeout(() => { if (scrollAnimRef.current === null && !dragRef.current.isDown) recentre(); }, 140);
+    };
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => { track.removeEventListener("scroll", onScroll); if (idle) clearTimeout(idle); };
+  }, [loop, n, accordionShown, wide, recentre]);
+
   const scrollToFilter = (filter: string) => {
+    if (accordionShown) {
+      const first = collections.findIndex((c) => c.category === filter);
+      if (first >= 0) setOpenIdx(first);
+      return;
+    }
     const matches = collections
       .map((c, i) => ({ ...c, i }))
       .filter((c) => c.category === filter);
@@ -100,16 +177,16 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
     goTo(next.i);
   };
 
-  /* ── Autoplay — steps forward through the real cards and, after the last one, scrolls back to the first. ── */
+  /* ── Autoplay — glides to the next card; after the last one it carries on into the first card of the next copy, forever. ── */
   useEffect(() => {
-    if (collections.length < 2) return;
+    if (collections.length < 2 || accordionShown || !autoMs) return;
     const id = setTimeout(() => {
       const next = activeIdx + 1 >= collections.length ? 0 : activeIdx + 1;
       setActiveIdx(next);
-      scrollToCard(next);
-    }, AUTOPLAY_DELAY);
+      scrollToCard(activeIdx + 1 >= collections.length ? 2 * collections.length : collections.length + next, 800, easeInOutCubic);
+    }, autoMs);
     return () => clearTimeout(id);
-  }, [activeIdx, collections.length, scrollToCard]);
+  }, [activeIdx, collections.length, scrollToCard, accordionShown, autoMs]);
 
   /* ── Click-and-drag scrolling (desktop) — touch swipe already works
      natively on the overflow-x:auto track, no extra code needed there. ── */
@@ -143,26 +220,104 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
     goTo(i);
   };
 
+  // Expanding cards: one open, the rest collapsed. Tap a collapsed one to open it; tap the open one to go to its page.
+  const accList = collections.map((c, i) => ({ c, i })); // every card shows; the badges only jump to the first card of a category
+  const accOpen = accList.some((x) => x.i === openIdx) ? (openIdx as number) : accList[0]?.i;
+  const onAcc = (i: number) => {
+    if (i !== accOpen) { setOpenIdx(i); return; }
+    handleCardClick(i);
+  };
+  useEffect(() => {
+    if (!accordionShown || !autoMs || accList.length < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setTimeout(() => {
+      const pos = accList.findIndex((x) => x.i === accOpen);
+      setOpenIdx(accList[(pos + 1) % accList.length].i);
+    }, autoMs);
+    return () => clearTimeout(id);
+  }, [accordionShown, autoMs, accOpen, accList.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const renderAcc = (kind: "strips" | "rows", wrapCls: string) => (
+    <div className={wrapCls}>
+      <div
+        className={kind === "strips" ? "flex gap-2 h-[420px] lg:h-[520px]" : "flex flex-col gap-2"}
+        style={{ padding: "4px 0 16px" }}
+      >
+        {accList.map(({ c, i }) => {
+          const open = i === accOpen;
+          return (
+            <div
+              key={`${c.name}-${i}`}
+              onClick={() => onAcc(i)}
+              tabIndex={0}
+              aria-expanded={open}
+              onKeyDown={(e) => { if (e.key === "Enter") onAcc(i); }}
+              className="relative overflow-hidden cursor-pointer select-none"
+              style={
+                kind === "strips"
+                  ? { flex: open ? 5 : 1, minWidth: 0, borderRadius: 12, backgroundColor: "#12131a", transition: "flex 0.55s cubic-bezier(.3,.7,.2,1)" }
+                  : { height: open ? 300 : 64, borderRadius: 18, backgroundColor: "#12131a", transition: "height 0.55s cubic-bezier(.3,.7,.2,1)" }
+              }
+            >
+              <img loading="lazy" decoding="async" src={c.image} alt={c.name} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.15) 55%, transparent 100%)" }} />
+              {kind === "strips" ? (
+                <span
+                  className="absolute text-white uppercase font-bold whitespace-nowrap"
+                  style={{ left: "50%", bottom: 14, writingMode: "vertical-rl", transform: "translateX(-50%) rotate(180deg)", fontSize: 11, letterSpacing: "0.14em", opacity: open ? 0 : 1, transition: "opacity .3s" }}
+                >
+                  {c.name}
+                </span>
+              ) : (
+                <span className="absolute inset-y-0 left-4 flex items-center text-white uppercase font-bold" style={{ fontSize: 12, letterSpacing: "0.14em", opacity: open ? 0 : 1, transition: "opacity .3s" }}>
+                  {c.name}
+                </span>
+              )}
+              {c.sub && (
+                <div
+                  className="absolute top-3 left-3 max-w-[calc(100%-24px)] px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] font-semibold text-white whitespace-nowrap overflow-hidden text-ellipsis"
+                  style={{ backgroundColor: c.accent, borderRadius: 999, opacity: open ? 1 : 0, transition: "opacity .4s .15s", pointerEvents: "none" }}
+                >
+                  {c.sub}
+                </div>
+              )}
+              <div
+                className="absolute bottom-0 left-0 right-0 p-4"
+                style={{ opacity: open ? 1 : 0, transform: open ? "none" : "translateY(8px)", transition: "opacity .4s .15s, transform .4s .15s", pointerEvents: open ? "auto" : "none" }}
+              >
+                <h3 className="text-white leading-[1.1]" style={{ fontSize: "clamp(20px, 2.2vw, 28px)" }}>{c.name}</h3>
+                {c.link && <span className="inline-block mt-2 text-[12px] font-semibold text-white underline">View collection</span>}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   return (
     <section className="home-section--compact relative" style={{ backgroundColor: "var(--bg-secondary)" }}>
       <div className="site-container">
 
         {/* Header — title left-aligned, filter tabs centred */}
-        <div className="mb-10">
+        <div className="mb-2 lg:mb-10">
           <h2 className="home-heading mb-6">
             {heading}
           </h2>
 
           {/* Filter Tabs */}
-          <div className="flex items-center justify-center gap-2 flex-wrap">
+          <div className="flex flex-nowrap items-center gap-2 overflow-x-auto w-fit max-w-full mx-0 lg:mx-auto px-1 py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {filters.map((filter) => {
-              const isActive = collections[activeIdx]?.category === filter;
+              const isActive = (accordionShown ? collections[accOpen ?? 0]?.category : collections[activeIdx]?.category) === filter;
               return (
                 <button
                   key={filter}
                   onClick={() => scrollToFilter(filter)}
+                  className={isActive ? "shadow-[0_6px_18px_rgba(250,191,125,0.40)] max-lg:shadow-[0_2px_5px_rgba(250,191,125,0.35)]" : "shadow-[0_2px_8px_rgba(30,30,46,0.06)] max-lg:shadow-none"}
                   style={{
                     fontFamily: "var(--font-heebo)",
+                    flexShrink: 0,
+                    whiteSpace: "nowrap",
                     fontSize: "12px",
                     fontWeight: 700,
                     letterSpacing: "0.16em",
@@ -174,7 +329,6 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
                     color: isActive ? "#fff" : "#6B6B80",
                     cursor: "pointer",
                     transition: "all 0.3s cubic-bezier(0.25,0.46,0.45,0.94)",
-                    boxShadow: isActive ? "0 6px 18px rgba(250,191,125,0.40)" : "0 2px 8px rgba(30,30,46,0.06)",
                   }}
                 >
                   {filter}
@@ -184,27 +338,33 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
           </div>
         </div>
 
+        <div className={`${mobileStyle === "slider" ? "max-lg:block" : "max-lg:hidden"} ${desktopStyle === "slider" ? "lg:block" : "lg:hidden"}`}>
         {/* Carousel — native horizontal scroll, so touch swipe works out of
             the box; mouse click-and-drag is added on top for desktop. */}
         <div
           ref={trackRef}
           className="flex gap-6 overflow-x-auto hide-scrollbar"
           style={{
-            padding: "16px",
+            // room round the cards so the enlarged active card and its glow are not cut off, with a soft fade at the two ends
+            padding: "28px 16px 36px",
+            margin: "0 -16px",
             cursor: "grab",
             WebkitOverflowScrolling: "touch",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 20px), transparent 100%)",
+            maskImage: "linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 20px), transparent 100%)",
           }}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={endDrag}
           onMouseLeave={endDrag}
         >
-          {displayItems.map((item, i) => (
+          {displayItems.map(({ item, i, clone, key }) => (
             <div
-              key={`${item.name}-${i}`}
+              key={key}
+              aria-hidden={clone || undefined}
               onClick={() => handleCardClick(i)}
               role={item.link ? "link" : undefined}
-              tabIndex={item.link ? 0 : undefined}
+              tabIndex={clone ? -1 : item.link ? 0 : undefined}
               onKeyDown={(e) => { if (item.link && e.key === "Enter") handleCardClick(i); }}
               className={`group flex-shrink-0 relative cursor-pointer select-none ${i === activeIdx ? "scale-[1.03]" : ""}`}
               style={{
@@ -223,7 +383,7 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
                   fills it completely with no letterboxing and no meaningful cropping. */}
               <img loading="lazy" decoding="async"
                 src={item.image}
-                alt={item.name}
+                alt={clone ? "" : item.name}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                 draggable={false}
               />
@@ -247,7 +407,7 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
         </div>
 
         {/* Pagination dots */}
-        <div className="flex items-center justify-center gap-2 mt-8">
+        <div className="flex items-center justify-center gap-2 mt-2">
           {collections.map((item, i) => (
             <button
               key={item.name}
@@ -267,6 +427,10 @@ export default function HorizontalShowcase({ content = {} }: { content?: Horizon
             />
           ))}
         </div>
+        </div>
+
+        {renderAcc("strips", `${mobileStyle === "strips" ? "max-lg:block" : "max-lg:hidden"} ${desktopStyle === "strips" ? "lg:block" : "lg:hidden"}`)}
+        {renderAcc("rows", `${mobileStyle === "rows" ? "max-lg:block" : "max-lg:hidden"} lg:hidden`)}
       </div>
     </section>
   );

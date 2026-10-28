@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo, type MouseEvent as ReactMouseEvent } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import IconButton from "@/components/ui/IconButton";
 import type { HeroContent } from "@/lib/homepage";
+import { resolveTextStyle } from "@/lib/textStyle";
+import { fieldStyleCss, type FieldStyle } from "@/components/FieldStyles";
 
 /* ─── Slide Data ─────────────────────────────────────────────── */
 /* Native aspect ratio of the slide images — used to size the right-side visual */
@@ -73,15 +75,23 @@ const DEFAULT_SLIDES = allSlides.filter((s) => !s.hidden);
 type Slide = {
   id: number; image: string; mobileImage?: string; tag: string; line1: string; line2: string; sub: string;
   accent: string; bg: string; orb1: string; orb2: string;
-  imageOnly?: boolean; stacked?: boolean; ctaLabel?: string; ctaUrl?: string;
+  imageOnly?: boolean; stacked?: boolean; ctaLabel?: string; ctaUrl?: string; st?: Record<string, FieldStyle | undefined>;
+  isVideo?: boolean; video?: string; hAlign?: string; vAlign?: string; overlay?: number; hasCta?: boolean;
+  focus?: string; fit?: string; textFirst?: boolean; swap?: boolean;
 };
 
-const SLIDE_DURATION = 6500;
+const VIDEO_SAFETY_MS = 45000; // a video slide normally moves on when the video ends; this only covers a video that fails to play
+const DEFAULT_SLIDE_SECONDS = 5; // was 6.5s; editors can change it in CMS > Home Page > Hero Slider
 
 export default function Hero({ content, designsCount = "800+" }: { content?: HeroContent; designsCount?: string }) {
   const [current, setCurrent] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [progress, setProgress] = useState(0);
+  // Seconds per slide from the CMS, kept in a ref so the timer callbacks below always read the latest value.
+  const slideMs = Math.min(20, Math.max(2, Number(content?.slide_seconds) || DEFAULT_SLIDE_SECONDS)) * 1000;
+  const slideMsRef = useRef(slideMs);
+  slideMsRef.current = slideMs;
+  const headStyle = resolveTextStyle(content as Record<string, unknown>);
 
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -112,8 +122,19 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
           orb2: style.orb2,
           imageOnly: layout === "image_only",
           stacked: layout === "stacked",
+          isVideo: layout === "video",
+          video: s.video || undefined,
+          hAlign: s.text_align || "left",
+          vAlign: s.text_valign || "bottom",
+          overlay: Math.min(80, Math.max(0, Number(s.overlay ?? 35) || 0)),
+          hasCta: !!s.cta_label,
+          focus: s.image_focus || "center",
+          fit: s.fit_mode || "fill",
+          textFirst: s.mobile_order === "text_first",
+          swap: !!s.swap_desktop,
           ctaLabel: s.cta_label || "Explore Collection",
           ctaUrl: s.cta_url || "/collection",
+          st: { tag: s.tag__style, line1: s.line1__style, line2: s.line2__style, sub: s.sub__style, cta: s.cta_label__style },
         } as Slide,
         hidden: !!s.hidden,
       };
@@ -124,6 +145,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
   }, [content?.slides]);
 
   const slide = slides[current] ?? slides[0];
+  const fs = (k: string) => fieldStyleCss(slide.st?.[k]); // this slide's per-field toolbar styles
 
   /* Warm the browser cache with every slide's picture so none of them pops in late when its turn comes */
   useEffect(() => {
@@ -160,7 +182,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     startRef.current = Date.now();
     const tick = () => {
-      const pct = Math.min(((Date.now() - startRef.current) / SLIDE_DURATION) * 100, 100);
+      const pct = Math.min(((Date.now() - startRef.current) / slideMsRef.current) * 100, 100);
       setProgress(pct);
       if (pct < 100) rafRef.current = requestAnimationFrame(tick);
     };
@@ -177,8 +199,13 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
     animOut(() => {
       setCurrent(idx);
       setTransitioning(false);
-      startProgress();
-      timerRef.current = setTimeout(() => goTo((idx + 1) % slides.length), SLIDE_DURATION);
+      const sl = slides[idx];
+      if (sl?.isVideo && sl.video && slides.length > 1) {
+        timerRef.current = setTimeout(() => goTo((idx + 1) % slides.length), VIDEO_SAFETY_MS); // only if the video never plays
+      } else {
+        startProgress();
+        timerRef.current = setTimeout(() => goTo((idx + 1) % slides.length), slideMsRef.current);
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transitioning, animOut, startProgress]);
@@ -190,6 +217,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 1024px)").matches) return;
     const onMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 2;
       const y = (e.clientY / window.innerHeight - 0.5) * 2;
@@ -205,8 +233,12 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
   /* ── Boot ── */
   useEffect(() => {
     animIn();
-    startProgress();
-    timerRef.current = setTimeout(() => goTo(1), SLIDE_DURATION);
+    if (slides[0]?.isVideo && slides[0].video && slides.length > 1) {
+      timerRef.current = setTimeout(() => goTo(1), VIDEO_SAFETY_MS);
+    } else {
+      startProgress();
+      timerRef.current = setTimeout(() => goTo(1), slideMsRef.current);
+    }
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -221,13 +253,11 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
     <section
       ref={sectionRef}
       id="hero"
+      data-kind={slide.imageOnly ? "image_only" : slide.stacked ? "stacked" : slide.isVideo ? "video" : "split"}
       className="relative w-full overflow-hidden flex items-center"
       style={{
         backgroundColor: slide.bg,
         transition: "background-color 1400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-        minHeight: "max(680px, 100svh)",
-        paddingTop: "clamp(108px, 12vh, 132px)",
-        paddingBottom: "78px",
       }}
     >
       {/* ── Ambient orbs (mouse-reactive) ── */}
@@ -279,9 +309,13 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
                 className="absolute inset-0"
                 style={{ opacity: i === current ? 1 : 0, transition: "opacity 1300ms cubic-bezier(0.4,0,0.2,1)", zIndex: i === current ? 2 : 1 }}
               >
+                {s.fit === "fit" && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={s.mobileImage || s.image} alt="" aria-hidden="true" className="hero-blur-bg" />
+                )}
                 <picture>
                   {s.mobileImage && <source media="(max-width: 1023px)" srcSet={s.mobileImage} />}
-                  <img src={s.image} alt={s.line1 || "Banner"} className="w-full h-full object-cover" />
+                  <img src={s.image} alt={s.line1 || "Banner"} className={`relative w-full h-full ${s.fit === "fit" ? "hero-fit" : "object-cover"}`} style={{ objectPosition: s.focus || "center" }} />
                 </picture>
               </div>
             )
@@ -289,28 +323,99 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
         </div>
       )}
 
+      {/* ── Video banner: full-screen looping video, text on top (position + overlay set per slide in the CMS) ── */}
+      {slide.isVideo && (
+        <>
+          <div className="absolute inset-0 z-[4] overflow-hidden bg-black">
+            {slide.video ? (
+              <video
+                key={slide.video}
+                className="absolute inset-0 w-full h-full object-cover"
+                src={slide.video}
+                poster={slide.image}
+                autoPlay
+                muted
+                loop={slides.length < 2}
+                onEnded={goNext}
+                onTimeUpdate={(e) => { const v = e.currentTarget; if (v.duration) setProgress((v.currentTime / v.duration) * 100); }}
+                onLoadedMetadata={(e) => {
+                  // the video's own length replaces the safety timer (+ a small buffer)
+                  const d = e.currentTarget.duration;
+                  if (slides.length > 1 && isFinite(d) && d > 0) {
+                    if (timerRef.current) clearTimeout(timerRef.current);
+                    timerRef.current = setTimeout(() => goNext(), (d + 3) * 1000);
+                  }
+                }}
+                playsInline
+                preload="auto"
+                disableRemotePlayback
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={slide.image} alt={slide.line1 || "Banner"} className="absolute inset-0 w-full h-full object-cover" />
+            )}
+            <div className="absolute inset-0" style={{ background: `rgba(0,0,0,${(slide.overlay ?? 35) / 100})` }} />
+          </div>
+          <div
+            ref={contentRef}
+            className={`absolute inset-0 z-[6] flex flex-col px-6 md:px-14 ${slide.vAlign === "top" ? "justify-start" : slide.vAlign === "middle" ? "justify-center" : "justify-end"} ${slide.hAlign === "center" ? "items-center text-center" : slide.hAlign === "right" ? "items-end text-right" : "items-start text-left"}`}
+            style={{ paddingTop: "clamp(108px, 12vh, 132px)", paddingBottom: "112px" }}
+          >
+            <div className="w-full max-w-[820px]">
+              {slide.tag && (
+                <div className="h-sub mb-4 text-[12px] md:text-[13px] uppercase tracking-[0.22em]"
+                  style={{ color: "rgba(255,255,255,0.85)", fontFamily: "var(--font-jakarta)", ...fs("tag") }}>
+                  {slide.tag}
+                </div>
+              )}
+              {(slide.line1 || slide.line2) && (
+                <h2 className="leading-[1.1] tracking-tight" style={{ fontSize: "clamp(32px, 5.2vw, 78px)", fontWeight: 500, color: "#fff" }}>
+                  {slide.line1 && <span className="h-line1 block" style={{ ...headStyle, ...fs("line1") }}>{slide.line1}</span>}
+                  {slide.line2 && <span className="h-line2 block" style={{ ...headStyle, ...fs("line2") }}>{slide.line2}</span>}
+                </h2>
+              )}
+              {slide.sub && (
+                <p className="h-sub mt-5 max-w-[540px] text-[15px] md:text-[16px] leading-[1.7]"
+                  style={{ color: "rgba(255,255,255,0.88)", fontFamily: "var(--font-jakarta)", fontWeight: 300, ...(slide.hAlign === "center" ? { marginInline: "auto" } : slide.hAlign === "right" ? { marginLeft: "auto" } : {}), ...fs("sub") }}>
+                  {slide.sub}
+                </p>
+              )}
+              {slide.hasCta && (
+                <div className="h-btn mt-7">
+                  <Button href={slide.ctaUrl || "/collection"} variant="primary" className="group" style={{ backgroundColor: slide.accent }}>
+                    <span style={fs("cta")}>{slide.ctaLabel}</span>
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+
       {/* ── Main layout ── */}
-      {!slide.imageOnly && !slide.stacked && (
-      <div className="site-container relative z-10 w-full grid lg:grid-cols-[1fr_1fr] gap-10 lg:gap-0 items-center">
+      {!slide.imageOnly && !slide.stacked && !slide.isVideo && (
+      <div className="site-container relative z-10 w-full grid lg:grid-cols-[1fr_1fr] gap-5 lg:gap-0 items-center">
 
         {/* ── LEFT: Text ── */}
-        <div ref={contentRef} className="flex flex-col justify-center lg:pr-14">
+        <div ref={contentRef} className={`flex flex-col justify-center ${slide.textFirst ? "order-1" : "order-2"} ${slide.swap ? "lg:order-2 lg:pl-14" : "lg:order-1 lg:pr-14"}`}>
 
           {/* Headline — masked reveal */}
-          <div className="mb-7 space-y-1">
-            <div className="overflow-hidden pb-2">
+          <div className="mb-2 lg:mb-7 space-y-0 lg:space-y-1">
+            <div className="overflow-hidden pb-1 lg:pb-2">
               <h2
                 className="h-line1 block leading-[1.18] tracking-tight whitespace-nowrap"
                 style={{
                   fontSize: "clamp(26px, 3.9vw, 68px)",
                   fontWeight: 500,
                   color: "#1E1E2E",
+                  ...headStyle,
+                  ...fs("line1"),
                 }}
               >
                 {slide.line1}
               </h2>
             </div>
-            <div className="overflow-hidden pb-2">
+            <div className="overflow-hidden pb-1 lg:pb-2">
               <h2
                 className="h-line2 block leading-[1.18] tracking-tight whitespace-nowrap"
                 style={{
@@ -318,6 +423,8 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
                   fontWeight: 500,
                   color: slide.accent,
                   transition: "color 800ms ease",
+                  ...headStyle,
+                  ...fs("line2"),
                 }}
               >
                 {slide.line2}
@@ -327,33 +434,33 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
 
           {/* Divider */}
           <div
-            className="h-divider h-[2px] w-14 mb-6 origin-left"
+            className="h-divider hidden lg:block h-[2px] w-14 mb-6 origin-left"
             style={{ backgroundColor: slide.accent, borderRadius: "999px", transition: "background-color 800ms ease" }}
           />
 
           {/* Sub copy */}
           <p
-            className="h-sub text-[14px] leading-[1.8] max-w-[380px] mb-10"
-            style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)", fontWeight: 300 }}
+            className="h-sub text-[14px] leading-[1.7] lg:leading-[1.8] max-w-[380px] mb-4 lg:mb-10"
+            style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)", fontWeight: 300, ...fs("sub") }}
           >
             {slide.sub}
           </p>
 
           {/* Pill Buttons */}
-          <div className="flex flex-wrap gap-6 mb-10 items-center">
+          <div className="flex flex-nowrap lg:flex-wrap gap-x-4 lg:gap-x-6 gap-y-2 mb-4 lg:mb-10 items-center">
             <Button
-              href="/collection"
+              href={slide.ctaUrl || "/collection"}
               variant="primary"
-              className="h-btn group"
+              className="h-btn group max-lg:!px-5 max-lg:!py-3 max-lg:!text-[11px] max-lg:!tracking-[0.14em]"
               style={{
                 backgroundColor: slide.accent,
                 boxShadow: `0 8px 28px ${slide.accent}45`,
                 transition: "background-color 800ms ease, box-shadow 800ms ease, filter 250ms ease",
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.filter = "brightness(1.08)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.filter = "brightness(1)"; }}
+              onMouseEnter={(e: ReactMouseEvent<HTMLElement>) => { (e.currentTarget as HTMLElement).style.filter = "brightness(1.08)"; }}
+              onMouseLeave={(e: ReactMouseEvent<HTMLElement>) => { (e.currentTarget as HTMLElement).style.filter = "brightness(1)"; }}
             >
-              <span>Explore Collection</span>
+              <span style={fs("cta")}>{slide.ctaLabel || "Explore Collection"}</span>
               <svg className="w-[14px] h-[14px] group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -383,13 +490,13 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
           </div>
 
           {/* Stats */}
-          <div className="flex items-start gap-10 pt-7 border-t" style={{ borderColor: "rgba(30,30,46,0.08)" }}>
+          <div className="flex items-start gap-7 lg:gap-10 pt-4 lg:pt-7 border-t" style={{ borderColor: "rgba(30,30,46,0.08)" }}>
             {[{ value: designsCount, label: "Designs" }, { value: "9+", label: "Years" }, { value: "18K+", label: "Clients" }].map((s) => (
               <div key={s.label} className="h-stats">
-                <div className="font-bold text-[26px] leading-none mb-1.5" style={{ fontFamily: "var(--font-jakarta)", color: slide.accent, transition: "color 800ms ease" }}>
+                <div className="font-bold text-[20px] lg:text-[26px] leading-none mb-1" style={{ fontFamily: "var(--font-jakarta)", color: slide.accent, transition: "color 800ms ease" }}>
                   {s.value}
                 </div>
-                <div className="text-[12px] md:text-[11px] uppercase tracking-[0.14em] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+                <div className="text-[10px] md:text-[11px] uppercase tracking-[0.12em] lg:tracking-[0.14em] font-semibold" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
                   {s.label}
                 </div>
               </div>
@@ -398,7 +505,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
         </div>
 
         {/* ── RIGHT: Image ── */}
-        <div className="relative flex items-center justify-center">
+        <div className={`relative flex items-center justify-center -mx-1.5 lg:mx-0 ${slide.textFirst ? "order-2" : "order-1"} ${slide.swap ? "lg:order-1" : "lg:order-2"}`}>
 
           {/* Single slab — sized to the source image's native aspect ratio */}
           <div
@@ -415,7 +522,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
                 style={{ opacity: i === current ? 1 : 0, transition: "opacity 1300ms cubic-bezier(0.4,0,0.2,1)", zIndex: i === current ? 2 : 1 }}>
                 <img src={s.image} alt={s.line1}
                   className="w-full h-full object-cover"
-                  style={{ transform: i === current ? "scale(1.0)" : "scale(1.06)", transition: "transform 7500ms ease-out" }}
+                  style={{ objectPosition: s.focus || "center", transform: i === current ? "scale(1.0)" : "scale(1.06)", transition: "transform 7500ms ease-out" }}
                 />
                 <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 60%)" }} />
               </div>
@@ -424,7 +531,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
 
           {/* Floating badge */}
           <div
-            className="hero-badge glass-card absolute px-5 py-4 z-20 gpu"
+            className="hero-badge glass-card hidden md:block absolute px-5 py-4 z-20 gpu"
             style={{
               bottom: "6%", right: "-2%",
               willChange: "transform",
@@ -447,12 +554,13 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
 
           {/* Accent pill tag — brand orange, matches badge color used site-wide (product cards, etc.) */}
           <div
-            className="absolute top-6 left-6 z-20 px-4 py-2 text-white text-[12px] md:text-[11px] uppercase tracking-[0.16em] font-semibold"
+            className="hidden lg:block absolute top-6 left-6 z-20 px-4 py-2 text-white text-[12px] md:text-[11px] uppercase tracking-[0.16em] font-semibold"
             style={{
               backgroundColor: "#fabf7d",
               borderRadius: "999px",
               fontFamily: "var(--font-jakarta)",
               boxShadow: "0 6px 18px rgba(250,191,125,0.4)",
+              ...fs("tag"),
             }}
           >
             {slide.tag}
@@ -469,23 +577,23 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
             <div className="relative w-full h-full overflow-hidden">
               <picture>
                 {slide.mobileImage && <source media="(max-width: 1023px)" srcSet={slide.mobileImage} />}
-                <img src={slide.image} alt={slide.line1} className="w-full h-full object-cover" />
+                <img src={slide.image} alt={slide.line1} className="w-full h-full object-cover" style={{ objectPosition: slide.focus || "center" }} />
               </picture>
 {slide.tag && (              <div className="absolute top-5 left-5 md:left-14 px-4 py-2 text-white text-[12px] md:text-[11px] uppercase tracking-[0.16em] font-semibold"
-                style={{ backgroundColor: "#fabf7d", borderRadius: "999px", fontFamily: "var(--font-jakarta)" }}>
+                style={{ backgroundColor: "#fabf7d", borderRadius: "999px", fontFamily: "var(--font-jakarta)", ...fs("tag") }}>
                 {slide.tag}
               </div>)}
             </div>
           </div>
           <div ref={contentRef} className="site-container w-full flex-[3] min-h-0 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-12">
             <div className="overflow-hidden">
-              <h2 className="h-line1 inline leading-[1.15] tracking-tight" style={{ fontSize: "clamp(24px, 3.2vw, 52px)", fontWeight: 500, color: "#1E1E2E" }}>{slide.line1} </h2>
-              <h2 className="h-line2 inline leading-[1.15] tracking-tight" style={{ fontSize: "clamp(24px, 3.2vw, 52px)", fontWeight: 500, color: slide.accent }}>{slide.line2}</h2>
+              <h2 className="h-line1 inline leading-[1.15] tracking-tight" style={{ fontSize: "clamp(24px, 3.2vw, 52px)", fontWeight: 500, color: "#1E1E2E", ...headStyle, ...fs("line1") }}>{slide.line1} </h2>
+              <h2 className="h-line2 inline leading-[1.15] tracking-tight" style={{ fontSize: "clamp(24px, 3.2vw, 52px)", fontWeight: 500, color: slide.accent, ...headStyle, ...fs("line2") }}>{slide.line2}</h2>
             </div>
-            <p className="h-sub text-[14px] leading-[1.7] max-w-[420px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)", fontWeight: 300 }}>{slide.sub}</p>
+            <p className="h-sub text-[14px] leading-[1.7] max-w-[420px]" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)", fontWeight: 300, ...fs("sub") }}>{slide.sub}</p>
             <div className="flex flex-wrap items-center gap-6 shrink-0">
               <Button href={slide.ctaUrl || "/collection"} variant="primary" className="h-btn group" style={{ backgroundColor: slide.accent, boxShadow: `0 8px 28px ${slide.accent}45` }}>
-                <span>{slide.ctaLabel || "Explore Collection"}</span>
+                <span style={fs("cta")}>{slide.ctaLabel || "Explore Collection"}</span>
               </Button>
               <Link href="/about-us" className="h-btn inline-flex items-center gap-2" style={{ color: "#1E1E2E", fontFamily: "var(--font-jakarta)", fontSize: "14px", fontWeight: 500 }}>
                 <span>Our Story</span>
@@ -502,7 +610,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
           <div className="h-full origin-left" style={{ width: `${progress}%`, backgroundColor: slide.accent, transition: "width 0.09s linear, background-color 800ms ease", borderRadius: "999px" }} />
         </div>
 
-        <div className="site-container flex items-center justify-between py-5">
+        <div className="site-container flex items-center justify-between py-1 lg:py-5">
           {/* Pill dots - the button is a 40px-tall tap target, the visible pill is the inner span */}
           <div className="flex items-center">
             {slides.map((_, i) => (
@@ -519,7 +627,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
                     width: i === current ? "32px" : "8px",
                     height: "8px",
                     borderRadius: "999px",
-                    backgroundColor: i === current ? slide.accent : "rgba(30,30,46,0.18)",
+                    backgroundColor: i === current ? (slide.isVideo ? "#ffffff" : slide.accent) : slide.isVideo ? "rgba(255,255,255,0.4)" : "rgba(30,30,46,0.18)",
                     transition: "width 500ms cubic-bezier(0.25,0.46,0.45,0.94), background-color 500ms ease",
                   }}
                 />
@@ -529,8 +637,8 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
 
           {/* Counter + arrows */}
           <div className="flex items-center gap-5">
-            <span className="text-[12px] md:text-[11px] tabular-nums" style={{ color: "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
-              <span className="font-semibold" style={{ color: "#1E1E2E" }}>{String(current + 1).padStart(2, "0")}</span>
+            <span className="text-[12px] md:text-[11px] tabular-nums" style={{ color: slide.isVideo ? "rgba(255,255,255,0.75)" : "#6B6B80", fontFamily: "var(--font-jakarta)" }}>
+              <span className="font-semibold" style={{ color: slide.isVideo ? "#fff" : "#1E1E2E" }}>{String(current + 1).padStart(2, "0")}</span>
               {" / "}{String(slides.length).padStart(2, "0")}
             </span>
 
@@ -538,7 +646,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
               { fn: goPrev, d: "M19 12H5M12 19l-7-7 7-7", label: "Previous slide" },
               { fn: goNext, d: "M5 12h14M12 5l7 7-7 7", label: "Next slide" },
             ].map(({ fn, d, label }, i) => (
-              <IconButton key={i} size="sm" aria-label={label} onClick={fn}>
+              <IconButton key={i} size="sm" variant={slide.isVideo ? "glass" : "default"} aria-label={label} onClick={fn}>
                 <svg className="w-[12px] h-[12px]" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
                   <path d={d} strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -549,7 +657,7 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
       </div>
 
       {/* ── Scroll cue ── */}
-      {!slide.stacked && <div className="absolute left-8 md:left-14 bottom-24 z-20 flex flex-col items-center gap-2">
+      {!slide.stacked && !slide.isVideo && <div className="absolute left-8 md:left-14 bottom-24 z-20 hidden lg:flex flex-col items-center gap-2">
         <div className="relative w-[1px] h-14 overflow-hidden" style={{ backgroundColor: "rgba(30,30,46,0.1)" }}>
           <div className="absolute top-0 left-0 w-full h-1/2"
             style={{ backgroundColor: slide.accent, animation: "heroCue 2.2s cubic-bezier(0.4,0,0.6,1) infinite", transition: "background-color 800ms ease" }} />
@@ -558,6 +666,22 @@ export default function Hero({ content, designsCount = "800+" }: { content?: Her
       </div>}
 
       <style>{`
+        #hero { min-height: max(680px, 100svh); padding-top: clamp(108px, 12vh, 132px); padding-bottom: 78px; }
+        @media (max-width: 1023px) {
+          #hero { min-height: 0; padding-top: 93px; padding-bottom: 60px; }
+          #hero[data-kind="stacked"], #hero[data-kind="video"] { min-height: max(620px, 100svh); }
+          /* single "centre-stage" image: a shorter 4:5 frame on phones (the fixed header covers its top strip) */
+          #hero[data-kind="image_only"] { height: 125vw; padding: 0; }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+          #hero[data-kind="image_only"] { height: 80vw; }
+        }
+        .hero-blur-bg { display: none; }
+        .hero-fit { object-fit: cover; }
+        @media (max-width: 1023px) {
+          .hero-blur-bg { display: block; position: absolute; left: -10%; top: -10%; width: 120%; height: 120%; object-fit: cover; filter: blur(26px) saturate(1.1); }
+          .hero-fit { object-fit: contain; }
+        }
         @keyframes heroCue {
           0%   { transform: translateY(-100%); opacity: 1; }
           80%  { transform: translateY(260%); opacity: 1; }

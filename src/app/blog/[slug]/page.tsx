@@ -19,16 +19,8 @@ import {
 import { getCmsBaseUrl } from "@/lib/cityPages";
 import CmsPreviewBanner from "@/components/CmsPreviewBanner";
 
-export const revalidate = 300;
-export const dynamicParams = true;
-
 const FALLBACK_HERO =
-  "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1600";
-
-export async function generateStaticParams() {
-  const posts = await fetchBlogPosts();
-  return posts.map((p) => ({ slug: p.slug }));
-}
+  "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=65&auto=format&w=1280";
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ preview?: string }> };
 
@@ -92,6 +84,11 @@ export default async function BlogPostPage({ params, searchParams }: Props) {
       <h1 className="blog-post-title">{post.title}</h1>
       {(post.excerpt || post.metaDescription) && (
         <p className="blog-post-description">{post.excerpt || post.metaDescription}</p>
+      )}
+
+      {post.image && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={post.image} alt={post.imageAlt || post.title} className="w-full h-auto rounded-2xl mb-8" />
       )}
 
       {/* meta row */}
@@ -171,6 +168,7 @@ export default async function BlogPostPage({ params, searchParams }: Props) {
         <CmsPreviewBanner status={post.status} editHref={`${getCmsBaseUrl()}/cms/blog/${post.id}/`} />
       )}
       <Header />
+      <div className="blog-hero-blur">
       <PageHero
         eyebrow={post.categories[0]?.name || "Editorial"}
         title={post.title}
@@ -183,6 +181,7 @@ export default async function BlogPostPage({ params, searchParams }: Props) {
           { label: post.title },
         ]}
       />
+      </div>
 
       {post.autoFaqSchema && post.faqs.length > 0 && (
         <script

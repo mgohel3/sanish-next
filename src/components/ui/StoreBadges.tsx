@@ -75,10 +75,11 @@ function Badge({ href, icon, eyebrow, title, size, variant }: BadgeProps) {
  * hand-duplicated in 3+ files with drifting padding/font sizes. `size` scales
  * everything together; `variant` swaps black-on-white for white-on-dark.
  */
-export default function StoreBadges({ size = "md", variant = "dark", className = "" }: { size?: Size; variant?: Variant; className?: string }) {
+export default function StoreBadges({ size = "md", variant = "dark", className = "", align = "start" }: { size?: Size; variant?: Variant; className?: string; align?: "start" | "center" }) {
   const s = SIZES[size];
   return (
-    <div className={`flex flex-wrap items-center gap-3 ${className}`}>
+    // Equal-width buttons (so a stacked pair on a phone lines up), centred when the section around them is centred
+    <div className={`flex flex-wrap items-center gap-3 ${align === "center" ? "justify-center" : ""} ${size === "sm" ? "" : "[&>a]:min-w-[13rem] [&>a]:justify-center"} ${className}`}>
       <Badge href={PLAY_STORE_URL} icon={<PlayStoreIcon size={s.iconSize} />} eyebrow="Get it on" title="Google Play" size={size} variant={variant} />
       <Badge href={APP_STORE_URL} icon={<AppStoreIcon size={s.iconSize} color={variant === "dark" ? "white" : "#1E1E2E"} />} eyebrow="Download on the" title="App Store" size={size} variant={variant} />
     </div>

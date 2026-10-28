@@ -30,6 +30,7 @@ export function openCataloguePdfPopup(slug: string, name: string, cmsUrl?: strin
   window.dispatchEvent(new CustomEvent("open-inquiry-popup", {
     detail: {
       downloadAfterSubmit: true,
+      product: name,
       downloadUrl,
       downloadFilename: `Sanish-${name.replace(/[^a-zA-Z0-9]+/g, "-")}-Catalogue.pdf`,
     },

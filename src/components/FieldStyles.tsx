@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-type FieldStyle = {
+export type FieldStyle = {
   color?: string;
   font?: string;
   size?: string;
@@ -25,6 +25,29 @@ function loadGoogleFont(name: string) {
   link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name).replace(/%20/g, "+")}:ital,wght@0,400;0,700;1,400&display=swap`;
   document.head.appendChild(link);
 }
+/**
+ * Inline-style version of one field's toolbar settings, for components that
+ * render a field from a repeater row (e.g. each hero slide) and so can't be
+ * styled by the text-matching marker below. Blank / absent = {} (no change).
+ */
+export function fieldStyleCss(st?: FieldStyle): CSSProperties {
+  if (!st) return {};
+  const o: CSSProperties = {};
+  if (st.color) o.color = st.color;
+  if (st.font === "serif") o.fontFamily = "var(--font-vogue)";
+  else if (st.font === "sans") o.fontFamily = "var(--font-heebo)";
+  else if (st.font) { loadGoogleFont(st.font); o.fontFamily = `'${st.font}', serif`; }
+  if (st.bold) o.fontWeight = 700;
+  if (st.italic) o.fontStyle = "italic";
+  if (st.underline) o.textDecorationLine = "underline";
+  if (st.align) o.textAlign = st.align as CSSProperties["textAlign"];
+  if (st.size && /^\d+$/.test(st.size)) {
+    const px = parseInt(st.size, 10); // exact px on desktop, fluid down to ~60% on small screens
+    o.fontSize = `clamp(${Math.max(12, Math.round(px * 0.6))}px, ${((px / 1280) * 100).toFixed(2)}vw + 0.4rem, ${px}px)`;
+  }
+  return o;
+}
+
 const norm = (s: string) => s.replace(/\s+/g, " ").trim();
 const PROPS = ["color", "font-family", "font-size", "font-weight", "font-style", "text-align", "text-decoration-line"] as const;
 

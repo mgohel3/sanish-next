@@ -38,7 +38,7 @@ function StaticContactUs() {
       <PageHero
         eyebrow="Get in Touch"
         title="Contact Us"
-        image="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000"
+        image="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=65&auto=format&w=1280"
         description="Speak with our team about products, samples, specifications and dealer support."
         imageFill
       />

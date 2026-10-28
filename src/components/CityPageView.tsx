@@ -5,7 +5,7 @@ import CityPageContactCard from "@/components/CityPageContactCard";
 import type { CityPageData, CityPageListItem } from "@/lib/cityPages";
 
 const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600";
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=65&auto=format&w=1280";
 
 /** Every section title on this page shares one size (56px desktop). */
 const TITLE_STYLE = { fontSize: "clamp(32px, 4.5vw, 56px)" };

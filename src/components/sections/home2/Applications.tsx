@@ -8,7 +8,7 @@ const APPS = [
     id: "kitchen",
     label: "Modular Kitchens",
     desc: "High-moisture, high-traffic environments demand the best. Our laminates are scratch-resistant, moisture-proof, and available in 200+ kitchen-friendly designs — from sleek gloss to warm woodgrain.",
-    image: "/assets/img/material/shadesCollection.png",
+    image: "/assets/img/material/shadesCollection.webp",
     tags: ["High Gloss", "Matte", "Woodgrain"],
   },
   {
@@ -36,7 +36,7 @@ const APPS = [
     id: "doors",
     label: "Doors & Shutters",
     desc: "Impact-resistant and dimensionally stable laminates for door skins and shutters — maintaining their look through thousands of open/close cycles.",
-    image: "/assets/img/material/shadesCollection.png",
+    image: "/assets/img/material/shadesCollection.webp",
     tags: ["High Gloss", "Matte"],
   },
 ];
